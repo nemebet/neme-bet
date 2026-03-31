@@ -1,0 +1,210 @@
+[
+  {
+    "home_team": "Bosnia-Herzegovina",
+    "away_team": "Italy",
+    "home_has_data": true,
+    "away_has_data": true,
+    "lambda_home": 1.9265318302387267,
+    "lambda_away": 1.8645128205128203,
+    "exp_home_goals": 1.93,
+    "exp_away_goals": 1.86,
+    "p_home_win": 40.6,
+    "p_draw": 21.3,
+    "p_away_win": 38.1,
+    "p_btts_yes": 72.2,
+    "p_btts_no": 27.8,
+    "p_over_25": 73.0,
+    "p_under_25": 27.0,
+    "p_over_15": 89.2,
+    "top_scores": [
+      [
+        "1-1",
+        8.11058484283441
+      ],
+      [
+        "2-1",
+        7.8126499307861295
+      ],
+      [
+        "1-2",
+        7.5611447106608605
+      ],
+      [
+        "2-2",
+        7.28339297906467
+      ],
+      [
+        "3-1",
+        5.01710625672395
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 4.5,
+      "exp_away_corners": 5.3,
+      "exp_total_corners": 9.8,
+      "p_over_8_5": 64.4,
+      "p_under_8_5": 35.6,
+      "p_over_9_5": 51.7,
+      "p_under_9_5": 48.3,
+      "p_over_10_5": 39.2,
+      "p_under_10_5": 60.8
+    }
+  },
+  {
+    "home_team": "Czechia",
+    "away_team": "Denmark",
+    "home_has_data": true,
+    "away_has_data": true,
+    "lambda_home": 2.924261259210138,
+    "lambda_away": 1.8745279807692306,
+    "exp_home_goals": 2.92,
+    "exp_away_goals": 1.87,
+    "p_home_win": 59.5,
+    "p_draw": 17.0,
+    "p_away_win": 23.6,
+    "p_btts_yes": 80.1,
+    "p_btts_no": 19.9,
+    "p_over_25": 85.7,
+    "p_under_25": 14.3,
+    "p_over_15": 95.2,
+    "top_scores": [
+      [
+        "2-1",
+        6.626353923158174
+      ],
+      [
+        "3-1",
+        6.459063355768848
+      ],
+      [
+        "2-2",
+        6.210642919719982
+      ],
+      [
+        "3-2",
+        6.053847494974956
+      ],
+      [
+        "4-1",
+        4.721997185514673
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 4.2,
+      "exp_away_corners": 5.4,
+      "exp_total_corners": 9.7,
+      "p_over_8_5": 62.8,
+      "p_under_8_5": 37.2,
+      "p_over_9_5": 50.0,
+      "p_under_9_5": 50.0,
+      "p_over_10_5": 37.5,
+      "p_under_10_5": 62.5
+    }
+  },
+  {
+    "home_team": "Kosovo",
+    "away_team": "Turkey",
+    "home_has_data": true,
+    "away_has_data": true,
+    "lambda_home": 1.6802568446065427,
+    "lambda_away": 1.1800519230769229,
+    "exp_home_goals": 1.68,
+    "exp_away_goals": 1.18,
+    "p_home_win": 49.1,
+    "p_draw": 24.1,
+    "p_away_win": 26.8,
+    "p_btts_yes": 56.4,
+    "p_btts_no": 43.6,
+    "p_over_25": 54.5,
+    "p_under_25": 45.5,
+    "p_over_15": 77.9,
+    "top_scores": [
+      [
+        "1-1",
+        11.352482428239599
+      ],
+      [
+        "1-0",
+        9.62032450117839
+      ],
+      [
+        "2-1",
+        9.537543151662549
+      ],
+      [
+        "2-0",
+        8.082308045220513
+      ],
+      [
+        "0-1",
+        6.756397073863998
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 4.1,
+      "exp_away_corners": 3.8,
+      "exp_total_corners": 7.9,
+      "p_over_8_5": 39.0,
+      "p_under_8_5": 61.0,
+      "p_over_9_5": 26.8,
+      "p_under_9_5": 73.2,
+      "p_over_10_5": 17.2,
+      "p_under_10_5": 82.8
+    }
+  },
+  {
+    "home_team": "Sweden",
+    "away_team": "Poland",
+    "home_has_data": true,
+    "away_has_data": true,
+    "lambda_home": 3.2486831034482755,
+    "lambda_away": 0.9271836538461536,
+    "exp_home_goals": 3.25,
+    "exp_away_goals": 0.93,
+    "p_home_win": 81.7,
+    "p_draw": 11.1,
+    "p_away_win": 7.1,
+    "p_btts_yes": 58.1,
+    "p_btts_no": 41.9,
+    "p_over_25": 78.5,
+    "p_under_25": 21.5,
+    "p_over_15": 92.0,
+    "top_scores": [
+      [
+        "3-0",
+        8.83383154944317
+      ],
+      [
+        "3-1",
+        8.190584213474148
+      ],
+      [
+        "2-0",
+        8.157611501164839
+      ],
+      [
+        "2-1",
+        7.563604038307423
+      ],
+      [
+        "4-0",
+        7.174579823346093
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 6.0,
+      "exp_away_corners": 5.8,
+      "exp_total_corners": 11.8,
+      "p_over_8_5": 83.4,
+      "p_under_8_5": 16.6,
+      "p_over_9_5": 74.2,
+      "p_under_9_5": 25.8,
+      "p_over_10_5": 63.5,
+      "p_under_10_5": 36.5
+    }
+  }
+]

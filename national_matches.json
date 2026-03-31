@@ -1,0 +1,2746 @@
+[
+  {
+    "date": "2024-09-05",
+    "competition": "Nations League A",
+    "home_team": "Portugal",
+    "away_team": "Croatia",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-05",
+    "competition": "Nations League A",
+    "home_team": "Scotland",
+    "away_team": "Poland",
+    "home_goals": 2,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-09-05",
+    "competition": "Nations League C",
+    "home_team": "Azerbaijan",
+    "away_team": "Sweden",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-09-05",
+    "competition": "Nations League C",
+    "home_team": "Estonia",
+    "away_team": "Slovakia",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-05",
+    "competition": "Nations League C",
+    "home_team": "Belarus",
+    "away_team": "Bulgaria",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-05",
+    "competition": "Nations League C",
+    "home_team": "Northern Ireland",
+    "away_team": "Luxembourg",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-05",
+    "competition": "Nations League D",
+    "home_team": "San Marino",
+    "away_team": "Liechtenstein",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-06",
+    "competition": "Nations League A",
+    "home_team": "Belgium",
+    "away_team": "Israel",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-06",
+    "competition": "Nations League A",
+    "home_team": "France",
+    "away_team": "Italy",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-09-06",
+    "competition": "Nations League B",
+    "home_team": "Kazakhstan",
+    "away_team": "Norway",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-06",
+    "competition": "Nations League B",
+    "home_team": "Slovenia",
+    "away_team": "Austria",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-06",
+    "competition": "Nations League B",
+    "home_team": "Iceland",
+    "away_team": "Montenegro",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-06",
+    "competition": "Nations League B",
+    "home_team": "Wales",
+    "away_team": "Turkey",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-06",
+    "competition": "Nations League C",
+    "home_team": "Lithuania",
+    "away_team": "Cyprus",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-06",
+    "competition": "Nations League C",
+    "home_team": "Kosovo",
+    "away_team": "Romania",
+    "home_goals": 0,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-09-07",
+    "competition": "Nations League A",
+    "home_team": "Germany",
+    "away_team": "Hungary",
+    "home_goals": 5,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-07",
+    "competition": "Nations League A",
+    "home_team": "Netherlands",
+    "away_team": "Bosnia-Herzegovina",
+    "home_goals": 5,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-09-07",
+    "competition": "Nations League B",
+    "home_team": "Georgia",
+    "away_team": "Czechia",
+    "home_goals": 4,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-07",
+    "competition": "Nations League B",
+    "home_team": "Ukraine",
+    "away_team": "Albania",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-09-07",
+    "competition": "Nations League B",
+    "home_team": "Rep. Ireland",
+    "away_team": "England",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-09-07",
+    "competition": "Nations League B",
+    "home_team": "Greece",
+    "away_team": "Finland",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-07",
+    "competition": "Nations League C",
+    "home_team": "Faroe Islands",
+    "away_team": "North Macedonia",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-07",
+    "competition": "Nations League C",
+    "home_team": "Armenia",
+    "away_team": "Latvia",
+    "home_goals": 4,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-07",
+    "competition": "Nations League D",
+    "home_team": "Moldova",
+    "away_team": "Malta",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-08",
+    "competition": "Nations League A",
+    "home_team": "Croatia",
+    "away_team": "Poland",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-08",
+    "competition": "Nations League A",
+    "home_team": "Portugal",
+    "away_team": "Scotland",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-08",
+    "competition": "Nations League C",
+    "home_team": "Slovakia",
+    "away_team": "Azerbaijan",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-08",
+    "competition": "Nations League C",
+    "home_team": "Sweden",
+    "away_team": "Estonia",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-08",
+    "competition": "Nations League C",
+    "home_team": "Luxembourg",
+    "away_team": "Belarus",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-08",
+    "competition": "Nations League C",
+    "home_team": "Bulgaria",
+    "away_team": "Northern Ireland",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-08",
+    "competition": "Nations League D",
+    "home_team": "Gibraltar",
+    "away_team": "Liechtenstein",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-09-09",
+    "competition": "Nations League A",
+    "home_team": "France",
+    "away_team": "Belgium",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-09",
+    "competition": "Nations League A",
+    "home_team": "Israel",
+    "away_team": "Italy",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-09-09",
+    "competition": "Nations League B",
+    "home_team": "Norway",
+    "away_team": "Austria",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-09",
+    "competition": "Nations League B",
+    "home_team": "Slovenia",
+    "away_team": "Kazakhstan",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-09",
+    "competition": "Nations League B",
+    "home_team": "Montenegro",
+    "away_team": "Wales",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-09-09",
+    "competition": "Nations League C",
+    "home_team": "Cyprus",
+    "away_team": "Kosovo",
+    "home_goals": 0,
+    "away_goals": 4
+  },
+  {
+    "date": "2024-09-09",
+    "competition": "Nations League C",
+    "home_team": "Romania",
+    "away_team": "Lithuania",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-10",
+    "competition": "Nations League A",
+    "home_team": "Hungary",
+    "away_team": "Bosnia-Herzegovina",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-10",
+    "competition": "Nations League A",
+    "home_team": "Netherlands",
+    "away_team": "Germany",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-09-10",
+    "competition": "Nations League B",
+    "home_team": "Albania",
+    "away_team": "Georgia",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-10",
+    "competition": "Nations League B",
+    "home_team": "Czechia",
+    "away_team": "Ukraine",
+    "home_goals": 3,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-09-10",
+    "competition": "Nations League B",
+    "home_team": "England",
+    "away_team": "Finland",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-10",
+    "competition": "Nations League B",
+    "home_team": "Rep. Ireland",
+    "away_team": "Greece",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-09-10",
+    "competition": "Nations League B",
+    "home_team": "Turkey",
+    "away_team": "Iceland",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-09-10",
+    "competition": "Nations League C",
+    "home_team": "Latvia",
+    "away_team": "Faroe Islands",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-10",
+    "competition": "Nations League C",
+    "home_team": "North Macedonia",
+    "away_team": "Armenia",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-09-10",
+    "competition": "Nations League D",
+    "home_team": "Andorra",
+    "away_team": "Malta",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-10",
+    "competition": "Nations League A",
+    "home_team": "Israel",
+    "away_team": "France",
+    "home_goals": 1,
+    "away_goals": 4
+  },
+  {
+    "date": "2024-10-10",
+    "competition": "Nations League A",
+    "home_team": "Italy",
+    "away_team": "Belgium",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-10-10",
+    "competition": "Nations League B",
+    "home_team": "England",
+    "away_team": "Greece",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-10-10",
+    "competition": "Nations League B",
+    "home_team": "Finland",
+    "away_team": "Rep. Ireland",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-10-10",
+    "competition": "Nations League B",
+    "home_team": "Austria",
+    "away_team": "Kazakhstan",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-10",
+    "competition": "Nations League B",
+    "home_team": "Norway",
+    "away_team": "Slovenia",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-10",
+    "competition": "Nations League B",
+    "home_team": "Iceland",
+    "away_team": "Turkey",
+    "home_goals": 2,
+    "away_goals": 4
+  },
+  {
+    "date": "2024-10-10",
+    "competition": "Nations League B",
+    "home_team": "Wales",
+    "away_team": "Iceland",
+    "home_goals": 4,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-10",
+    "competition": "Nations League D",
+    "home_team": "Gibraltar",
+    "away_team": "San Marino",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-10",
+    "competition": "Nations League D",
+    "home_team": "Moldova",
+    "away_team": "Andorra",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-11",
+    "competition": "Nations League A",
+    "home_team": "Bosnia-Herzegovina",
+    "away_team": "Germany",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-10-11",
+    "competition": "Nations League A",
+    "home_team": "Hungary",
+    "away_team": "Netherlands",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-11",
+    "competition": "Nations League B",
+    "home_team": "Czechia",
+    "away_team": "Albania",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-11",
+    "competition": "Nations League B",
+    "home_team": "Ukraine",
+    "away_team": "Georgia",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-11",
+    "competition": "Nations League C",
+    "home_team": "Estonia",
+    "away_team": "Azerbaijan",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-11",
+    "competition": "Nations League C",
+    "home_team": "Slovakia",
+    "away_team": "Sweden",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-10-11",
+    "competition": "Nations League C",
+    "home_team": "Armenia",
+    "away_team": "Faroe Islands",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-11",
+    "competition": "Nations League C",
+    "home_team": "North Macedonia",
+    "away_team": "Latvia",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-12",
+    "competition": "Nations League A",
+    "home_team": "Croatia",
+    "away_team": "Scotland",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-12",
+    "competition": "Nations League A",
+    "home_team": "Poland",
+    "away_team": "Portugal",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-10-12",
+    "competition": "Nations League C",
+    "home_team": "Lithuania",
+    "away_team": "Kosovo",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-10-12",
+    "competition": "Nations League C",
+    "home_team": "Cyprus",
+    "away_team": "Romania",
+    "home_goals": 0,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-10-12",
+    "competition": "Nations League C",
+    "home_team": "Bulgaria",
+    "away_team": "Luxembourg",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-12",
+    "competition": "Nations League C",
+    "home_team": "Belarus",
+    "away_team": "Northern Ireland",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-13",
+    "competition": "Nations League B",
+    "home_team": "Finland",
+    "away_team": "England",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-10-13",
+    "competition": "Nations League B",
+    "home_team": "Greece",
+    "away_team": "Rep. Ireland",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-13",
+    "competition": "Nations League B",
+    "home_team": "Kazakhstan",
+    "away_team": "Slovenia",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-13",
+    "competition": "Nations League B",
+    "home_team": "Austria",
+    "away_team": "Norway",
+    "home_goals": 5,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-13",
+    "competition": "Nations League B",
+    "home_team": "Turkey",
+    "away_team": "Montenegro",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-13",
+    "competition": "Nations League B",
+    "home_team": "Iceland",
+    "away_team": "Wales",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-10-13",
+    "competition": "Nations League D",
+    "home_team": "Liechtenstein",
+    "away_team": "Gibraltar",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-13",
+    "competition": "Nations League D",
+    "home_team": "Malta",
+    "away_team": "Moldova",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-14",
+    "competition": "Nations League A",
+    "home_team": "Belgium",
+    "away_team": "France",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-10-14",
+    "competition": "Nations League A",
+    "home_team": "Italy",
+    "away_team": "Israel",
+    "home_goals": 4,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-14",
+    "competition": "Nations League A",
+    "home_team": "Germany",
+    "away_team": "Netherlands",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-14",
+    "competition": "Nations League B",
+    "home_team": "Georgia",
+    "away_team": "Albania",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-14",
+    "competition": "Nations League B",
+    "home_team": "Ukraine",
+    "away_team": "Czechia",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-14",
+    "competition": "Nations League C",
+    "home_team": "Azerbaijan",
+    "away_team": "Slovakia",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-10-14",
+    "competition": "Nations League C",
+    "home_team": "Estonia",
+    "away_team": "Sweden",
+    "home_goals": 0,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-10-15",
+    "competition": "Nations League A",
+    "home_team": "Poland",
+    "away_team": "Croatia",
+    "home_goals": 3,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-10-15",
+    "competition": "Nations League A",
+    "home_team": "Scotland",
+    "away_team": "Portugal",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-15",
+    "competition": "Nations League C",
+    "home_team": "Kosovo",
+    "away_team": "Cyprus",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-15",
+    "competition": "Nations League C",
+    "home_team": "Lithuania",
+    "away_team": "Romania",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-10-15",
+    "competition": "Nations League C",
+    "home_team": "Belarus",
+    "away_team": "Luxembourg",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-10-15",
+    "competition": "Nations League C",
+    "home_team": "Northern Ireland",
+    "away_team": "Bulgaria",
+    "home_goals": 5,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-10-15",
+    "competition": "Nations League C",
+    "home_team": "Faroe Islands",
+    "away_team": "Armenia",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-10-15",
+    "competition": "Nations League C",
+    "home_team": "Latvia",
+    "away_team": "North Macedonia",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-11-14",
+    "competition": "Nations League A",
+    "home_team": "Belgium",
+    "away_team": "Italy",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-14",
+    "competition": "Nations League A",
+    "home_team": "France",
+    "away_team": "Israel",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-14",
+    "competition": "Nations League B",
+    "home_team": "Greece",
+    "away_team": "England",
+    "home_goals": 0,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-11-14",
+    "competition": "Nations League B",
+    "home_team": "Rep. Ireland",
+    "away_team": "Finland",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-14",
+    "competition": "Nations League B",
+    "home_team": "Kazakhstan",
+    "away_team": "Austria",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-11-14",
+    "competition": "Nations League B",
+    "home_team": "Slovenia",
+    "away_team": "Norway",
+    "home_goals": 1,
+    "away_goals": 4
+  },
+  {
+    "date": "2024-11-15",
+    "competition": "Nations League A",
+    "home_team": "Portugal",
+    "away_team": "Poland",
+    "home_goals": 5,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-15",
+    "competition": "Nations League A",
+    "home_team": "Scotland",
+    "away_team": "Croatia",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-15",
+    "competition": "Nations League C",
+    "home_team": "Cyprus",
+    "away_team": "Lithuania",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-15",
+    "competition": "Nations League C",
+    "home_team": "Romania",
+    "away_team": "Kosovo",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-15",
+    "competition": "Nations League C",
+    "home_team": "Luxembourg",
+    "away_team": "Bulgaria",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-15",
+    "competition": "Nations League C",
+    "home_team": "Northern Ireland",
+    "away_team": "Belarus",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-15",
+    "competition": "Nations League C",
+    "home_team": "Faroe Islands",
+    "away_team": "Latvia",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-15",
+    "competition": "Nations League C",
+    "home_team": "North Macedonia",
+    "away_team": "Armenia",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-15",
+    "competition": "Nations League D",
+    "home_team": "San Marino",
+    "away_team": "Gibraltar",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-16",
+    "competition": "Nations League A",
+    "home_team": "Germany",
+    "away_team": "Bosnia-Herzegovina",
+    "home_goals": 7,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-16",
+    "competition": "Nations League A",
+    "home_team": "Netherlands",
+    "away_team": "Hungary",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-16",
+    "competition": "Nations League B",
+    "home_team": "Georgia",
+    "away_team": "Ukraine",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-16",
+    "competition": "Nations League B",
+    "home_team": "Albania",
+    "away_team": "Czechia",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-16",
+    "competition": "Nations League B",
+    "home_team": "Turkey",
+    "away_team": "Montenegro",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-16",
+    "competition": "Nations League B",
+    "home_team": "Wales",
+    "away_team": "Montenegro",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-16",
+    "competition": "Nations League C",
+    "home_team": "Azerbaijan",
+    "away_team": "Estonia",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-16",
+    "competition": "Nations League C",
+    "home_team": "Sweden",
+    "away_team": "Slovakia",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-16",
+    "competition": "Nations League D",
+    "home_team": "Andorra",
+    "away_team": "Moldova",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-17",
+    "competition": "Nations League A",
+    "home_team": "Israel",
+    "away_team": "Belgium",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-17",
+    "competition": "Nations League A",
+    "home_team": "Italy",
+    "away_team": "France",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-11-17",
+    "competition": "Nations League B",
+    "home_team": "England",
+    "away_team": "Rep. Ireland",
+    "home_goals": 5,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-17",
+    "competition": "Nations League B",
+    "home_team": "Finland",
+    "away_team": "Greece",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-11-17",
+    "competition": "Nations League B",
+    "home_team": "Austria",
+    "away_team": "Slovenia",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-17",
+    "competition": "Nations League B",
+    "home_team": "Norway",
+    "away_team": "Kazakhstan",
+    "home_goals": 5,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-17",
+    "competition": "Nations League B",
+    "home_team": "Iceland",
+    "away_team": "Montenegro",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-17",
+    "competition": "Nations League B",
+    "home_team": "Wales",
+    "away_team": "Turkey",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-18",
+    "competition": "Nations League A",
+    "home_team": "Croatia",
+    "away_team": "Portugal",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-18",
+    "competition": "Nations League A",
+    "home_team": "Poland",
+    "away_team": "Scotland",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-11-18",
+    "competition": "Nations League C",
+    "home_team": "Kosovo",
+    "away_team": "Lithuania",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-18",
+    "competition": "Nations League C",
+    "home_team": "Romania",
+    "away_team": "Cyprus",
+    "home_goals": 4,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-18",
+    "competition": "Nations League C",
+    "home_team": "Bulgaria",
+    "away_team": "Belarus",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-18",
+    "competition": "Nations League C",
+    "home_team": "Luxembourg",
+    "away_team": "Northern Ireland",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-11-18",
+    "competition": "Nations League C",
+    "home_team": "Armenia",
+    "away_team": "Faroe Islands",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-18",
+    "competition": "Nations League C",
+    "home_team": "Latvia",
+    "away_team": "North Macedonia",
+    "home_goals": 0,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-11-18",
+    "competition": "Nations League D",
+    "home_team": "Liechtenstein",
+    "away_team": "San Marino",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2024-11-19",
+    "competition": "Nations League A",
+    "home_team": "Bosnia-Herzegovina",
+    "away_team": "Netherlands",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-19",
+    "competition": "Nations League A",
+    "home_team": "Hungary",
+    "away_team": "Germany",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-19",
+    "competition": "Nations League B",
+    "home_team": "Albania",
+    "away_team": "Ukraine",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2024-11-19",
+    "competition": "Nations League B",
+    "home_team": "Czechia",
+    "away_team": "Georgia",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2024-11-19",
+    "competition": "Nations League C",
+    "home_team": "Slovakia",
+    "away_team": "Estonia",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-19",
+    "competition": "Nations League C",
+    "home_team": "Sweden",
+    "away_team": "Azerbaijan",
+    "home_goals": 6,
+    "away_goals": 0
+  },
+  {
+    "date": "2024-11-19",
+    "competition": "Nations League D",
+    "home_team": "Malta",
+    "away_team": "Andorra",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-03-21",
+    "competition": "WCQ Group G",
+    "home_team": "Malta",
+    "away_team": "Finland",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-03-21",
+    "competition": "WCQ Group G",
+    "home_team": "Poland",
+    "away_team": "Lithuania",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-03-21",
+    "competition": "WCQ Group H",
+    "home_team": "Cyprus",
+    "away_team": "San Marino",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-03-21",
+    "competition": "WCQ Group H",
+    "home_team": "Romania",
+    "away_team": "Bosnia-Herzegovina",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-03-21",
+    "competition": "WCQ Group K",
+    "home_team": "Andorra",
+    "away_team": "Latvia",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-03-21",
+    "competition": "WCQ Group K",
+    "home_team": "England",
+    "away_team": "Albania",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-03-22",
+    "competition": "WCQ Group I",
+    "home_team": "Moldova",
+    "away_team": "Norway",
+    "home_goals": 0,
+    "away_goals": 5
+  },
+  {
+    "date": "2025-03-22",
+    "competition": "WCQ Group I",
+    "home_team": "Israel",
+    "away_team": "Estonia",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-03-22",
+    "competition": "WCQ Group J",
+    "home_team": "Liechtenstein",
+    "away_team": "North Macedonia",
+    "home_goals": 0,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-03-22",
+    "competition": "WCQ Group J",
+    "home_team": "Wales",
+    "away_team": "Kazakhstan",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-03-22",
+    "competition": "WCQ Group L",
+    "home_team": "Montenegro",
+    "away_team": "Gibraltar",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-03-22",
+    "competition": "WCQ Group L",
+    "home_team": "Czechia",
+    "away_team": "Faroe Islands",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-03-24",
+    "competition": "WCQ Group G",
+    "home_team": "Lithuania",
+    "away_team": "Finland",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-03-24",
+    "competition": "WCQ Group G",
+    "home_team": "Poland",
+    "away_team": "Malta",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-03-24",
+    "competition": "WCQ Group H",
+    "home_team": "Bosnia-Herzegovina",
+    "away_team": "Cyprus",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-03-24",
+    "competition": "WCQ Group H",
+    "home_team": "San Marino",
+    "away_team": "Romania",
+    "home_goals": 1,
+    "away_goals": 5
+  },
+  {
+    "date": "2025-03-24",
+    "competition": "WCQ Group K",
+    "home_team": "Albania",
+    "away_team": "Andorra",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-03-24",
+    "competition": "WCQ Group K",
+    "home_team": "England",
+    "away_team": "Latvia",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-03-25",
+    "competition": "WCQ Group I",
+    "home_team": "Moldova",
+    "away_team": "Estonia",
+    "home_goals": 2,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-03-25",
+    "competition": "WCQ Group I",
+    "home_team": "Israel",
+    "away_team": "Norway",
+    "home_goals": 2,
+    "away_goals": 4
+  },
+  {
+    "date": "2025-03-25",
+    "competition": "WCQ Group J",
+    "home_team": "Liechtenstein",
+    "away_team": "Kazakhstan",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-03-25",
+    "competition": "WCQ Group J",
+    "home_team": "North Macedonia",
+    "away_team": "Wales",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-03-25",
+    "competition": "WCQ Group L",
+    "home_team": "Gibraltar",
+    "away_team": "Czechia",
+    "home_goals": 0,
+    "away_goals": 4
+  },
+  {
+    "date": "2025-03-25",
+    "competition": "WCQ Group L",
+    "home_team": "Montenegro",
+    "away_team": "Faroe Islands",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-06-06",
+    "competition": "WCQ Group I",
+    "home_team": "Estonia",
+    "away_team": "Israel",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-06-06",
+    "competition": "WCQ Group I",
+    "home_team": "Norway",
+    "away_team": "Italy",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-06-06",
+    "competition": "WCQ Group J",
+    "home_team": "North Macedonia",
+    "away_team": "Belgium",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-06-06",
+    "competition": "WCQ Group J",
+    "home_team": "Wales",
+    "away_team": "Liechtenstein",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-06-06",
+    "competition": "WCQ Group L",
+    "home_team": "Czechia",
+    "away_team": "Montenegro",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-06-06",
+    "competition": "WCQ Group L",
+    "home_team": "Gibraltar",
+    "away_team": "Croatia",
+    "home_goals": 0,
+    "away_goals": 7
+  },
+  {
+    "date": "2025-06-07",
+    "competition": "WCQ Group G",
+    "home_team": "Malta",
+    "away_team": "Lithuania",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-06-07",
+    "competition": "WCQ Group G",
+    "home_team": "Finland",
+    "away_team": "Netherlands",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-06-07",
+    "competition": "WCQ Group H",
+    "home_team": "Bosnia-Herzegovina",
+    "away_team": "San Marino",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-06-07",
+    "competition": "WCQ Group H",
+    "home_team": "Austria",
+    "away_team": "Romania",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-06-07",
+    "competition": "WCQ Group K",
+    "home_team": "Andorra",
+    "away_team": "England",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-06-07",
+    "competition": "WCQ Group K",
+    "home_team": "Albania",
+    "away_team": "Serbia",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-06-09",
+    "competition": "WCQ Group I",
+    "home_team": "Estonia",
+    "away_team": "Norway",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-06-09",
+    "competition": "WCQ Group I",
+    "home_team": "Italy",
+    "away_team": "Moldova",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-06-09",
+    "competition": "WCQ Group J",
+    "home_team": "Kazakhstan",
+    "away_team": "North Macedonia",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-06-09",
+    "competition": "WCQ Group J",
+    "home_team": "Belgium",
+    "away_team": "Wales",
+    "home_goals": 4,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-06-09",
+    "competition": "WCQ Group L",
+    "home_team": "Faroe Islands",
+    "away_team": "Gibraltar",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-06-09",
+    "competition": "WCQ Group L",
+    "home_team": "Croatia",
+    "away_team": "Czechia",
+    "home_goals": 5,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-06-10",
+    "competition": "WCQ Group G",
+    "home_team": "Finland",
+    "away_team": "Poland",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-06-10",
+    "competition": "WCQ Group G",
+    "home_team": "Netherlands",
+    "away_team": "Malta",
+    "home_goals": 8,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-06-10",
+    "competition": "WCQ Group H",
+    "home_team": "Romania",
+    "away_team": "Cyprus",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-06-10",
+    "competition": "WCQ Group H",
+    "home_team": "San Marino",
+    "away_team": "Austria",
+    "home_goals": 0,
+    "away_goals": 4
+  },
+  {
+    "date": "2025-06-10",
+    "competition": "WCQ Group K",
+    "home_team": "Latvia",
+    "away_team": "Albania",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-06-10",
+    "competition": "WCQ Group K",
+    "home_team": "Serbia",
+    "away_team": "Andorra",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-04",
+    "competition": "WCQ Group A",
+    "home_team": "Luxembourg",
+    "away_team": "Northern Ireland",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-09-04",
+    "competition": "WCQ Group A",
+    "home_team": "Slovakia",
+    "away_team": "Germany",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-04",
+    "competition": "WCQ Group E",
+    "home_team": "Georgia",
+    "away_team": "Turkey",
+    "home_goals": 2,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-09-04",
+    "competition": "WCQ Group E",
+    "home_team": "Bulgaria",
+    "away_team": "Spain",
+    "home_goals": 0,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-09-04",
+    "competition": "WCQ Group G",
+    "home_team": "Lithuania",
+    "away_team": "Malta",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-04",
+    "competition": "WCQ Group G",
+    "home_team": "Netherlands",
+    "away_team": "Poland",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-04",
+    "competition": "WCQ Group J",
+    "home_team": "Kazakhstan",
+    "away_team": "Wales",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-04",
+    "competition": "WCQ Group J",
+    "home_team": "Liechtenstein",
+    "away_team": "Belgium",
+    "home_goals": 0,
+    "away_goals": 6
+  },
+  {
+    "date": "2025-09-05",
+    "competition": "WCQ Group B",
+    "home_team": "Slovenia",
+    "away_team": "Sweden",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-09-05",
+    "competition": "WCQ Group B",
+    "home_team": "Switzerland",
+    "away_team": "Kosovo",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-05",
+    "competition": "WCQ Group C",
+    "home_team": "Greece",
+    "away_team": "Belarus",
+    "home_goals": 5,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-05",
+    "competition": "WCQ Group C",
+    "home_team": "Denmark",
+    "away_team": "Scotland",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-05",
+    "competition": "WCQ Group D",
+    "home_team": "Iceland",
+    "away_team": "Azerbaijan",
+    "home_goals": 5,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-05",
+    "competition": "WCQ Group D",
+    "home_team": "Ukraine",
+    "away_team": "France",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-09-05",
+    "competition": "WCQ Group I",
+    "home_team": "Moldova",
+    "away_team": "Israel",
+    "home_goals": 0,
+    "away_goals": 4
+  },
+  {
+    "date": "2025-09-05",
+    "competition": "WCQ Group I",
+    "home_team": "Italy",
+    "away_team": "Estonia",
+    "home_goals": 5,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-05",
+    "competition": "WCQ Group L",
+    "home_team": "Faroe Islands",
+    "away_team": "Croatia",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-05",
+    "competition": "WCQ Group L",
+    "home_team": "Montenegro",
+    "away_team": "Czechia",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-09-06",
+    "competition": "WCQ Group F",
+    "home_team": "Armenia",
+    "away_team": "Portugal",
+    "home_goals": 0,
+    "away_goals": 5
+  },
+  {
+    "date": "2025-09-06",
+    "competition": "WCQ Group F",
+    "home_team": "Rep. Ireland",
+    "away_team": "Hungary",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-09-06",
+    "competition": "WCQ Group H",
+    "home_team": "Austria",
+    "away_team": "Cyprus",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-06",
+    "competition": "WCQ Group H",
+    "home_team": "San Marino",
+    "away_team": "Bosnia-Herzegovina",
+    "home_goals": 0,
+    "away_goals": 6
+  },
+  {
+    "date": "2025-09-06",
+    "competition": "WCQ Group K",
+    "home_team": "Latvia",
+    "away_team": "Serbia",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-06",
+    "competition": "WCQ Group K",
+    "home_team": "England",
+    "away_team": "Andorra",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-07",
+    "competition": "WCQ Group A",
+    "home_team": "Luxembourg",
+    "away_team": "Slovakia",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-07",
+    "competition": "WCQ Group A",
+    "home_team": "Germany",
+    "away_team": "Northern Ireland",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-07",
+    "competition": "WCQ Group E",
+    "home_team": "Georgia",
+    "away_team": "Bulgaria",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-07",
+    "competition": "WCQ Group E",
+    "home_team": "Turkey",
+    "away_team": "Spain",
+    "home_goals": 0,
+    "away_goals": 6
+  },
+  {
+    "date": "2025-09-07",
+    "competition": "WCQ Group G",
+    "home_team": "Lithuania",
+    "away_team": "Netherlands",
+    "home_goals": 2,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-09-07",
+    "competition": "WCQ Group G",
+    "home_team": "Poland",
+    "away_team": "Finland",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-07",
+    "competition": "WCQ Group J",
+    "home_team": "North Macedonia",
+    "away_team": "Liechtenstein",
+    "home_goals": 5,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-07",
+    "competition": "WCQ Group J",
+    "home_team": "Belgium",
+    "away_team": "Kazakhstan",
+    "home_goals": 6,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-08",
+    "competition": "WCQ Group B",
+    "home_team": "Kosovo",
+    "away_team": "Sweden",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-08",
+    "competition": "WCQ Group B",
+    "home_team": "Switzerland",
+    "away_team": "Slovenia",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-08",
+    "competition": "WCQ Group C",
+    "home_team": "Belarus",
+    "away_team": "Scotland",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-09-08",
+    "competition": "WCQ Group C",
+    "home_team": "Greece",
+    "away_team": "Denmark",
+    "home_goals": 0,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-09-08",
+    "competition": "WCQ Group I",
+    "home_team": "Israel",
+    "away_team": "Italy",
+    "home_goals": 4,
+    "away_goals": 5
+  },
+  {
+    "date": "2025-09-08",
+    "competition": "WCQ Group L",
+    "home_team": "Gibraltar",
+    "away_team": "Faroe Islands",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-08",
+    "competition": "WCQ Group L",
+    "home_team": "Croatia",
+    "away_team": "Montenegro",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-09",
+    "competition": "WCQ Group D",
+    "home_team": "Azerbaijan",
+    "away_team": "Ukraine",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-09",
+    "competition": "WCQ Group D",
+    "home_team": "France",
+    "away_team": "Iceland",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-09",
+    "competition": "WCQ Group F",
+    "home_team": "Armenia",
+    "away_team": "Rep. Ireland",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-09",
+    "competition": "WCQ Group F",
+    "home_team": "Hungary",
+    "away_team": "Portugal",
+    "home_goals": 2,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-09-09",
+    "competition": "WCQ Group H",
+    "home_team": "Bosnia-Herzegovina",
+    "away_team": "Austria",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-09-09",
+    "competition": "WCQ Group H",
+    "home_team": "Cyprus",
+    "away_team": "Romania",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-09-09",
+    "competition": "WCQ Group I",
+    "home_team": "Norway",
+    "away_team": "Moldova",
+    "home_goals": 11,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-09-09",
+    "competition": "WCQ Group K",
+    "home_team": "Albania",
+    "away_team": "Latvia",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-09-09",
+    "competition": "WCQ Group K",
+    "home_team": "Serbia",
+    "away_team": "England",
+    "home_goals": 0,
+    "away_goals": 5
+  },
+  {
+    "date": "2025-10-09",
+    "competition": "WCQ Group C",
+    "home_team": "Belarus",
+    "away_team": "Denmark",
+    "home_goals": 0,
+    "away_goals": 6
+  },
+  {
+    "date": "2025-10-09",
+    "competition": "WCQ Group C",
+    "home_team": "Scotland",
+    "away_team": "Greece",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-09",
+    "competition": "WCQ Group G",
+    "home_team": "Finland",
+    "away_team": "Lithuania",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-09",
+    "competition": "WCQ Group G",
+    "home_team": "Malta",
+    "away_team": "Netherlands",
+    "home_goals": 0,
+    "away_goals": 4
+  },
+  {
+    "date": "2025-10-09",
+    "competition": "WCQ Group H",
+    "home_team": "Austria",
+    "away_team": "San Marino",
+    "home_goals": 10,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-09",
+    "competition": "WCQ Group H",
+    "home_team": "Cyprus",
+    "away_team": "Bosnia-Herzegovina",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-10-09",
+    "competition": "WCQ Group L",
+    "home_team": "Czechia",
+    "away_team": "Croatia",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-09",
+    "competition": "WCQ Group L",
+    "home_team": "Faroe Islands",
+    "away_team": "Montenegro",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-10",
+    "competition": "WCQ Group A",
+    "home_team": "Northern Ireland",
+    "away_team": "Slovakia",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-10",
+    "competition": "WCQ Group A",
+    "home_team": "Germany",
+    "away_team": "Luxembourg",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-10",
+    "competition": "WCQ Group B",
+    "home_team": "Kosovo",
+    "away_team": "Slovenia",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-10",
+    "competition": "WCQ Group B",
+    "home_team": "Sweden",
+    "away_team": "Switzerland",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-10-10",
+    "competition": "WCQ Group D",
+    "home_team": "Iceland",
+    "away_team": "Ukraine",
+    "home_goals": 3,
+    "away_goals": 5
+  },
+  {
+    "date": "2025-10-10",
+    "competition": "WCQ Group D",
+    "home_team": "France",
+    "away_team": "Azerbaijan",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-10",
+    "competition": "WCQ Group J",
+    "home_team": "Kazakhstan",
+    "away_team": "Liechtenstein",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-10",
+    "competition": "WCQ Group J",
+    "home_team": "Belgium",
+    "away_team": "North Macedonia",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-11",
+    "competition": "WCQ Group E",
+    "home_team": "Bulgaria",
+    "away_team": "Turkey",
+    "home_goals": 1,
+    "away_goals": 6
+  },
+  {
+    "date": "2025-10-11",
+    "competition": "WCQ Group E",
+    "home_team": "Spain",
+    "away_team": "Georgia",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-11",
+    "competition": "WCQ Group F",
+    "home_team": "Hungary",
+    "away_team": "Armenia",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-11",
+    "competition": "WCQ Group F",
+    "home_team": "Portugal",
+    "away_team": "Rep. Ireland",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-11",
+    "competition": "WCQ Group I",
+    "home_team": "Norway",
+    "away_team": "Israel",
+    "home_goals": 5,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-11",
+    "competition": "WCQ Group I",
+    "home_team": "Estonia",
+    "away_team": "Italy",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-10-11",
+    "competition": "WCQ Group K",
+    "home_team": "Latvia",
+    "away_team": "Andorra",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-10-11",
+    "competition": "WCQ Group K",
+    "home_team": "Serbia",
+    "away_team": "Albania",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-12",
+    "competition": "WCQ Group C",
+    "home_team": "Scotland",
+    "away_team": "Belarus",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-12",
+    "competition": "WCQ Group C",
+    "home_team": "Denmark",
+    "away_team": "Greece",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-12",
+    "competition": "WCQ Group G",
+    "home_team": "Netherlands",
+    "away_team": "Finland",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-12",
+    "competition": "WCQ Group G",
+    "home_team": "Lithuania",
+    "away_team": "Poland",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-10-12",
+    "competition": "WCQ Group H",
+    "home_team": "San Marino",
+    "away_team": "Cyprus",
+    "home_goals": 0,
+    "away_goals": 4
+  },
+  {
+    "date": "2025-10-12",
+    "competition": "WCQ Group H",
+    "home_team": "Romania",
+    "away_team": "Austria",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-12",
+    "competition": "WCQ Group L",
+    "home_team": "Faroe Islands",
+    "away_team": "Czechia",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-12",
+    "competition": "WCQ Group L",
+    "home_team": "Croatia",
+    "away_team": "Gibraltar",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-13",
+    "competition": "WCQ Group A",
+    "home_team": "Northern Ireland",
+    "away_team": "Germany",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-13",
+    "competition": "WCQ Group A",
+    "home_team": "Slovakia",
+    "away_team": "Luxembourg",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-13",
+    "competition": "WCQ Group B",
+    "home_team": "Slovenia",
+    "away_team": "Switzerland",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-13",
+    "competition": "WCQ Group B",
+    "home_team": "Sweden",
+    "away_team": "Kosovo",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-13",
+    "competition": "WCQ Group D",
+    "home_team": "Iceland",
+    "away_team": "France",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-10-13",
+    "competition": "WCQ Group D",
+    "home_team": "Ukraine",
+    "away_team": "Azerbaijan",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-13",
+    "competition": "WCQ Group J",
+    "home_team": "North Macedonia",
+    "away_team": "Kazakhstan",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-13",
+    "competition": "WCQ Group J",
+    "home_team": "Wales",
+    "away_team": "Belgium",
+    "home_goals": 2,
+    "away_goals": 4
+  },
+  {
+    "date": "2025-10-14",
+    "competition": "WCQ Group E",
+    "home_team": "Turkey",
+    "away_team": "Georgia",
+    "home_goals": 4,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-14",
+    "competition": "WCQ Group E",
+    "home_team": "Spain",
+    "away_team": "Bulgaria",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-14",
+    "competition": "WCQ Group F",
+    "home_team": "Rep. Ireland",
+    "away_team": "Armenia",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-14",
+    "competition": "WCQ Group F",
+    "home_team": "Portugal",
+    "away_team": "Hungary",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-10-14",
+    "competition": "WCQ Group I",
+    "home_team": "Estonia",
+    "away_team": "Moldova",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-10-14",
+    "competition": "WCQ Group I",
+    "home_team": "Italy",
+    "away_team": "Israel",
+    "home_goals": 3,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-10-14",
+    "competition": "WCQ Group K",
+    "home_team": "Andorra",
+    "away_team": "Serbia",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-10-14",
+    "competition": "WCQ Group K",
+    "home_team": "Latvia",
+    "away_team": "England",
+    "home_goals": 0,
+    "away_goals": 5
+  },
+  {
+    "date": "2025-11-13",
+    "competition": "WCQ Group D",
+    "home_team": "Azerbaijan",
+    "away_team": "Iceland",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-13",
+    "competition": "WCQ Group D",
+    "home_team": "France",
+    "away_team": "Ukraine",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-13",
+    "competition": "WCQ Group F",
+    "home_team": "Armenia",
+    "away_team": "Hungary",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-13",
+    "competition": "WCQ Group F",
+    "home_team": "Rep. Ireland",
+    "away_team": "Portugal",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-13",
+    "competition": "WCQ Group I",
+    "home_team": "Norway",
+    "away_team": "Estonia",
+    "home_goals": 4,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-13",
+    "competition": "WCQ Group I",
+    "home_team": "Moldova",
+    "away_team": "Italy",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-13",
+    "competition": "WCQ Group K",
+    "home_team": "Andorra",
+    "away_team": "Albania",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-13",
+    "competition": "WCQ Group K",
+    "home_team": "England",
+    "away_team": "Serbia",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-14",
+    "competition": "WCQ Group A",
+    "home_team": "Luxembourg",
+    "away_team": "Germany",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-14",
+    "competition": "WCQ Group A",
+    "home_team": "Slovakia",
+    "away_team": "Northern Ireland",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-14",
+    "competition": "WCQ Group G",
+    "home_team": "Finland",
+    "away_team": "Malta",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-14",
+    "competition": "WCQ Group G",
+    "home_team": "Poland",
+    "away_team": "Netherlands",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-14",
+    "competition": "WCQ Group L",
+    "home_team": "Gibraltar",
+    "away_team": "Montenegro",
+    "home_goals": 1,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-14",
+    "competition": "WCQ Group L",
+    "home_team": "Croatia",
+    "away_team": "Faroe Islands",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-15",
+    "competition": "WCQ Group B",
+    "home_team": "Slovenia",
+    "away_team": "Kosovo",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-15",
+    "competition": "WCQ Group B",
+    "home_team": "Switzerland",
+    "away_team": "Sweden",
+    "home_goals": 4,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-15",
+    "competition": "WCQ Group C",
+    "home_team": "Greece",
+    "away_team": "Scotland",
+    "home_goals": 3,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-15",
+    "competition": "WCQ Group C",
+    "home_team": "Denmark",
+    "away_team": "Belarus",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-15",
+    "competition": "WCQ Group E",
+    "home_team": "Georgia",
+    "away_team": "Spain",
+    "home_goals": 0,
+    "away_goals": 4
+  },
+  {
+    "date": "2025-11-15",
+    "competition": "WCQ Group E",
+    "home_team": "Turkey",
+    "away_team": "Bulgaria",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-15",
+    "competition": "WCQ Group H",
+    "home_team": "Cyprus",
+    "away_team": "Austria",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-15",
+    "competition": "WCQ Group H",
+    "home_team": "Bosnia-Herzegovina",
+    "away_team": "Romania",
+    "home_goals": 3,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-15",
+    "competition": "WCQ Group J",
+    "home_team": "Kazakhstan",
+    "away_team": "Belgium",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-15",
+    "competition": "WCQ Group J",
+    "home_team": "Liechtenstein",
+    "away_team": "Wales",
+    "home_goals": 0,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-16",
+    "competition": "WCQ Group D",
+    "home_team": "Azerbaijan",
+    "away_team": "France",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-11-16",
+    "competition": "WCQ Group D",
+    "home_team": "Ukraine",
+    "away_team": "Iceland",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-16",
+    "competition": "WCQ Group F",
+    "home_team": "Hungary",
+    "away_team": "Rep. Ireland",
+    "home_goals": 2,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-11-16",
+    "competition": "WCQ Group F",
+    "home_team": "Portugal",
+    "away_team": "Armenia",
+    "home_goals": 9,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-16",
+    "competition": "WCQ Group I",
+    "home_team": "Israel",
+    "away_team": "Moldova",
+    "home_goals": 4,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-16",
+    "competition": "WCQ Group I",
+    "home_team": "Italy",
+    "away_team": "Norway",
+    "home_goals": 1,
+    "away_goals": 4
+  },
+  {
+    "date": "2025-11-16",
+    "competition": "WCQ Group K",
+    "home_team": "Albania",
+    "away_team": "England",
+    "home_goals": 0,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-16",
+    "competition": "WCQ Group K",
+    "home_team": "Serbia",
+    "away_team": "Latvia",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-17",
+    "competition": "WCQ Group A",
+    "home_team": "Northern Ireland",
+    "away_team": "Luxembourg",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-17",
+    "competition": "WCQ Group A",
+    "home_team": "Germany",
+    "away_team": "Slovakia",
+    "home_goals": 6,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-17",
+    "competition": "WCQ Group G",
+    "home_team": "Malta",
+    "away_team": "Poland",
+    "home_goals": 2,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-11-17",
+    "competition": "WCQ Group G",
+    "home_team": "Netherlands",
+    "away_team": "Lithuania",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-17",
+    "competition": "WCQ Group L",
+    "home_team": "Czechia",
+    "away_team": "Gibraltar",
+    "home_goals": 6,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-17",
+    "competition": "WCQ Group L",
+    "home_team": "Montenegro",
+    "away_team": "Croatia",
+    "home_goals": 2,
+    "away_goals": 3
+  },
+  {
+    "date": "2025-11-18",
+    "competition": "WCQ Group B",
+    "home_team": "Kosovo",
+    "away_team": "Switzerland",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-18",
+    "competition": "WCQ Group B",
+    "home_team": "Sweden",
+    "away_team": "Slovenia",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-18",
+    "competition": "WCQ Group C",
+    "home_team": "Belarus",
+    "away_team": "Greece",
+    "home_goals": 0,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-18",
+    "competition": "WCQ Group C",
+    "home_team": "Scotland",
+    "away_team": "Denmark",
+    "home_goals": 4,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-18",
+    "competition": "WCQ Group E",
+    "home_team": "Bulgaria",
+    "away_team": "Georgia",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-18",
+    "competition": "WCQ Group E",
+    "home_team": "Spain",
+    "away_team": "Turkey",
+    "home_goals": 2,
+    "away_goals": 2
+  },
+  {
+    "date": "2025-11-18",
+    "competition": "WCQ Group H",
+    "home_team": "Austria",
+    "away_team": "Bosnia-Herzegovina",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-18",
+    "competition": "WCQ Group H",
+    "home_team": "Romania",
+    "away_team": "San Marino",
+    "home_goals": 7,
+    "away_goals": 1
+  },
+  {
+    "date": "2025-11-18",
+    "competition": "WCQ Group J",
+    "home_team": "Belgium",
+    "away_team": "Liechtenstein",
+    "home_goals": 7,
+    "away_goals": 0
+  },
+  {
+    "date": "2025-11-18",
+    "competition": "WCQ Group J",
+    "home_team": "Wales",
+    "away_team": "North Macedonia",
+    "home_goals": 7,
+    "away_goals": 1
+  },
+  {
+    "date": "2026-03-26",
+    "competition": "WCQ Playoffs",
+    "home_team": "Italy",
+    "away_team": "Northern Ireland",
+    "home_goals": 2,
+    "away_goals": 0
+  },
+  {
+    "date": "2026-03-26",
+    "competition": "WCQ Playoffs",
+    "home_team": "Wales",
+    "away_team": "Bosnia-Herzegovina",
+    "home_goals": 1,
+    "away_goals": 1
+  },
+  {
+    "date": "2026-03-26",
+    "competition": "WCQ Playoffs",
+    "home_team": "Ukraine",
+    "away_team": "Sweden",
+    "home_goals": 1,
+    "away_goals": 3
+  },
+  {
+    "date": "2026-03-26",
+    "competition": "WCQ Playoffs",
+    "home_team": "Poland",
+    "away_team": "Albania",
+    "home_goals": 2,
+    "away_goals": 1
+  },
+  {
+    "date": "2026-03-26",
+    "competition": "WCQ Playoffs",
+    "home_team": "Turkey",
+    "away_team": "Romania",
+    "home_goals": 1,
+    "away_goals": 0
+  },
+  {
+    "date": "2026-03-26",
+    "competition": "WCQ Playoffs",
+    "home_team": "Slovakia",
+    "away_team": "Kosovo",
+    "home_goals": 3,
+    "away_goals": 4
+  },
+  {
+    "date": "2026-03-26",
+    "competition": "WCQ Playoffs",
+    "home_team": "Denmark",
+    "away_team": "North Macedonia",
+    "home_goals": 4,
+    "away_goals": 0
+  },
+  {
+    "date": "2026-03-26",
+    "competition": "WCQ Playoffs",
+    "home_team": "Czechia",
+    "away_team": "Rep. Ireland",
+    "home_goals": 2,
+    "away_goals": 2
+  }
+]

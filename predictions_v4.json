@@ -1,0 +1,508 @@
+[
+  {
+    "home_team": "Bosnia-Herzegovina",
+    "away_team": "Italy",
+    "elo_home": 1572,
+    "elo_away": 1619,
+    "home_pressure": {
+      "attack_mod": 1.08,
+      "defense_mod": 0.98,
+      "label": "HAMBRIENTO"
+    },
+    "away_pressure": {
+      "attack_mod": 0.96,
+      "defense_mod": 1.04,
+      "label": "PRESIÓN NEGATIVA"
+    },
+    "context": {
+      "match_type": {
+        "factor": 1.25,
+        "label": "Final directa clasificatoria"
+      },
+      "tournament": {
+        "level": 5,
+        "label": "Playoff Mundial",
+        "draw_boost": 0.04,
+        "goals_mod": 0.92
+      },
+      "goals_modifier": 0.874,
+      "draw_boost": 0.04,
+      "home_pressure": {
+        "attack_mod": 1.08,
+        "defense_mod": 0.98,
+        "label": "HAMBRIENTO"
+      },
+      "away_pressure": {
+        "attack_mod": 0.96,
+        "defense_mod": 1.04,
+        "label": "PRESIÓN NEGATIVA"
+      },
+      "tactical_tension": 1.15,
+      "corners_tension_mod": 1.08,
+      "home_context": "Solo 1 Mundial en su historia (2014). Juegan en casa con público volcado. Motivación máxima, la presión juega a favor.",
+      "away_context": "Tetracampeona del mundo pero 2 Mundiales seguidos sin clasificar. Presión extrema negativa — el trauma de 2018 y 2022 pesa. Visitante en eliminatoria directa."
+    },
+    "context_narrative": "FINAL DIRECTA (nivel 5/8) — Bosnia-Herzegovina: HAMBRIENTO | Italy: PRESIÓN NEGATIVA — Goles ×0.87 | Empate boost +4% | Dixon-Coles ρ=-0.18",
+    "home_wc_context": "Solo 1 Mundial en su historia (2014). Juegan en casa con público volcado. Motivación máxima, la presión juega a favor.",
+    "away_wc_context": "Tetracampeona del mundo pero 2 Mundiales seguidos sin clasificar. Presión extrema negativa — el trauma de 2018 y 2022 pesa. Visitante en eliminatoria directa.",
+    "absences_home": [
+      [
+        "Dzeko",
+        -0.25,
+        0.0
+      ]
+    ],
+    "absences_away": [
+      [
+        "Barella",
+        -0.15,
+        -0.05
+      ]
+    ],
+    "lambda_h": 1.856,
+    "lambda_a": 1.293,
+    "lambda_h_elo": 1.482,
+    "lambda_a_elo": 0.947,
+    "sub_poisson": {
+      "1": 0.5060561579999153,
+      "X": 0.22685051736565026,
+      "2": 0.26709332463443436,
+      "btts": 0.612171089692549,
+      "o25": 0.6092759500821652,
+      "o15": 0.8219912788150469
+    },
+    "sub_dc": {
+      "1": 0.4875218805590467,
+      "X": 0.26391907224738737,
+      "2": 0.24855904719356584,
+      "btts": 0.6307053671334175,
+      "o25": 0.6092759500821652,
+      "o15": 0.8405255562559154
+    },
+    "sub_elo": {
+      "1": 0.4960887902276238,
+      "X": 0.26263264258110147,
+      "2": 0.24127856719127475,
+      "btts": 0.47298860134118614,
+      "o25": 0.437752225841463,
+      "o15": 0.6977438519750284
+    },
+    "p_home_win": 46.8,
+    "p_draw": 29.3,
+    "p_away_win": 23.9,
+    "p_btts_yes": 58.6,
+    "p_btts_no": 41.4,
+    "p_over_25": 54.2,
+    "p_under_25": 45.8,
+    "p_over_15": 78.8,
+    "top_scores": [
+      [
+        "1-1",
+        13.50368599751609
+      ],
+      [
+        "2-1",
+        8.883906628724056
+      ],
+      [
+        "1-0",
+        8.412286259096435
+      ],
+      [
+        "2-0",
+        7.600711524276516
+      ],
+      [
+        "0-0",
+        7.301076632226431
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 4.5,
+      "exp_away_corners": 7.4,
+      "exp_total_corners": 12.0,
+      "home_wpi": 1.0,
+      "away_wpi": 1.42,
+      "tension_mod": 1.08,
+      "p_over_8_5": 84.4,
+      "p_over_9_5": 75.6,
+      "p_over_10_5": 65.1
+    }
+  },
+  {
+    "home_team": "Czechia",
+    "away_team": "Denmark",
+    "elo_home": 1571,
+    "elo_away": 1594,
+    "home_pressure": {
+      "attack_mod": 1.0,
+      "defense_mod": 1.0,
+      "label": "RELAJADO"
+    },
+    "away_pressure": {
+      "attack_mod": 1.0,
+      "defense_mod": 1.0,
+      "label": "RELAJADO"
+    },
+    "context": {
+      "match_type": {
+        "factor": 1.25,
+        "label": "Final directa clasificatoria"
+      },
+      "tournament": {
+        "level": 5,
+        "label": "Playoff Mundial",
+        "draw_boost": 0.04,
+        "goals_mod": 0.92
+      },
+      "goals_modifier": 0.874,
+      "draw_boost": 0.04,
+      "home_pressure": {
+        "attack_mod": 1.0,
+        "defense_mod": 1.0,
+        "label": "RELAJADO"
+      },
+      "away_pressure": {
+        "attack_mod": 1.0,
+        "defense_mod": 1.0,
+        "label": "RELAJADO"
+      },
+      "tactical_tension": 1.15,
+      "corners_tension_mod": 1.08,
+      "home_context": "No van al Mundial desde 2006 (20 años). Generación con hambre pero sin trauma específico. Juegan en casa, ventaja local importante.",
+      "away_context": "Fueron al Mundial 2022 y semifinalistas Euro 2020. Sin presión excesiva, juegan libres como visitantes."
+    },
+    "context_narrative": "FINAL DIRECTA (nivel 5/8) — Czechia: RELAJADO | Denmark: RELAJADO — Goles ×0.87 | Empate boost +4% | Dixon-Coles ρ=-0.18",
+    "home_wc_context": "No van al Mundial desde 2006 (20 años). Generación con hambre pero sin trauma específico. Juegan en casa, ventaja local importante.",
+    "away_wc_context": "Fueron al Mundial 2022 y semifinalistas Euro 2020. Sin presión excesiva, juegan libres como visitantes.",
+    "absences_home": [],
+    "absences_away": [
+      [
+        "Eriksen",
+        -0.2,
+        0.0
+      ]
+    ],
+    "lambda_h": 2.681,
+    "lambda_a": 1.342,
+    "lambda_h_elo": 1.675,
+    "lambda_a_elo": 0.877,
+    "sub_poisson": {
+      "1": 0.6581026610551121,
+      "X": 0.16972001649716498,
+      "2": 0.17217732244772288,
+      "btts": 0.6880695634494489,
+      "o25": 0.764899681799546,
+      "o15": 0.9099688712965742
+    },
+    "sub_dc": {
+      "1": 0.6464924469074956,
+      "X": 0.1929404447923979,
+      "2": 0.16056710830010643,
+      "btts": 0.6996797775970653,
+      "o25": 0.764899681799546,
+      "o15": 0.9215790854441906
+    },
+    "sub_elo": {
+      "1": 0.562228732030938,
+      "X": 0.2420075192123343,
+      "2": 0.1957637487567276,
+      "btts": 0.47472119793305356,
+      "o25": 0.469492026735389,
+      "o15": 0.7232462815424167
+    },
+    "p_home_win": 59.6,
+    "p_draw": 23.6,
+    "p_away_win": 16.7,
+    "p_btts_yes": 63.6,
+    "p_btts_no": 36.4,
+    "p_over_25": 66.2,
+    "p_under_25": 33.8,
+    "p_over_15": 85.5,
+    "top_scores": [
+      [
+        "1-1",
+        9.882682740474856
+      ],
+      [
+        "2-1",
+        8.507592817811238
+      ],
+      [
+        "2-0",
+        7.419633796135315
+      ],
+      [
+        "3-1",
+        6.684402431719416
+      ],
+      [
+        "1-0",
+        6.602462171461439
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 4.3,
+      "exp_away_corners": 8.7,
+      "exp_total_corners": 13.0,
+      "home_wpi": 1.0,
+      "away_wpi": 1.75,
+      "tension_mod": 1.08,
+      "p_over_8_5": 90.0,
+      "p_over_9_5": 83.4,
+      "p_over_10_5": 74.8
+    }
+  },
+  {
+    "home_team": "Kosovo",
+    "away_team": "Turkey",
+    "elo_home": 1608,
+    "elo_away": 1616,
+    "home_pressure": {
+      "attack_mod": 1.12,
+      "defense_mod": 0.97,
+      "label": "HISTÓRICO"
+    },
+    "away_pressure": {
+      "attack_mod": 1.1,
+      "defense_mod": 1.05,
+      "label": "DESESPERADO"
+    },
+    "context": {
+      "match_type": {
+        "factor": 1.25,
+        "label": "Final directa clasificatoria"
+      },
+      "tournament": {
+        "level": 5,
+        "label": "Playoff Mundial",
+        "draw_boost": 0.04,
+        "goals_mod": 0.92
+      },
+      "goals_modifier": 0.874,
+      "draw_boost": 0.04,
+      "home_pressure": {
+        "attack_mod": 1.12,
+        "defense_mod": 0.97,
+        "label": "HISTÓRICO"
+      },
+      "away_pressure": {
+        "attack_mod": 1.1,
+        "defense_mod": 1.05,
+        "label": "DESESPERADO"
+      },
+      "tactical_tension": 1.15,
+      "corners_tension_mod": 1.08,
+      "home_context": "NUNCA han ido a un Mundial. Miembros FIFA desde 2016. Este partido es histórico para todo el país. Motivación desbordante, el estadio será un infierno.",
+      "away_context": "No van desde 2002 (24 años). Semifinalistas mundialistas ese año, luego 5 mundiales sin clasificar. Desesperación mezclada con talento actual."
+    },
+    "context_narrative": "FINAL DIRECTA (nivel 5/8) — Kosovo: HISTÓRICO | Turkey: DESESPERADO — Goles ×0.87 | Empate boost +4% | Dixon-Coles ρ=-0.18",
+    "home_wc_context": "NUNCA han ido a un Mundial. Miembros FIFA desde 2016. Este partido es histórico para todo el país. Motivación desbordante, el estadio será un infierno.",
+    "away_wc_context": "No van desde 2002 (24 años). Semifinalistas mundialistas ese año, luego 5 mundiales sin clasificar. Desesperación mezclada con talento actual.",
+    "absences_home": [],
+    "absences_away": [],
+    "lambda_h": 1.578,
+    "lambda_a": 0.932,
+    "lambda_h_elo": 2.039,
+    "lambda_a_elo": 1.087,
+    "sub_poisson": {
+      "1": 0.5246565514437075,
+      "X": 0.25264464412233356,
+      "2": 0.22269880443395892,
+      "btts": 0.48097170728182725,
+      "o25": 0.4585885611702833,
+      "o15": 0.7146263121772676
+    },
+    "sub_dc": {
+      "1": 0.5031412071590682,
+      "X": 0.29567533269161234,
+      "2": 0.20118346014931954,
+      "btts": 0.5024870515664667,
+      "o25": 0.45858856117028335,
+      "o15": 0.7361416564619071
+    },
+    "sub_elo": {
+      "1": 0.5934638943546667,
+      "X": 0.21040356222693127,
+      "2": 0.19613254341840197,
+      "btts": 0.5763596122759228,
+      "o25": 0.6042630061179042,
+      "o15": 0.8188047293008568
+    },
+    "p_home_win": 50.7,
+    "p_draw": 29.7,
+    "p_away_win": 19.6,
+    "p_btts_yes": 52.7,
+    "p_btts_no": 47.3,
+    "p_over_25": 48.6,
+    "p_under_25": 51.4,
+    "p_over_15": 74.9,
+    "top_scores": [
+      [
+        "1-1",
+        14.027836287152914
+      ],
+      [
+        "1-0",
+        10.367036890149697
+      ],
+      [
+        "2-0",
+        9.240549232395738
+      ],
+      [
+        "2-1",
+        9.007820815517515
+      ],
+      [
+        "0-0",
+        8.99991507750242
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 3.7,
+      "exp_away_corners": 4.3,
+      "exp_total_corners": 8.0,
+      "home_wpi": 0.69,
+      "away_wpi": 1.0,
+      "tension_mod": 1.08,
+      "p_over_8_5": 41.3,
+      "p_over_9_5": 28.9,
+      "p_over_10_5": 18.8
+    }
+  },
+  {
+    "home_team": "Sweden",
+    "away_team": "Poland",
+    "elo_home": 1535,
+    "elo_away": 1538,
+    "home_pressure": {
+      "attack_mod": 1.05,
+      "defense_mod": 1.0,
+      "label": "MOTIVADO"
+    },
+    "away_pressure": {
+      "attack_mod": 1.0,
+      "defense_mod": 1.0,
+      "label": "RELAJADO"
+    },
+    "context": {
+      "match_type": {
+        "factor": 1.25,
+        "label": "Final directa clasificatoria"
+      },
+      "tournament": {
+        "level": 5,
+        "label": "Playoff Mundial",
+        "draw_boost": 0.04,
+        "goals_mod": 0.92
+      },
+      "goals_modifier": 0.874,
+      "draw_boost": 0.04,
+      "home_pressure": {
+        "attack_mod": 1.05,
+        "defense_mod": 1.0,
+        "label": "MOTIVADO"
+      },
+      "away_pressure": {
+        "attack_mod": 1.0,
+        "defense_mod": 1.0,
+        "label": "RELAJADO"
+      },
+      "tactical_tension": 1.15,
+      "corners_tension_mod": 1.08,
+      "home_context": "Cuartofinalistas en 2018 pero no fueron en 2022. Juegan en casa con Isak lesionado, necesitan al público. Motivación alta sin exceso de presión.",
+      "away_context": "Fueron al Mundial 2022 con Lewandowski. Menos presión que el rival, pueden jugar más libres como visitantes. Lewandowski a sus 37 años puede ser su último intento."
+    },
+    "context_narrative": "FINAL DIRECTA (nivel 5/8) — Sweden: MOTIVADO | Poland: RELAJADO — Goles ×0.87 | Empate boost +4% | Dixon-Coles ρ=-0.18",
+    "home_wc_context": "Cuartofinalistas en 2018 pero no fueron en 2022. Juegan en casa con Isak lesionado, necesitan al público. Motivación alta sin exceso de presión.",
+    "away_wc_context": "Fueron al Mundial 2022 con Lewandowski. Menos presión que el rival, pueden jugar más libres como visitantes. Lewandowski a sus 37 años puede ser su último intento.",
+    "absences_home": [
+      [
+        "Isak",
+        -0.3,
+        0.0
+      ]
+    ],
+    "absences_away": [
+      [
+        "Lewandowski",
+        -0.1,
+        0.0
+      ]
+    ],
+    "lambda_h": 1.674,
+    "lambda_a": 0.834,
+    "lambda_h_elo": 1.539,
+    "lambda_a_elo": 0.9,
+    "sub_poisson": {
+      "1": 0.5731533592006444,
+      "X": 0.2415647324484638,
+      "2": 0.18528190835089187,
+      "btts": 0.4594224251635557,
+      "o25": 0.4580049388429783,
+      "o15": 0.7141642684006637
+    },
+    "sub_dc": {
+      "1": 0.5526877918545612,
+      "X": 0.2824958671406301,
+      "2": 0.16481634100480871,
+      "btts": 0.4798879925096388,
+      "o25": 0.4580049388429783,
+      "o15": 0.7346298357467468
+    },
+    "sub_elo": {
+      "1": 0.522697879545759,
+      "X": 0.25692501265378026,
+      "2": 0.22037710780046074,
+      "btts": 0.4662653788765512,
+      "o25": 0.4406549766186416,
+      "o15": 0.7001300871202392
+    },
+    "p_home_win": 51.8,
+    "p_draw": 30.3,
+    "p_away_win": 17.8,
+    "p_btts_yes": 47.9,
+    "p_btts_no": 52.1,
+    "p_over_25": 43.6,
+    "p_under_25": 56.4,
+    "p_over_15": 71.2,
+    "top_scores": [
+      [
+        "1-1",
+        14.321971119629778
+      ],
+      [
+        "1-0",
+        12.173883235137545
+      ],
+      [
+        "0-0",
+        10.489889778820997
+      ],
+      [
+        "2-0",
+        10.416524837385504
+      ],
+      [
+        "2-1",
+        8.877135518619768
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 6.8,
+      "exp_away_corners": 7.2,
+      "exp_total_corners": 13.9,
+      "home_wpi": 1.06,
+      "away_wpi": 1.27,
+      "tension_mod": 1.08,
+      "p_over_8_5": 93.5,
+      "p_over_9_5": 88.6,
+      "p_over_10_5": 81.8
+    }
+  }
+]

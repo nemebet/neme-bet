@@ -1,0 +1,617 @@
+{
+  "Italy": {
+    "team": "Italy",
+    "matches_with_corners": 11,
+    "avg_corners_for": 7.09,
+    "avg_corners_against": 3.82,
+    "avg_total_corners": 10.91,
+    "home": {
+      "avg_corners_for": 7.83,
+      "avg_corners_against": 4.17
+    },
+    "away": {
+      "avg_corners_for": 6.2,
+      "avg_corners_against": 3.4
+    }
+  },
+  "Northern Ireland": {
+    "team": "Northern Ireland",
+    "matches_with_corners": 1,
+    "avg_corners_for": 3.0,
+    "avg_corners_against": 12.0,
+    "avg_total_corners": 15.0,
+    "home": {
+      "avg_corners_for": 0.0,
+      "avg_corners_against": 0.0
+    },
+    "away": {
+      "avg_corners_for": 3.0,
+      "avg_corners_against": 12.0
+    }
+  },
+  "Denmark": {
+    "team": "Denmark",
+    "matches_with_corners": 8,
+    "avg_corners_for": 8.75,
+    "avg_corners_against": 3.75,
+    "avg_total_corners": 12.5,
+    "home": {
+      "avg_corners_for": 10.2,
+      "avg_corners_against": 4.2
+    },
+    "away": {
+      "avg_corners_for": 6.33,
+      "avg_corners_against": 3.0
+    }
+  },
+  "FYR Macedonia": {
+    "team": "FYR Macedonia",
+    "matches_with_corners": 1,
+    "avg_corners_for": 2.0,
+    "avg_corners_against": 11.0,
+    "avg_total_corners": 13.0,
+    "home": {
+      "avg_corners_for": 0.0,
+      "avg_corners_against": 0.0
+    },
+    "away": {
+      "avg_corners_for": 2.0,
+      "avg_corners_against": 11.0
+    }
+  },
+  "Slovakia": {
+    "team": "Slovakia",
+    "matches_with_corners": 1,
+    "avg_corners_for": 7.0,
+    "avg_corners_against": 3.0,
+    "avg_total_corners": 10.0,
+    "home": {
+      "avg_corners_for": 7.0,
+      "avg_corners_against": 3.0
+    },
+    "away": {
+      "avg_corners_for": 0.0,
+      "avg_corners_against": 0.0
+    }
+  },
+  "Kosovo": {
+    "team": "Kosovo",
+    "matches_with_corners": 9,
+    "avg_corners_for": 3.44,
+    "avg_corners_against": 4.89,
+    "avg_total_corners": 8.33,
+    "home": {
+      "avg_corners_for": 2.75,
+      "avg_corners_against": 3.0
+    },
+    "away": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 6.4
+    }
+  },
+  "Türkiye": {
+    "team": "Türkiye",
+    "matches_with_corners": 10,
+    "avg_corners_for": 5.8,
+    "avg_corners_against": 4.3,
+    "avg_total_corners": 10.1,
+    "home": {
+      "avg_corners_for": 7.4,
+      "avg_corners_against": 4.4
+    },
+    "away": {
+      "avg_corners_for": 4.2,
+      "avg_corners_against": 4.2
+    }
+  },
+  "Romania": {
+    "team": "Romania",
+    "matches_with_corners": 3,
+    "avg_corners_for": 3.0,
+    "avg_corners_against": 4.67,
+    "avg_total_corners": 7.67,
+    "home": {
+      "avg_corners_for": 5.0,
+      "avg_corners_against": 1.0
+    },
+    "away": {
+      "avg_corners_for": 2.0,
+      "avg_corners_against": 6.5
+    }
+  },
+  "Ukraine": {
+    "team": "Ukraine",
+    "matches_with_corners": 1,
+    "avg_corners_for": 9.0,
+    "avg_corners_against": 3.0,
+    "avg_total_corners": 12.0,
+    "home": {
+      "avg_corners_for": 9.0,
+      "avg_corners_against": 3.0
+    },
+    "away": {
+      "avg_corners_for": 0.0,
+      "avg_corners_against": 0.0
+    }
+  },
+  "Sweden": {
+    "team": "Sweden",
+    "matches_with_corners": 7,
+    "avg_corners_for": 5.29,
+    "avg_corners_against": 4.43,
+    "avg_total_corners": 9.71,
+    "home": {
+      "avg_corners_for": 7.33,
+      "avg_corners_against": 5.33
+    },
+    "away": {
+      "avg_corners_for": 3.75,
+      "avg_corners_against": 3.75
+    }
+  },
+  "Poland": {
+    "team": "Poland",
+    "matches_with_corners": 9,
+    "avg_corners_for": 6.33,
+    "avg_corners_against": 3.33,
+    "avg_total_corners": 9.67,
+    "home": {
+      "avg_corners_for": 6.4,
+      "avg_corners_against": 2.2
+    },
+    "away": {
+      "avg_corners_for": 6.25,
+      "avg_corners_against": 4.75
+    }
+  },
+  "Albania": {
+    "team": "Albania",
+    "matches_with_corners": 1,
+    "avg_corners_for": 2.0,
+    "avg_corners_against": 6.0,
+    "avg_total_corners": 8.0,
+    "home": {
+      "avg_corners_for": 0.0,
+      "avg_corners_against": 0.0
+    },
+    "away": {
+      "avg_corners_for": 2.0,
+      "avg_corners_against": 6.0
+    }
+  },
+  "Austria": {
+    "team": "Austria",
+    "matches_with_corners": 2,
+    "avg_corners_for": 3.0,
+    "avg_corners_against": 2.5,
+    "avg_total_corners": 5.5,
+    "home": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 2.0
+    },
+    "away": {
+      "avg_corners_for": 2.0,
+      "avg_corners_against": 3.0
+    }
+  },
+  "Bosnia & Herzegovina": {
+    "team": "Bosnia & Herzegovina",
+    "matches_with_corners": 9,
+    "avg_corners_for": 4.0,
+    "avg_corners_against": 3.22,
+    "avg_total_corners": 7.22,
+    "home": {
+      "avg_corners_for": 4.4,
+      "avg_corners_against": 3.4
+    },
+    "away": {
+      "avg_corners_for": 3.5,
+      "avg_corners_against": 3.0
+    }
+  },
+  "Scotland": {
+    "team": "Scotland",
+    "matches_with_corners": 2,
+    "avg_corners_for": 3.0,
+    "avg_corners_against": 11.0,
+    "avg_total_corners": 14.0,
+    "home": {
+      "avg_corners_for": 2.0,
+      "avg_corners_against": 9.0
+    },
+    "away": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 13.0
+    }
+  },
+  "Switzerland": {
+    "team": "Switzerland",
+    "matches_with_corners": 4,
+    "avg_corners_for": 4.25,
+    "avg_corners_against": 3.5,
+    "avg_total_corners": 7.75,
+    "home": {
+      "avg_corners_for": 3.5,
+      "avg_corners_against": 3.5
+    },
+    "away": {
+      "avg_corners_for": 5.0,
+      "avg_corners_against": 3.5
+    }
+  },
+  "Spain": {
+    "team": "Spain",
+    "matches_with_corners": 2,
+    "avg_corners_for": 5.0,
+    "avg_corners_against": 5.5,
+    "avg_total_corners": 10.5,
+    "home": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 3.0
+    },
+    "away": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 8.0
+    }
+  },
+  "Slovenia": {
+    "team": "Slovenia",
+    "matches_with_corners": 4,
+    "avg_corners_for": 4.0,
+    "avg_corners_against": 4.75,
+    "avg_total_corners": 8.75,
+    "home": {
+      "avg_corners_for": 2.5,
+      "avg_corners_against": 5.5
+    },
+    "away": {
+      "avg_corners_for": 5.5,
+      "avg_corners_against": 4.0
+    }
+  },
+  "Czech Republic": {
+    "team": "Czech Republic",
+    "matches_with_corners": 9,
+    "avg_corners_for": 8.0,
+    "avg_corners_against": 3.0,
+    "avg_total_corners": 11.0,
+    "home": {
+      "avg_corners_for": 8.2,
+      "avg_corners_against": 4.0
+    },
+    "away": {
+      "avg_corners_for": 7.75,
+      "avg_corners_against": 1.75
+    }
+  },
+  "Gibraltar": {
+    "team": "Gibraltar",
+    "matches_with_corners": 2,
+    "avg_corners_for": 0.5,
+    "avg_corners_against": 12.0,
+    "avg_total_corners": 12.5,
+    "home": {
+      "avg_corners_for": 0.0,
+      "avg_corners_against": 12.0
+    },
+    "away": {
+      "avg_corners_for": 1.0,
+      "avg_corners_against": 12.0
+    }
+  },
+  "Malta": {
+    "team": "Malta",
+    "matches_with_corners": 2,
+    "avg_corners_for": 3.5,
+    "avg_corners_against": 7.0,
+    "avg_total_corners": 10.5,
+    "home": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 9.0
+    },
+    "away": {
+      "avg_corners_for": 3.0,
+      "avg_corners_against": 5.0
+    }
+  },
+  "Norway": {
+    "team": "Norway",
+    "matches_with_corners": 2,
+    "avg_corners_for": 4.0,
+    "avg_corners_against": 4.0,
+    "avg_total_corners": 8.0,
+    "home": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 2.0
+    },
+    "away": {
+      "avg_corners_for": 2.0,
+      "avg_corners_against": 6.0
+    }
+  },
+  "Belarus": {
+    "team": "Belarus",
+    "matches_with_corners": 2,
+    "avg_corners_for": 3.5,
+    "avg_corners_against": 10.0,
+    "avg_total_corners": 13.5,
+    "home": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 7.0
+    },
+    "away": {
+      "avg_corners_for": 3.0,
+      "avg_corners_against": 13.0
+    }
+  },
+  "Bulgaria": {
+    "team": "Bulgaria",
+    "matches_with_corners": 2,
+    "avg_corners_for": 5.5,
+    "avg_corners_against": 8.5,
+    "avg_total_corners": 14.0,
+    "home": {
+      "avg_corners_for": 5.0,
+      "avg_corners_against": 8.0
+    },
+    "away": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 9.0
+    }
+  },
+  "Netherlands": {
+    "team": "Netherlands",
+    "matches_with_corners": 3,
+    "avg_corners_for": 5.0,
+    "avg_corners_against": 3.0,
+    "avg_total_corners": 8.0,
+    "home": {
+      "avg_corners_for": 7.0,
+      "avg_corners_against": 4.0
+    },
+    "away": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 2.5
+    }
+  },
+  "Moldova": {
+    "team": "Moldova",
+    "matches_with_corners": 2,
+    "avg_corners_for": 3.5,
+    "avg_corners_against": 10.0,
+    "avg_total_corners": 13.5,
+    "home": {
+      "avg_corners_for": 1.0,
+      "avg_corners_against": 13.0
+    },
+    "away": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 7.0
+    }
+  },
+  "Israel": {
+    "team": "Israel",
+    "matches_with_corners": 2,
+    "avg_corners_for": 3.5,
+    "avg_corners_against": 4.0,
+    "avg_total_corners": 7.5,
+    "home": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 4.0
+    },
+    "away": {
+      "avg_corners_for": 3.0,
+      "avg_corners_against": 4.0
+    }
+  },
+  "Georgia": {
+    "team": "Georgia",
+    "matches_with_corners": 3,
+    "avg_corners_for": 6.0,
+    "avg_corners_against": 6.33,
+    "avg_total_corners": 12.33,
+    "home": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 2.0
+    },
+    "away": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 8.5
+    }
+  },
+  "Faroe Islands": {
+    "team": "Faroe Islands",
+    "matches_with_corners": 2,
+    "avg_corners_for": 2.0,
+    "avg_corners_against": 6.5,
+    "avg_total_corners": 8.5,
+    "home": {
+      "avg_corners_for": 1.0,
+      "avg_corners_against": 7.0
+    },
+    "away": {
+      "avg_corners_for": 3.0,
+      "avg_corners_against": 6.0
+    }
+  },
+  "Greece": {
+    "team": "Greece",
+    "matches_with_corners": 2,
+    "avg_corners_for": 4.5,
+    "avg_corners_against": 5.0,
+    "avg_total_corners": 9.5,
+    "home": {
+      "avg_corners_for": 3.0,
+      "avg_corners_against": 3.0
+    },
+    "away": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 7.0
+    }
+  },
+  "Lithuania": {
+    "team": "Lithuania",
+    "matches_with_corners": 2,
+    "avg_corners_for": 2.5,
+    "avg_corners_against": 9.5,
+    "avg_total_corners": 12.0,
+    "home": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 8.0
+    },
+    "away": {
+      "avg_corners_for": 1.0,
+      "avg_corners_against": 11.0
+    }
+  },
+  "Estonia": {
+    "team": "Estonia",
+    "matches_with_corners": 2,
+    "avg_corners_for": 1.5,
+    "avg_corners_against": 10.0,
+    "avg_total_corners": 11.5,
+    "home": {
+      "avg_corners_for": 0.0,
+      "avg_corners_against": 8.0
+    },
+    "away": {
+      "avg_corners_for": 3.0,
+      "avg_corners_against": 12.0
+    }
+  },
+  "Cyprus": {
+    "team": "Cyprus",
+    "matches_with_corners": 2,
+    "avg_corners_for": 5.0,
+    "avg_corners_against": 6.0,
+    "avg_total_corners": 11.0,
+    "home": {
+      "avg_corners_for": 3.0,
+      "avg_corners_against": 5.0
+    },
+    "away": {
+      "avg_corners_for": 7.0,
+      "avg_corners_against": 7.0
+    }
+  },
+  "Croatia": {
+    "team": "Croatia",
+    "matches_with_corners": 2,
+    "avg_corners_for": 3.0,
+    "avg_corners_against": 5.5,
+    "avg_total_corners": 8.5,
+    "home": {
+      "avg_corners_for": 0.0,
+      "avg_corners_against": 6.0
+    },
+    "away": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 5.0
+    }
+  },
+  "Finland": {
+    "team": "Finland",
+    "matches_with_corners": 2,
+    "avg_corners_for": 3.0,
+    "avg_corners_against": 6.0,
+    "avg_total_corners": 9.0,
+    "home": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 4.0
+    },
+    "away": {
+      "avg_corners_for": 2.0,
+      "avg_corners_against": 8.0
+    }
+  },
+  "San Marino": {
+    "team": "San Marino",
+    "matches_with_corners": 2,
+    "avg_corners_for": 1.0,
+    "avg_corners_against": 5.5,
+    "avg_total_corners": 6.5,
+    "home": {
+      "avg_corners_for": 0.0,
+      "avg_corners_against": 6.0
+    },
+    "away": {
+      "avg_corners_for": 2.0,
+      "avg_corners_against": 5.0
+    }
+  },
+  "Montenegro": {
+    "team": "Montenegro",
+    "matches_with_corners": 3,
+    "avg_corners_for": 4.0,
+    "avg_corners_against": 6.33,
+    "avg_total_corners": 10.33,
+    "home": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 5.5
+    },
+    "away": {
+      "avg_corners_for": 4.0,
+      "avg_corners_against": 8.0
+    }
+  },
+  "Germany": {
+    "team": "Germany",
+    "matches_with_corners": 2,
+    "avg_corners_for": 7.0,
+    "avg_corners_against": 5.0,
+    "avg_total_corners": 12.0,
+    "home": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 4.0
+    },
+    "away": {
+      "avg_corners_for": 8.0,
+      "avg_corners_against": 6.0
+    }
+  },
+  "Iceland": {
+    "team": "Iceland",
+    "matches_with_corners": 2,
+    "avg_corners_for": 4.0,
+    "avg_corners_against": 5.5,
+    "avg_total_corners": 9.5,
+    "home": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 6.0
+    },
+    "away": {
+      "avg_corners_for": 2.0,
+      "avg_corners_against": 5.0
+    }
+  },
+  "Hungary": {
+    "team": "Hungary",
+    "matches_with_corners": 2,
+    "avg_corners_for": 2.5,
+    "avg_corners_against": 3.5,
+    "avg_total_corners": 6.0,
+    "home": {
+      "avg_corners_for": 2.0,
+      "avg_corners_against": 3.0
+    },
+    "away": {
+      "avg_corners_for": 3.0,
+      "avg_corners_against": 4.0
+    }
+  },
+  "Portugal": {
+    "team": "Portugal",
+    "matches_with_corners": 1,
+    "avg_corners_for": 6.0,
+    "avg_corners_against": 7.0,
+    "avg_total_corners": 13.0,
+    "home": {
+      "avg_corners_for": 0.0,
+      "avg_corners_against": 0.0
+    },
+    "away": {
+      "avg_corners_for": 6.0,
+      "avg_corners_against": 7.0
+    }
+  }
+}

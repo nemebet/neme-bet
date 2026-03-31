@@ -1,0 +1,974 @@
+[
+  {
+    "home_team": "Bosnia-Herzegovina",
+    "away_team": "Italy",
+    "elo_home": 1572,
+    "elo_away": 1619,
+    "home_pressure": {
+      "attack_mod": 1.08,
+      "defense_mod": 0.98,
+      "label": "HAMBRIENTO"
+    },
+    "away_pressure": {
+      "attack_mod": 0.96,
+      "defense_mod": 1.04,
+      "label": "PRESIÓN NEGATIVA"
+    },
+    "home_squad": {
+      "team": "Bosnia-Herzegovina",
+      "xi_count": 10,
+      "avg_rating": 6.31,
+      "weighted_attack": 9.02,
+      "weighted_defense": 7.72,
+      "attack_mod": 0.993,
+      "defense_mod": 1.004,
+      "scorer_xg_bonus": 0.3,
+      "dangerous_scorers": [
+        {
+          "name": "Demirović",
+          "goals": 12,
+          "club": "Stuttgart"
+        },
+        {
+          "name": "Tabakovic",
+          "goals": 5,
+          "club": "Hoffenheim"
+        }
+      ],
+      "best_form": [
+        {
+          "name": "Demirović",
+          "rating": 7.41,
+          "club": "Stuttgart"
+        },
+        {
+          "name": "Hajradinović",
+          "rating": 6.54,
+          "club": "Dinamo Zagreb"
+        },
+        {
+          "name": "Kolašinac",
+          "rating": 6.44,
+          "club": "Atalanta"
+        }
+      ],
+      "worst_form": [
+        {
+          "name": "Tabakovic",
+          "rating": 6.13,
+          "club": "Hoffenheim"
+        },
+        {
+          "name": "Gazibegović",
+          "rating": 6.07,
+          "club": "Sturm Graz"
+        },
+        {
+          "name": "Pjanić",
+          "rating": 5.55,
+          "club": "Sharjah"
+        }
+      ],
+      "absent": [
+        {
+          "name": "Džeko",
+          "pos": "ST",
+          "reason": "Retirado selección",
+          "rating": 5.5
+        }
+      ]
+    },
+    "away_squad": {
+      "team": "Italy",
+      "xi_count": 9,
+      "avg_rating": 6.82,
+      "weighted_attack": 8.98,
+      "weighted_defense": 7.34,
+      "attack_mod": 1.013,
+      "defense_mod": 0.994,
+      "scorer_xg_bonus": 0.15,
+      "dangerous_scorers": [
+        {
+          "name": "Kean",
+          "goals": 9,
+          "club": "Fiorentina"
+        }
+      ],
+      "best_form": [
+        {
+          "name": "Dimarco",
+          "rating": 7.43,
+          "club": "Inter Milan"
+        },
+        {
+          "name": "Bastoni",
+          "rating": 7.23,
+          "club": "Inter Milan"
+        },
+        {
+          "name": "Tonali",
+          "rating": 7.1,
+          "club": "Newcastle"
+        }
+      ],
+      "worst_form": [
+        {
+          "name": "Frattesi",
+          "rating": 6.64,
+          "club": "Inter Milan"
+        },
+        {
+          "name": "Pellegrini",
+          "rating": 6.44,
+          "club": "Roma"
+        },
+        {
+          "name": "Retegui",
+          "rating": 6.11,
+          "club": "Al-Qadsiah"
+        }
+      ],
+      "absent": [
+        {
+          "name": "Barella",
+          "pos": "CM",
+          "reason": "Lesión muscular",
+          "rating": 7.4
+        }
+      ]
+    },
+    "context": {
+      "match_type": {
+        "factor": 1.25,
+        "label": "Final directa clasificatoria"
+      },
+      "tournament": {
+        "level": 5,
+        "label": "Playoff Mundial",
+        "draw_boost": 0.04,
+        "goals_mod": 0.92
+      },
+      "goals_modifier": 0.874,
+      "draw_boost": 0.04,
+      "home_pressure": {
+        "attack_mod": 1.08,
+        "defense_mod": 0.98,
+        "label": "HAMBRIENTO"
+      },
+      "away_pressure": {
+        "attack_mod": 0.96,
+        "defense_mod": 1.04,
+        "label": "PRESIÓN NEGATIVA"
+      },
+      "tactical_tension": 1.15,
+      "corners_tension_mod": 1.08,
+      "home_context": "Solo 1 Mundial en su historia (2014). Juegan en casa con público volcado. Motivación máxima, la presión juega a favor.",
+      "away_context": "Tetracampeona del mundo pero 2 Mundiales seguidos sin clasificar. Presión extrema negativa — el trauma de 2018 y 2022 pesa. Visitante en eliminatoria directa."
+    },
+    "context_narrative": "FINAL DIRECTA (nivel 5/8) — Bosnia-Herzegovina: HAMBRIENTO | Italy: PRESIÓN NEGATIVA — XI Rating: 6.31 vs 6.82",
+    "home_wc_context": "Solo 1 Mundial en su historia (2014). Juegan en casa con público volcado. Motivación máxima, la presión juega a favor.",
+    "away_wc_context": "Tetracampeona del mundo pero 2 Mundiales seguidos sin clasificar. Presión extrema negativa — el trauma de 2018 y 2022 pesa. Visitante en eliminatoria directa.",
+    "lambda_h": 2.131,
+    "lambda_a": 1.465,
+    "lambda_h_elo": 1.769,
+    "lambda_a_elo": 1.111,
+    "sub_poisson": {
+      "1": 0.5285888496266501,
+      "X": 0.20830326283067563,
+      "2": 0.2631078875426742,
+      "btts": 0.6777323198665394,
+      "o25": 0.6965878295876048,
+      "o15": 0.8739580573695327
+    },
+    "sub_dc": {
+      "1": 0.5131728695073566,
+      "X": 0.23913522306926277,
+      "2": 0.24769190742338068,
+      "btts": 0.6931482999858328,
+      "o25": 0.6965878295876048,
+      "o15": 0.8893740374888263
+    },
+    "sub_elo": {
+      "1": 0.5277509967666391,
+      "X": 0.23408268648498734,
+      "2": 0.23816631674837355,
+      "btts": 0.5564827883393276,
+      "o25": 0.5494600742780016,
+      "o15": 0.782251718101686
+    },
+    "p_home_win": 49.6,
+    "p_draw": 26.7,
+    "p_away_win": 23.8,
+    "p_btts_yes": 65.5,
+    "p_btts_no": 34.5,
+    "p_over_25": 63.8,
+    "p_under_25": 36.2,
+    "p_over_15": 84.9,
+    "top_scores": [
+      [
+        "1-1",
+        11.5580949014838
+      ],
+      [
+        "2-1",
+        8.820236005972177
+      ],
+      [
+        "2-2",
+        7.464901052445029
+      ],
+      [
+        "2-0",
+        6.621664703668341
+      ],
+      [
+        "1-0",
+        6.254576143607013
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 4.5,
+      "exp_away_corners": 7.4,
+      "exp_total_corners": 12.0,
+      "home_wpi": 1.0,
+      "away_wpi": 1.42,
+      "tension_mod": 1.08,
+      "p_over_8_5": 84.4,
+      "p_over_9_5": 75.6,
+      "p_over_10_5": 65.1
+    }
+  },
+  {
+    "home_team": "Czechia",
+    "away_team": "Denmark",
+    "elo_home": 1571,
+    "elo_away": 1594,
+    "home_pressure": {
+      "attack_mod": 1.0,
+      "defense_mod": 1.0,
+      "label": "RELAJADO"
+    },
+    "away_pressure": {
+      "attack_mod": 1.0,
+      "defense_mod": 1.0,
+      "label": "RELAJADO"
+    },
+    "home_squad": {
+      "team": "Czechia",
+      "xi_count": 11,
+      "avg_rating": 6.59,
+      "weighted_attack": 11.3,
+      "weighted_defense": 8.52,
+      "attack_mod": 1.004,
+      "defense_mod": 0.998,
+      "scorer_xg_bonus": 0.3,
+      "dangerous_scorers": [
+        {
+          "name": "Schick",
+          "goals": 9,
+          "club": "Leverkusen"
+        },
+        {
+          "name": "Hložek",
+          "goals": 7,
+          "club": "Hoffenheim"
+        }
+      ],
+      "best_form": [
+        {
+          "name": "Schick",
+          "rating": 7.11,
+          "club": "Leverkusen"
+        },
+        {
+          "name": "Souček",
+          "rating": 6.9,
+          "club": "West Ham"
+        },
+        {
+          "name": "Coufal",
+          "rating": 6.8,
+          "club": "West Ham"
+        }
+      ],
+      "worst_form": [
+        {
+          "name": "Staněk",
+          "rating": 6.35,
+          "club": "Slavia Prague"
+        },
+        {
+          "name": "Holeš",
+          "rating": 6.26,
+          "club": "Slavia Prague"
+        },
+        {
+          "name": "Barák",
+          "rating": 6.24,
+          "club": "Fiorentina"
+        }
+      ],
+      "absent": []
+    },
+    "away_squad": {
+      "team": "Denmark",
+      "xi_count": 10,
+      "avg_rating": 6.8,
+      "weighted_attack": 10.33,
+      "weighted_defense": 7.73,
+      "attack_mod": 1.012,
+      "defense_mod": 0.994,
+      "scorer_xg_bonus": 0.6,
+      "dangerous_scorers": [
+        {
+          "name": "Damsgaard",
+          "goals": 5,
+          "club": "Brentford"
+        },
+        {
+          "name": "Isaksen",
+          "goals": 6,
+          "club": "Lazio"
+        },
+        {
+          "name": "Højlund",
+          "goals": 14,
+          "club": "Napoli"
+        },
+        {
+          "name": "Wind",
+          "goals": 8,
+          "club": "Wolfsburg"
+        }
+      ],
+      "best_form": [
+        {
+          "name": "Højlund",
+          "rating": 7.53,
+          "club": "Napoli"
+        },
+        {
+          "name": "Christensen",
+          "rating": 6.96,
+          "club": "Barcelona"
+        },
+        {
+          "name": "Isaksen",
+          "rating": 6.84,
+          "club": "Lazio"
+        }
+      ],
+      "worst_form": [
+        {
+          "name": "Wind",
+          "rating": 6.62,
+          "club": "Wolfsburg"
+        },
+        {
+          "name": "Vestergaard",
+          "rating": 6.6,
+          "club": "Leicester"
+        },
+        {
+          "name": "Maehle",
+          "rating": 6.42,
+          "club": "Wolfsburg"
+        }
+      ],
+      "absent": [
+        {
+          "name": "Eriksen",
+          "pos": "CAM",
+          "reason": "Forma irregular",
+          "rating": 5.8
+        }
+      ]
+    },
+    "context": {
+      "match_type": {
+        "factor": 1.25,
+        "label": "Final directa clasificatoria"
+      },
+      "tournament": {
+        "level": 5,
+        "label": "Playoff Mundial",
+        "draw_boost": 0.04,
+        "goals_mod": 0.92
+      },
+      "goals_modifier": 0.874,
+      "draw_boost": 0.04,
+      "home_pressure": {
+        "attack_mod": 1.0,
+        "defense_mod": 1.0,
+        "label": "RELAJADO"
+      },
+      "away_pressure": {
+        "attack_mod": 1.0,
+        "defense_mod": 1.0,
+        "label": "RELAJADO"
+      },
+      "tactical_tension": 1.15,
+      "corners_tension_mod": 1.08,
+      "home_context": "No van al Mundial desde 2006 (20 años). Generación con hambre pero sin trauma específico. Juegan en casa, ventaja local importante.",
+      "away_context": "Fueron al Mundial 2022 y semifinalistas Euro 2020. Sin presión excesiva, juegan libres como visitantes."
+    },
+    "context_narrative": "FINAL DIRECTA (nivel 5/8) — Czechia: RELAJADO | Denmark: RELAJADO — XI Rating: 6.59 vs 6.80",
+    "home_wc_context": "No van al Mundial desde 2006 (20 años). Generación con hambre pero sin trauma específico. Juegan en casa, ventaja local importante.",
+    "away_wc_context": "Fueron al Mundial 2022 y semifinalistas Euro 2020. Sin presión excesiva, juegan libres como visitantes.",
+    "lambda_h": 2.976,
+    "lambda_a": 1.956,
+    "lambda_h_elo": 1.982,
+    "lambda_a_elo": 1.49,
+    "sub_poisson": {
+      "1": 0.588014574811912,
+      "X": 0.1687822979322386,
+      "2": 0.24320312725584953,
+      "btts": 0.8145569941394468,
+      "o25": 0.8689633848545975,
+      "o15": 0.9570381453424712
+    },
+    "sub_dc": {
+      "1": 0.5804270877326332,
+      "X": 0.18395727209079613,
+      "2": 0.23561564017657075,
+      "btts": 0.8221444812187256,
+      "o25": 0.8689633848545973,
+      "o15": 0.9646256324217499
+    },
+    "sub_elo": {
+      "1": 0.4914649696006679,
+      "X": 0.21740044077944354,
+      "2": 0.2911345896198886,
+      "btts": 0.6678860968069128,
+      "o25": 0.6738451686797432,
+      "o15": 0.8610785551576066
+    },
+    "p_home_win": 53.2,
+    "p_draw": 22.4,
+    "p_away_win": 24.4,
+    "p_btts_yes": 77.9,
+    "p_btts_no": 22.1,
+    "p_over_25": 80.1,
+    "p_under_25": 19.9,
+    "p_over_15": 93.0,
+    "top_scores": [
+      [
+        "2-2",
+        7.551709957391517
+      ],
+      [
+        "1-1",
+        7.080630637409004
+      ],
+      [
+        "2-1",
+        6.797936931984498
+      ],
+      [
+        "3-1",
+        5.879998580049881
+      ],
+      [
+        "3-2",
+        5.349473853687605
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 4.3,
+      "exp_away_corners": 8.7,
+      "exp_total_corners": 13.0,
+      "home_wpi": 1.0,
+      "away_wpi": 1.75,
+      "tension_mod": 1.08,
+      "p_over_8_5": 90.0,
+      "p_over_9_5": 83.4,
+      "p_over_10_5": 74.8
+    }
+  },
+  {
+    "home_team": "Kosovo",
+    "away_team": "Turkey",
+    "elo_home": 1608,
+    "elo_away": 1616,
+    "home_pressure": {
+      "attack_mod": 1.12,
+      "defense_mod": 0.97,
+      "label": "HISTÓRICO"
+    },
+    "away_pressure": {
+      "attack_mod": 1.1,
+      "defense_mod": 1.05,
+      "label": "DESESPERADO"
+    },
+    "home_squad": {
+      "team": "Kosovo",
+      "xi_count": 11,
+      "avg_rating": 6.46,
+      "weighted_attack": 10.69,
+      "weighted_defense": 8.44,
+      "attack_mod": 0.998,
+      "defense_mod": 1.001,
+      "scorer_xg_bonus": 0.45,
+      "dangerous_scorers": [
+        {
+          "name": "Zhegrova",
+          "goals": 8,
+          "club": "Lille"
+        },
+        {
+          "name": "Rashica",
+          "goals": 5,
+          "club": "Braga"
+        },
+        {
+          "name": "Muriqi",
+          "goals": 18,
+          "club": "Mallorca"
+        }
+      ],
+      "best_form": [
+        {
+          "name": "Muriqi",
+          "rating": 7.75,
+          "club": "Mallorca"
+        },
+        {
+          "name": "Zhegrova",
+          "rating": 7.34,
+          "club": "Lille"
+        },
+        {
+          "name": "Rrahmani",
+          "rating": 7.14,
+          "club": "Napoli"
+        }
+      ],
+      "worst_form": [
+        {
+          "name": "Bytyqi",
+          "rating": 6.15,
+          "club": "Norwich"
+        },
+        {
+          "name": "Hadergjonaj",
+          "rating": 5.73,
+          "club": "Kasimpasa"
+        },
+        {
+          "name": "Aliti",
+          "rating": 5.5,
+          "club": "CFR Cluj"
+        }
+      ],
+      "absent": []
+    },
+    "away_squad": {
+      "team": "Turkey",
+      "xi_count": 10,
+      "avg_rating": 6.71,
+      "weighted_attack": 10.16,
+      "weighted_defense": 8.06,
+      "attack_mod": 1.008,
+      "defense_mod": 0.996,
+      "scorer_xg_bonus": 0.45,
+      "dangerous_scorers": [
+        {
+          "name": "Çalhanoğlu",
+          "goals": 9,
+          "club": "Inter Milan"
+        },
+        {
+          "name": "Yıldız",
+          "goals": 11,
+          "club": "Juventus"
+        },
+        {
+          "name": "Aktürkoğlu",
+          "goals": 6,
+          "club": "Benfica"
+        }
+      ],
+      "best_form": [
+        {
+          "name": "Çalhanoğlu",
+          "rating": 7.73,
+          "club": "Inter Milan"
+        },
+        {
+          "name": "Yıldız",
+          "rating": 7.33,
+          "club": "Juventus"
+        },
+        {
+          "name": "Kökcü",
+          "rating": 6.98,
+          "club": "Benfica"
+        }
+      ],
+      "worst_form": [
+        {
+          "name": "Müldür",
+          "rating": 6.3,
+          "club": "Fenerbahçe"
+        },
+        {
+          "name": "Yılmaz B.",
+          "rating": 6.21,
+          "club": "Galatasaray"
+        },
+        {
+          "name": "Demiral",
+          "rating": 6.11,
+          "club": "Al-Ahli"
+        }
+      ],
+      "absent": []
+    },
+    "context": {
+      "match_type": {
+        "factor": 1.25,
+        "label": "Final directa clasificatoria"
+      },
+      "tournament": {
+        "level": 5,
+        "label": "Playoff Mundial",
+        "draw_boost": 0.04,
+        "goals_mod": 0.92
+      },
+      "goals_modifier": 0.874,
+      "draw_boost": 0.04,
+      "home_pressure": {
+        "attack_mod": 1.12,
+        "defense_mod": 0.97,
+        "label": "HISTÓRICO"
+      },
+      "away_pressure": {
+        "attack_mod": 1.1,
+        "defense_mod": 1.05,
+        "label": "DESESPERADO"
+      },
+      "tactical_tension": 1.15,
+      "corners_tension_mod": 1.08,
+      "home_context": "NUNCA han ido a un Mundial. Miembros FIFA desde 2016. Este partido es histórico para todo el país. Motivación desbordante, el estadio será un infierno.",
+      "away_context": "No van desde 2002 (24 años). Semifinalistas mundialistas ese año, luego 5 mundiales sin clasificar. Desesperación mezclada con talento actual."
+    },
+    "context_narrative": "FINAL DIRECTA (nivel 5/8) — Kosovo: HISTÓRICO | Turkey: DESESPERADO — XI Rating: 6.46 vs 6.71",
+    "home_wc_context": "NUNCA han ido a un Mundial. Miembros FIFA desde 2016. Este partido es histórico para todo el país. Motivación desbordante, el estadio será un infierno.",
+    "away_wc_context": "No van desde 2002 (24 años). Semifinalistas mundialistas ese año, luego 5 mundiales sin clasificar. Desesperación mezclada con talento actual.",
+    "lambda_h": 2.018,
+    "lambda_a": 1.39,
+    "lambda_h_elo": 2.485,
+    "lambda_a_elo": 1.545,
+    "sub_poisson": {
+      "1": 0.520826213284869,
+      "X": 0.21541743034795824,
+      "2": 0.2637563563671729,
+      "btts": 0.6511236788095464,
+      "o25": 0.6617860282947916,
+      "o15": 0.8540683047042089
+    },
+    "sub_dc": {
+      "1": 0.5041089859962272,
+      "X": 0.24885188492524166,
+      "2": 0.24703912907853112,
+      "btts": 0.667840906098188,
+      "o25": 0.6617860282947916,
+      "o15": 0.8707855319928507
+    },
+    "sub_elo": {
+      "1": 0.581568906377021,
+      "X": 0.18752233392529838,
+      "2": 0.23090875969768065,
+      "btts": 0.721107281642419,
+      "o25": 0.7660389271605099,
+      "o15": 0.9105156944274713
+    },
+    "p_home_win": 50.7,
+    "p_draw": 25.7,
+    "p_away_win": 23.6,
+    "p_btts_yes": 68.6,
+    "p_btts_no": 31.4,
+    "p_over_25": 67.9,
+    "p_under_25": 32.1,
+    "p_over_15": 87.4,
+    "top_scores": [
+      [
+        "1-1",
+        10.732500716112654
+      ],
+      [
+        "2-1",
+        8.638425364797262
+      ],
+      [
+        "2-2",
+        7.739007180695771
+      ],
+      [
+        "3-1",
+        6.187610915843013
+      ],
+      [
+        "2-0",
+        6.040097417580985
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 3.7,
+      "exp_away_corners": 4.3,
+      "exp_total_corners": 8.0,
+      "home_wpi": 0.69,
+      "away_wpi": 1.0,
+      "tension_mod": 1.08,
+      "p_over_8_5": 41.3,
+      "p_over_9_5": 28.9,
+      "p_over_10_5": 18.8
+    }
+  },
+  {
+    "home_team": "Sweden",
+    "away_team": "Poland",
+    "elo_home": 1535,
+    "elo_away": 1538,
+    "home_pressure": {
+      "attack_mod": 1.05,
+      "defense_mod": 1.0,
+      "label": "MOTIVADO"
+    },
+    "away_pressure": {
+      "attack_mod": 1.0,
+      "defense_mod": 1.0,
+      "label": "RELAJADO"
+    },
+    "home_squad": {
+      "team": "Sweden",
+      "xi_count": 10,
+      "avg_rating": 6.5,
+      "weighted_attack": 10.46,
+      "weighted_defense": 7.17,
+      "attack_mod": 1.0,
+      "defense_mod": 1.0,
+      "scorer_xg_bonus": 0.45,
+      "dangerous_scorers": [
+        {
+          "name": "Kulusevski",
+          "goals": 8,
+          "club": "Tottenham"
+        },
+        {
+          "name": "Gyökeres",
+          "goals": 16,
+          "club": "Arsenal"
+        },
+        {
+          "name": "Elanga",
+          "goals": 6,
+          "club": "Nottingham F."
+        }
+      ],
+      "best_form": [
+        {
+          "name": "Gyökeres",
+          "rating": 7.6,
+          "club": "Arsenal"
+        },
+        {
+          "name": "Kulusevski",
+          "rating": 7.5,
+          "club": "Tottenham"
+        },
+        {
+          "name": "Elanga",
+          "rating": 6.6,
+          "club": "Nottingham F."
+        }
+      ],
+      "worst_form": [
+        {
+          "name": "Cajuste",
+          "rating": 6.2,
+          "club": "Ipswich"
+        },
+        {
+          "name": "Krafth",
+          "rating": 6.0,
+          "club": "Newcastle"
+        },
+        {
+          "name": "Augustinsson",
+          "rating": 5.92,
+          "club": "Anderlecht"
+        }
+      ],
+      "absent": [
+        {
+          "name": "Isak",
+          "pos": "ST",
+          "reason": "Lesión muscular",
+          "rating": 8.0
+        }
+      ]
+    },
+    "away_squad": {
+      "team": "Poland",
+      "xi_count": 10,
+      "avg_rating": 6.6,
+      "weighted_attack": 8.43,
+      "weighted_defense": 9.09,
+      "attack_mod": 1.004,
+      "defense_mod": 0.998,
+      "scorer_xg_bonus": 0.3,
+      "dangerous_scorers": [
+        {
+          "name": "Zieliński",
+          "goals": 6,
+          "club": "Inter Milan"
+        },
+        {
+          "name": "Lewandowski",
+          "goals": 15,
+          "club": "Barcelona"
+        }
+      ],
+      "best_form": [
+        {
+          "name": "Lewandowski",
+          "rating": 7.16,
+          "club": "Barcelona"
+        },
+        {
+          "name": "Zieliński",
+          "rating": 7.14,
+          "club": "Inter Milan"
+        },
+        {
+          "name": "Szczęsny",
+          "rating": 6.76,
+          "club": "Barcelona"
+        }
+      ],
+      "worst_form": [
+        {
+          "name": "Zalewski",
+          "rating": 6.34,
+          "club": "Roma"
+        },
+        {
+          "name": "Kiwior",
+          "rating": 6.3,
+          "club": "Arsenal"
+        },
+        {
+          "name": "Bednarek",
+          "rating": 6.0,
+          "club": "Southampton"
+        }
+      ],
+      "absent": []
+    },
+    "context": {
+      "match_type": {
+        "factor": 1.25,
+        "label": "Final directa clasificatoria"
+      },
+      "tournament": {
+        "level": 5,
+        "label": "Playoff Mundial",
+        "draw_boost": 0.04,
+        "goals_mod": 0.92
+      },
+      "goals_modifier": 0.874,
+      "draw_boost": 0.04,
+      "home_pressure": {
+        "attack_mod": 1.05,
+        "defense_mod": 1.0,
+        "label": "MOTIVADO"
+      },
+      "away_pressure": {
+        "attack_mod": 1.0,
+        "defense_mod": 1.0,
+        "label": "RELAJADO"
+      },
+      "tactical_tension": 1.15,
+      "corners_tension_mod": 1.08,
+      "home_context": "Cuartofinalistas en 2018 pero no fueron en 2022. Juegan en casa con Isak lesionado, necesitan al público. Motivación alta sin exceso de presión.",
+      "away_context": "Fueron al Mundial 2022 con Lewandowski. Menos presión que el rival, pueden jugar más libres como visitantes. Lewandowski a sus 37 años puede ser su último intento."
+    },
+    "context_narrative": "FINAL DIRECTA (nivel 5/8) — Sweden: MOTIVADO | Poland: RELAJADO — XI Rating: 6.50 vs 6.60",
+    "home_wc_context": "Cuartofinalistas en 2018 pero no fueron en 2022. Juegan en casa con Isak lesionado, necesitan al público. Motivación alta sin exceso de presión.",
+    "away_wc_context": "Fueron al Mundial 2022 con Lewandowski. Menos presión que el rival, pueden jugar más libres como visitantes. Lewandowski a sus 37 años puede ser su último intento.",
+    "lambda_h": 2.12,
+    "lambda_a": 1.137,
+    "lambda_h_elo": 1.989,
+    "lambda_a_elo": 1.204,
+    "sub_poisson": {
+      "1": 0.5986646886085389,
+      "X": 0.2047550352451534,
+      "2": 0.19658027614630771,
+      "btts": 0.5976523903347196,
+      "o25": 0.6317744599967459,
+      "o15": 0.8360567603466715
+    },
+    "sub_dc": {
+      "1": 0.581955437099124,
+      "X": 0.2381735382639833,
+      "2": 0.17987102463689275,
+      "btts": 0.6143616418441346,
+      "o25": 0.6317744599967459,
+      "o15": 0.8527660118560865
+    },
+    "sub_elo": {
+      "1": 0.555741459408085,
+      "X": 0.21646187474539572,
+      "2": 0.22779666584651945,
+      "btts": 0.604349778638515,
+      "o25": 0.6187280570432998,
+      "o15": 0.8279583247272783
+    },
+    "p_home_win": 55.1,
+    "p_draw": 25.9,
+    "p_away_win": 19.1,
+    "p_btts_yes": 61.5,
+    "p_btts_no": 38.5,
+    "p_over_25": 61.3,
+    "p_under_25": 38.7,
+    "p_over_15": 83.6,
+    "top_scores": [
+      [
+        "1-1",
+        11.791666068581169
+      ],
+      [
+        "2-1",
+        9.314073986320096
+      ],
+      [
+        "2-0",
+        8.055584079794652
+      ],
+      [
+        "1-0",
+        7.2663117472324315
+      ],
+      [
+        "2-2",
+        6.735427924921557
+      ]
+    ],
+    "corners": {
+      "has_corner_data": true,
+      "exp_home_corners": 6.8,
+      "exp_away_corners": 7.2,
+      "exp_total_corners": 13.9,
+      "home_wpi": 1.06,
+      "away_wpi": 1.27,
+      "tension_mod": 1.08,
+      "p_over_8_5": 93.5,
+      "p_over_9_5": 88.6,
+      "p_over_10_5": 81.8
+    }
+  }
+]
