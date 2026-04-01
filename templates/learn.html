@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Autoaprendizaje - NEME BET</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#1f6feb">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Autoaprendizaje</h1>
+            <div class="sub">El modelo aprende de sus errores y ajusta pesos automaticamente</div>
+        </div>
+
+        <div class="nav">
+            <a href="/">Predecir</a>
+            <a href="/scanner">Cuotas</a>
+            <a href="/learn" class="active">IA</a>
+            <a href="/history">Historial</a>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}{% for msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}{% endif %}
+        {% endwith %}
+
+        <!-- Status -->
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="num">{{ verified_count }}</div>
+                <div class="lbl">Verificadas</div>
+            </div>
+            <div class="stat-box">
+                <div class="num">v{{ weights.version }}</div>
+                <div class="lbl">Version</div>
+            </div>
+            <div class="stat-box">
+                <div class="num">{{ weights.accuracy_1x2 if weights.accuracy_1x2 is not none else '-' }}{% if weights.accuracy_1x2 is not none %}%{% endif %}</div>
+                <div class="lbl">Acierto 1X2</div>
+            </div>
+        </div>
+
+        <!-- Current weights -->
+        <div class="pred-card">
+            <div class="pred-head">
+                <div class="teams">Pesos actuales del Ensemble</div>
+            </div>
+            <div class="pred-body">
+                <!-- Weight bars -->
+                <div style="margin-bottom:12px">
+                    <div class="stat-row">
+                        <span class="label">Poisson</span>
+                        <span class="val" style="color:var(--green)">{{ (weights.w_poisson * 100)|round(1) }}%</span>
+                    </div>
+                    <div style="background:var(--bg3);border-radius:4px;height:8px;margin-bottom:8px">
+                        <div style="background:var(--green);width:{{ weights.w_poisson * 100 }}%;height:100%;border-radius:4px"></div>
+                    </div>
+
+                    <div class="stat-row">
+                        <span class="label">Dixon-Coles</span>
+                        <span class="val" style="color:var(--purple)">{{ (weights.w_dixon_coles * 100)|round(1) }}%</span>
+                    </div>
+                    <div style="background:var(--bg3);border-radius:4px;height:8px;margin-bottom:8px">
+                        <div style="background:var(--purple);width:{{ weights.w_dixon_coles * 100 }}%;height:100%;border-radius:4px"></div>
+                    </div>
+
+                    <div class="stat-row">
+                        <span class="label">ELO</span>
+                        <span class="val" style="color:var(--blue)">{{ (weights.w_elo * 100)|round(1) }}%</span>
+                    </div>
+                    <div style="background:var(--bg3);border-radius:4px;height:8px;margin-bottom:8px">
+                        <div style="background:var(--blue);width:{{ weights.w_elo * 100 }}%;height:100%;border-radius:4px"></div>
+                    </div>
+                </div>
+
+                <!-- Other params -->
+                <div class="stat-row">
+                    <span class="label">Ventaja local</span>
+                    <span class="val">x{{ weights.home_advantage }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">Impacto por baja</span>
+                    <span class="val">{{ (weights.injury_baja * 100)|round(1) }}%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">Sesgo empate</span>
+                    <span class="val" style="color:{% if weights.draw_bias > 0 %}var(--green){% elif weights.draw_bias < 0 %}var(--red){% else %}var(--text2){% endif %}">{{ '%+.2f'|format(weights.draw_bias) }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">Sesgo over</span>
+                    <span class="val" style="color:{% if weights.over_bias > 0 %}var(--green){% elif weights.over_bias < 0 %}var(--red){% else %}var(--text2){% endif %}">{{ '%+.2f'|format(weights.over_bias) }}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">Brier Score</span>
+                    <span class="val">{{ weights.brier_score if weights.brier_score is not none else '-' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance report (if learning was run) -->
+        {% if report %}
+        <div class="pred-card">
+            <div class="pred-head">
+                <div class="teams">Reporte de Rendimiento</div>
+            </div>
+            <div class="pred-body">
+                <pre style="font-size:12px;color:var(--text2);white-space:pre-wrap;font-family:monospace">{{ report }}</pre>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Changes from learning -->
+        {% if result and result.status == 'learned' and result.changes %}
+        <div class="pred-card" style="border-left:3px solid var(--green)">
+            <div class="pred-head">
+                <div class="teams" style="color:var(--green)">Ajustes realizados</div>
+            </div>
+            <div class="pred-body">
+                {% for change in result.changes %}
+                <div style="font-size:13px;padding:4px 0;color:var(--text)">{{ change }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Learn button -->
+        <form method="POST" action="/learn">
+            <button type="submit" class="btn" {% if verified_count < 3 %}disabled{% endif %}>
+                {% if verified_count < 3 %}
+                    Necesitas {{ 3 - verified_count }} resultado(s) verificado(s) mas
+                {% else %}
+                    Ejecutar Aprendizaje ({{ verified_count }} muestras)
+                {% endif %}
+            </button>
+        </form>
+
+        {% if verified_count < 3 %}
+        <div class="warning" style="margin-top:12px">
+            <span class="icon">!</span>
+            <span>El modelo necesita al menos 3 predicciones con resultado real verificado. Ve a Historial para registrar resultados.</span>
+        </div>
+        {% endif %}
+
+        <!-- How it works -->
+        <div class="pred-card" style="margin-top:16px">
+            <div class="pred-head">
+                <div class="teams">Como funciona</div>
+            </div>
+            <div class="pred-body" style="font-size:13px;color:var(--text2);line-height:1.6">
+                <p><strong>1.</strong> Predices partidos con el modelo</p>
+                <p><strong>2.</strong> Registras los resultados reales en Historial</p>
+                <p><strong>3.</strong> El sistema analiza aciertos y errores</p>
+                <p><strong>4.</strong> Detecta sesgos (sobreestima locales, subestima empates, etc.)</p>
+                <p><strong>5.</strong> Ajusta pesos del ensemble segun precision de cada sub-modelo</p>
+                <p><strong>6.</strong> Los nuevos pesos se aplican en la proxima prediccion</p>
+                <p style="margin-top:8px;color:var(--blue)">Mientras mas resultados registres, mejor se calibra el modelo.</p>
+            </div>
+        </div>
+
+        <div class="footer">NEME BET &copy; 2026 | No es consejo de apuestas</div>
+    </div>
+</body>
+</html>
