@@ -1,0 +1,1090 @@
+#!/usr/bin/env python3
+"""
+WEBAPP.PY — Predictor de Apuestas v3.0 — App Web Movil
+═══════════════════════════════════════════════════════
+Flask app con OCR de imagenes, modelo ensemble v5 completo,
+scraping de noticias y historial de acierto.
+
+Ejecutar: python3 webapp.py
+Acceder:  http://<IP>:5000
+"""
+
+import json
+import os
+import re
+import sys
+import time
+import base64
+import urllib.request
+import urllib.error
+import urllib.parse
+import traceback
+from datetime import datetime, timedelta
+from math import exp, lgamma, log
+from collections import defaultdict
+from werkzeug.utils import secure_filename
+
+from flask import (Flask, render_template, request, redirect,
+                   url_for, jsonify, flash)
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  CONFIG
+# ═══════════════════════════════════════════════════════════════════════════
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+app = Flask(__name__,
+            template_folder=os.path.join(BASE_DIR, "templates"),
+            static_folder=os.path.join(BASE_DIR, "static"))
+app.secret_key = "predictor-apuestas-2026"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16MB max
+
+
+def load_env():
+    env = {}
+    # 1. Read .env file if exists (local dev)
+    for path in [os.path.join(BASE_DIR, ".env"), os.path.expanduser("~/.env")]:
+        if os.path.exists(path):
+            with open(path) as f:
+                for line in f:
+                    line = line.strip()
+                    if "=" in line and not line.startswith("#"):
+                        k, v = line.split("=", 1)
+                        env[k.strip()] = v.strip()
+    # 2. System env vars override (Railway/Render inject these)
+    for key in ["FOOTBALL_DATA_API_KEY", "API_FOOTBALL_KEY", "ANTHROPIC_API_KEY"]:
+        val = os.environ.get(key)
+        if val:
+            env[key] = val
+    return env
+
+ENV = load_env()
+FOOTBALL_DATA_KEY = ENV.get("FOOTBALL_DATA_API_KEY", "")
+API_FOOTBALL_KEY = ENV.get("API_FOOTBALL_KEY", "")
+ANTHROPIC_API_KEY = ENV.get("ANTHROPIC_API_KEY", "")
+FOOTBALL_DATA_BASE = "https://api.football-data.org/v4"
+
+# Modelo (defaults, pueden ser overridden por autolearn)
+MAX_GOALS = 8
+DC_RHO = -0.13
+ELO_INITIAL = 1500
+ELO_K = 40
+ELO_HOME_ADVANTAGE = 100
+
+
+def get_weights():
+    """Carga pesos aprendidos si existen, o usa defaults."""
+    wp = os.path.join(BASE_DIR, "learned_weights.json")
+    if os.path.exists(wp):
+        with open(wp, encoding="utf-8") as f:
+            w = json.load(f)
+            return {
+                "w_poisson": w.get("w_poisson", 0.40),
+                "w_dixon_coles": w.get("w_dixon_coles", 0.30),
+                "w_elo": w.get("w_elo", 0.30),
+                "home_advantage": w.get("home_advantage", 1.10),
+                "injury_baja": w.get("injury_baja", 0.04),
+                "injury_duda": w.get("injury_duda", 0.02),
+                "injury_max": w.get("injury_max", 0.20),
+                "form_impact": w.get("form_impact", 400),
+                "draw_bias": w.get("draw_bias", 0.0),
+                "over_bias": w.get("over_bias", 0.0),
+                "btts_bias": w.get("btts_bias", 0.0),
+            }
+    return {
+        "w_poisson": 0.40, "w_dixon_coles": 0.30, "w_elo": 0.30,
+        "home_advantage": 1.10, "injury_baja": 0.04, "injury_duda": 0.02,
+        "injury_max": 0.20, "form_impact": 400,
+        "draw_bias": 0.0, "over_bias": 0.0, "btts_bias": 0.0,
+    }
+
+# Picks
+HIGH_CONFIDENCE = 75.0
+MED_CONFIDENCE = 65.0
+MIN_SUBMODELS = 2
+
+# Rate limit
+_last_req = 0
+REQ_INTERVAL = 6.5
+
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp", "bmp"}
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  HTTP HELPERS
+# ═══════════════════════════════════════════════════════════════════════════
+
+def _rate_limit():
+    global _last_req
+    elapsed = time.time() - _last_req
+    if elapsed < REQ_INTERVAL:
+        time.sleep(REQ_INTERVAL - elapsed)
+    _last_req = time.time()
+
+
+def fd_get(endpoint, params=None):
+    """football-data.org GET."""
+    _rate_limit()
+    url = f"{FOOTBALL_DATA_BASE}/{endpoint}"
+    if params:
+        url += "?" + urllib.parse.urlencode(params)
+    req = urllib.request.Request(url)
+    req.add_header("X-Auth-Token", FOOTBALL_DATA_KEY)
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            return json.loads(resp.read().decode())
+    except urllib.error.HTTPError as e:
+        if e.code == 429:
+            time.sleep(30)
+            return fd_get(endpoint, params)
+        return {}
+    except Exception:
+        return {}
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  MATH CORE (Poisson, Dixon-Coles, ELO)
+# ═══════════════════════════════════════════════════════════════════════════
+
+def poisson_pmf(k, lam):
+    if lam <= 0:
+        return 1.0 if k == 0 else 0.0
+    return exp(k * log(max(lam, 1e-10)) - lam - lgamma(k + 1))
+
+
+def prob_to_odds(p):
+    return round(100 / p, 2) if p > 0 else 99.99
+
+
+def dc_tau(h, a, lh, la, rho=DC_RHO):
+    if h == 0 and a == 0: return 1.0 - lh * la * rho
+    if h == 0 and a == 1: return 1.0 + lh * rho
+    if h == 1 and a == 0: return 1.0 + la * rho
+    if h == 1 and a == 1: return 1.0 - rho
+    return 1.0
+
+
+def build_dc_matrix(lh, la, rho=DC_RHO):
+    m = {}
+    for h in range(MAX_GOALS + 1):
+        for a in range(MAX_GOALS + 1):
+            tau = max(dc_tau(h, a, lh, la, rho), 0.001)
+            m[(h, a)] = poisson_pmf(h, lh) * poisson_pmf(a, la) * tau
+    t = sum(m.values())
+    return {k: v / t for k, v in m.items()} if t > 0 else m
+
+
+def extract_markets(matrix):
+    t = sum(matrix.values())
+    if t == 0:
+        return {"1": 1/3, "X": 1/3, "2": 1/3, "btts": 0.5, "o25": 0.5, "o15": 0.5}
+    return {
+        "1":    sum(p for (h, a), p in matrix.items() if h > a) / t,
+        "X":    sum(p for (h, a), p in matrix.items() if h == a) / t,
+        "2":    sum(p for (h, a), p in matrix.items() if h < a) / t,
+        "btts": sum(p for (h, a), p in matrix.items() if h > 0 and a > 0) / t,
+        "o25":  sum(p for (h, a), p in matrix.items() if h + a > 2.5) / t,
+        "o15":  sum(p for (h, a), p in matrix.items() if h + a > 1.5) / t,
+    }
+
+
+def elo_expected_goals(elo_h, elo_a, avg_gf):
+    diff = elo_h - elo_a + ELO_HOME_ADVANTAGE
+    sr = 10 ** (diff / 400)
+    total = avg_gf * 2
+    return max(0.3, min(total * sr / (1 + sr), 4.5)), max(0.2, min(total / (1 + sr), 4.0))
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  PARSER DE PARTIDOS
+# ═══════════════════════════════════════════════════════════════════════════
+
+def parse_matches(text):
+    parts = re.split(r'[,;\n]+', text.strip())
+    matches = []
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        teams = re.split(r'\s+(?:vs\.?|VS\.?|v\.?|contra|-)\s+', part, maxsplit=1)
+        if len(teams) == 2:
+            h, a = teams[0].strip(), teams[1].strip()
+            if h and a:
+                matches.append((h, a))
+    return matches
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  OCR: IMAGEN -> TEXTO (EasyOCR / pytesseract / Claude Vision)
+# ═══════════════════════════════════════════════════════════════════════════
+
+def ocr_extract_matches(image_path):
+    """Extrae nombres de equipos de una imagen.
+    Intenta: 1) EasyOCR, 2) pytesseract, 3) Claude Vision API."""
+
+    text = None
+    method = None
+
+    # 1. EasyOCR
+    try:
+        import easyocr
+        reader = easyocr.Reader(["en", "es"], gpu=False, verbose=False)
+        results = reader.readtext(image_path)
+        text = "\n".join(r[1] for r in results)
+        method = "EasyOCR"
+    except Exception:
+        pass
+
+    # 2. pytesseract
+    if not text:
+        try:
+            import pytesseract
+            from PIL import Image
+            img = Image.open(image_path)
+            text = pytesseract.image_to_string(img, lang="eng+spa")
+            method = "pytesseract"
+        except Exception:
+            pass
+
+    # 3. Claude Vision API (fallback)
+    if not text and ANTHROPIC_API_KEY:
+        text = claude_vision_extract(image_path)
+        method = "Claude Vision"
+
+    if not text:
+        return [], "No se pudo leer la imagen. Instala easyocr o pytesseract, o configura ANTHROPIC_API_KEY."
+
+    # Extraer partidos del texto OCR
+    matches = parse_matches_from_ocr(text)
+    if not matches:
+        # Intento con Claude si hay key y no se uso aun
+        if method != "Claude Vision" and ANTHROPIC_API_KEY:
+            text2 = claude_vision_extract(image_path)
+            if text2:
+                matches = parse_matches_from_ocr(text2)
+                method = "Claude Vision (fallback)"
+
+    return matches, f"Metodo: {method} | Texto detectado: {len(text)} chars | {len(matches)} partidos"
+
+
+def claude_vision_extract(image_path):
+    """Usa Claude claude-sonnet-4-20250514 para leer partidos de una imagen."""
+    if not ANTHROPIC_API_KEY:
+        return None
+
+    with open(image_path, "rb") as f:
+        img_data = base64.b64encode(f.read()).decode("utf-8")
+
+    ext = image_path.rsplit(".", 1)[-1].lower()
+    media_map = {"jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png",
+                 "gif": "image/gif", "webp": "image/webp", "bmp": "image/bmp"}
+    media_type = media_map.get(ext, "image/jpeg")
+
+    payload = json.dumps({
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [{
+            "role": "user",
+            "content": [
+                {"type": "image", "source": {"type": "base64",
+                 "media_type": media_type, "data": img_data}},
+                {"type": "text", "text":
+                 "Extract all football/soccer match pairs from this image. "
+                 "Return ONLY the matches in this exact format, one per line:\n"
+                 "Team1 vs Team2\n"
+                 "Do not add any other text. Use the team names exactly as shown."}
+            ]
+        }]
+    }).encode("utf-8")
+
+    req = urllib.request.Request("https://api.anthropic.com/v1/messages",
+                                 data=payload, method="POST")
+    req.add_header("x-api-key", ANTHROPIC_API_KEY)
+    req.add_header("anthropic-version", "2023-06-01")
+    req.add_header("content-type", "application/json")
+
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            result = json.loads(resp.read().decode())
+            return result.get("content", [{}])[0].get("text", "")
+    except Exception as e:
+        print(f"Claude Vision error: {e}")
+        return None
+
+
+def parse_matches_from_ocr(text):
+    """Intenta extraer pares de equipos del texto OCR."""
+    matches = []
+
+    # Patron 1: "Team1 vs Team2" o "Team1 - Team2"
+    direct = parse_matches(text)
+    if direct:
+        return direct
+
+    # Patron 2: Lineas con dos equipos separados por marcador/hora
+    lines = text.strip().split("\n")
+    for line in lines:
+        line = line.strip()
+        # "Real Madrid 2 - 1 Barcelona" o "Real Madrid 21:00 Barcelona"
+        m = re.match(r'^(.+?)\s+\d+\s*[-:]\s*\d+\s+(.+)$', line)
+        if m:
+            h, a = m.group(1).strip(), m.group(2).strip()
+            if len(h) > 2 and len(a) > 2:
+                matches.append((h, a))
+                continue
+        # "Real Madrid - Barcelona" simple
+        m = re.match(r'^(.+?)\s+[-–]\s+(.+)$', line)
+        if m:
+            h, a = m.group(1).strip(), m.group(2).strip()
+            if len(h) > 2 and len(a) > 2 and not h.isdigit() and not a.isdigit():
+                matches.append((h, a))
+
+    return matches
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  TEAM SEARCH (football-data.org)
+# ═══════════════════════════════════════════════════════════════════════════
+
+_teams_cache = None
+
+
+def load_teams():
+    global _teams_cache
+    if _teams_cache is not None:
+        return _teams_cache
+
+    cache_path = os.path.join(BASE_DIR, ".teams_cache.json")
+    if os.path.exists(cache_path):
+        mtime = os.path.getmtime(cache_path)
+        if time.time() - mtime < 7 * 86400:
+            with open(cache_path, encoding="utf-8") as f:
+                _teams_cache = json.load(f)
+                return _teams_cache
+
+    comps = ["PL", "PD", "SA", "BL1", "FL1", "CL", "DED", "PPL", "ELC", "BSA"]
+    teams = {}
+    for code in comps:
+        data = fd_get(f"competitions/{code}/teams")
+        for t in data.get("teams", []):
+            tid = str(t["id"])
+            if tid not in teams:
+                teams[tid] = {
+                    "id": t["id"], "name": t.get("name", ""),
+                    "short": t.get("shortName", ""), "tla": t.get("tla", ""),
+                }
+
+    _teams_cache = teams
+    with open(cache_path, "w", encoding="utf-8") as f:
+        json.dump(teams, f, ensure_ascii=False, indent=2)
+    return teams
+
+
+def find_team(name):
+    teams = load_teams()
+    nl = name.lower().strip()
+
+    # Exact
+    for t in teams.values():
+        if nl in (t["name"].lower(), t["short"].lower(), t["tla"].lower()):
+            return t
+
+    # Prefix / cleaned
+    cands = []
+    for t in teams.values():
+        for field in [t["name"], t["short"]]:
+            fl = field.lower()
+            if fl.startswith(nl) or nl.startswith(fl) and len(fl) >= 3:
+                cands.append((t, 100 - len(fl)))
+                break
+            clean = re.sub(r'^(FC|CF|AC|AS|US|SS|RC|RCD|SC|SL|BSC|TSG|VfB|VfL|1\.)\s+', '', fl)
+            if clean.startswith(nl) or nl.startswith(clean):
+                cands.append((t, 95 - len(fl)))
+                break
+    if cands:
+        cands.sort(key=lambda x: x[1], reverse=True)
+        return cands[0][0]
+
+    # Word match
+    words = nl.split()
+    best, best_s = None, 0
+    for t in teams.values():
+        full = f"{t['name']} {t['short']}".lower()
+        hits = sum(1 for w in words if w in full)
+        if hits == len(words) and words:
+            s = hits * 100 - len(full)
+            if s > best_s:
+                best_s, best = s, t
+    if best:
+        return best
+
+    for t in teams.values():
+        full = f"{t['name']} {t['short']}".lower()
+        hits = sum(1 for w in words if w in full)
+        if words and hits / len(words) >= 0.5:
+            s = hits * 100 - len(full)
+            if s > best_s:
+                best_s, best = s, t
+    return best
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  MATCH DATA + STATS (football-data.org)
+# ═══════════════════════════════════════════════════════════════════════════
+
+def fetch_matches(team_id, limit=15):
+    data = fd_get(f"teams/{team_id}/matches", {"status": "FINISHED", "limit": limit})
+    out = []
+    for m in data.get("matches", []):
+        sc = m.get("score", {}).get("fullTime", {})
+        hg, ag = sc.get("home"), sc.get("away")
+        if hg is None or ag is None:
+            continue
+        out.append({
+            "date": m["utcDate"][:10],
+            "home_team": m["homeTeam"]["name"],
+            "away_team": m["awayTeam"]["name"],
+            "home_id": m["homeTeam"]["id"],
+            "away_id": m["awayTeam"]["id"],
+            "home_goals": hg, "away_goals": ag,
+            "comp": m.get("competition", {}).get("name", ""),
+        })
+    return out
+
+
+def compute_stats(matches, team_id):
+    gfh, gah, gfa, gaa = [], [], [], []
+    form = []
+    for m in matches:
+        is_h = m["home_id"] == team_id
+        if is_h:
+            gfh.append(m["home_goals"]); gah.append(m["away_goals"])
+            form.append("W" if m["home_goals"] > m["away_goals"] else
+                        "D" if m["home_goals"] == m["away_goals"] else "L")
+        else:
+            gfa.append(m["away_goals"]); gaa.append(m["home_goals"])
+            form.append("W" if m["away_goals"] > m["home_goals"] else
+                        "D" if m["home_goals"] == m["away_goals"] else "L")
+
+    allgf = gfh + gfa
+    allga = gah + gaa
+    n = len(allgf)
+    if n == 0:
+        return {"avg_gf": 1.3, "avg_ga": 1.1, "home_avg_gf": 1.5,
+                "home_avg_ga": 1.0, "away_avg_gf": 1.1, "away_avg_ga": 1.3,
+                "n": 0, "form_pct": 50, "form_str": "?", "gd": 0}
+
+    pts = sum(3 if r == "W" else 1 if r == "D" else 0 for r in form)
+    avg_gf = sum(allgf) / n
+    avg_ga = sum(allga) / n
+
+    return {
+        "avg_gf": round(avg_gf, 3), "avg_ga": round(avg_ga, 3),
+        "home_avg_gf": round(sum(gfh) / len(gfh), 3) if gfh else round(avg_gf * 1.1, 3),
+        "home_avg_ga": round(sum(gah) / len(gah), 3) if gah else round(avg_ga * 0.9, 3),
+        "away_avg_gf": round(sum(gfa) / len(gfa), 3) if gfa else round(avg_gf * 0.9, 3),
+        "away_avg_ga": round(sum(gaa) / len(gaa), 3) if gaa else round(avg_ga * 1.1, 3),
+        "n": n,
+        "form_pct": round(pts / (n * 3) * 100, 1),
+        "form_str": "".join(form[-5:]),
+        "gd": round(avg_gf - avg_ga, 2),
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  NEWS SCRAPING (Google News RSS)
+# ═══════════════════════════════════════════════════════════════════════════
+
+def fetch_news(team_name):
+    queries = [f"{team_name} injury news", f"{team_name} lineup squad"]
+    news = []
+    seen = set()
+    kw_baja = {"out", "miss", "ruled", "absent", "suspend", "ban", "baja"}
+    kw_duda = {"doubt", "fitness", "injur", "duda", "lesion"}
+    kw_alin = {"lineup", "team news", "squad", "return", "alineacion", "convocatoria"}
+
+    for q in queries:
+        url = f"https://news.google.com/rss/search?q={urllib.parse.quote(q)}&hl=en&gl=US&ceid=US:en"
+        req = urllib.request.Request(url)
+        req.add_header("User-Agent", "Mozilla/5.0")
+        try:
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                xml = resp.read().decode("utf-8", errors="replace")
+            items = re.findall(
+                r"<item>.*?<title>([^<]+)</title>.*?<pubDate>([^<]+)</pubDate>.*?</item>",
+                xml, re.DOTALL)
+            cutoff = datetime.now() - timedelta(hours=72)
+            for title, pubdate in items:
+                try:
+                    dt = datetime.strptime(pubdate.strip()[:25], "%a, %d %b %Y %H:%M:%S")
+                except ValueError:
+                    dt = datetime.now()
+                if dt < cutoff:
+                    continue
+                tc = title.strip()
+                if tc in seen:
+                    continue
+                seen.add(tc)
+                tl = tc.lower()
+                if any(k in tl for k in kw_baja):
+                    ntype = "BAJA"
+                elif any(k in tl for k in kw_duda):
+                    ntype = "DUDA"
+                elif any(k in tl for k in kw_alin):
+                    ntype = "ALINEACION"
+                else:
+                    continue  # Skip irrelevant
+                hours = max(0, int((datetime.now() - dt).total_seconds() / 3600))
+                news.append({"title": tc, "type": ntype, "hours": hours})
+        except Exception:
+            pass
+
+    news.sort(key=lambda x: x["hours"])
+    return news[:8]
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  PREDICTION ENGINE (Full v5 Ensemble)
+# ═══════════════════════════════════════════════════════════════════════════
+
+def predict(home_name, away_name, h_stats, a_stats, h_elo, a_elo, h_news, a_news):
+    W = get_weights()  # Learned or default weights
+
+    avg = (h_stats["avg_gf"] + a_stats["avg_gf"] +
+           h_stats["avg_ga"] + a_stats["avg_ga"]) / 4
+    if avg < 0.5:
+        avg = 1.3
+
+    h_att = h_stats["home_avg_gf"] / avg if avg > 0 else 1.0
+    h_def = h_stats["home_avg_ga"] / avg if avg > 0 else 1.0
+    a_att = a_stats["away_avg_gf"] / avg if avg > 0 else 1.0
+    a_def = a_stats["away_avg_ga"] / avg if avg > 0 else 1.0
+
+    lh = h_att * a_def * avg * W["home_advantage"]
+    la = a_att * h_def * avg
+
+    # Form (learned form_impact divisor)
+    lh *= 1.0 + (h_stats["form_pct"] - 50) / W["form_impact"]
+    la *= 1.0 + (a_stats["form_pct"] - 50) / W["form_impact"]
+
+    # Injuries (learned impact values)
+    h_bajas = sum(1 for n in h_news if n["type"] == "BAJA")
+    a_bajas = sum(1 for n in a_news if n["type"] == "BAJA")
+    h_dudas = sum(1 for n in h_news if n["type"] == "DUDA")
+    a_dudas = sum(1 for n in a_news if n["type"] == "DUDA")
+    h_imp = min(h_bajas * W["injury_baja"] + h_dudas * W["injury_duda"], W["injury_max"])
+    a_imp = min(a_bajas * W["injury_baja"] + a_dudas * W["injury_duda"], W["injury_max"])
+    lh *= (1.0 - h_imp)
+    la *= (1.0 - a_imp)
+
+    lh = max(0.3, min(lh, 5.0))
+    la = max(0.2, min(la, 4.5))
+
+    # Sub 1: Poisson
+    poi_m = {}
+    for h in range(MAX_GOALS + 1):
+        for a in range(MAX_GOALS + 1):
+            poi_m[(h, a)] = poisson_pmf(h, lh) * poisson_pmf(a, la)
+    pt = sum(poi_m.values())
+    poi_m = {k: v / pt for k, v in poi_m.items()}
+
+    # Sub 2: Dixon-Coles
+    dc_m = build_dc_matrix(lh, la, DC_RHO)
+
+    # Sub 3: ELO
+    elh, ela = elo_expected_goals(h_elo, a_elo, avg)
+    elh *= (1.0 - h_imp) * (1.0 + (h_stats["form_pct"] - 50) / W["form_impact"])
+    ela *= (1.0 - a_imp) * (1.0 + (a_stats["form_pct"] - 50) / W["form_impact"])
+    elh = max(0.3, min(elh, 5.0))
+    ela = max(0.2, min(ela, 4.5))
+    elo_m = {}
+    for h in range(MAX_GOALS + 1):
+        for a in range(MAX_GOALS + 1):
+            elo_m[(h, a)] = poisson_pmf(h, elh) * poisson_pmf(a, ela)
+    et = sum(elo_m.values())
+    elo_m = {k: v / et for k, v in elo_m.items()}
+
+    # Ensemble (learned weights)
+    ens_m = {}
+    for key in poi_m:
+        ens_m[key] = W["w_poisson"] * poi_m[key] + W["w_dixon_coles"] * dc_m[key] + W["w_elo"] * elo_m[key]
+
+    # Apply learned biases
+    if W["draw_bias"] != 0:
+        for key in ens_m:
+            h, a = key
+            if h == a:
+                ens_m[key] *= (1 + W["draw_bias"] * 5)
+            else:
+                ens_m[key] *= (1 - abs(W["draw_bias"]))
+
+    ens_t = sum(ens_m.values())
+    ens_m = {k: v / ens_t for k, v in ens_m.items()}
+
+    ens = extract_markets(ens_m)
+    poi = extract_markets(poi_m)
+    dc = extract_markets(dc_m)
+    elo_p = extract_markets(elo_m)
+
+    scores = sorted(ens_m.items(), key=lambda x: x[1], reverse=True)
+    top = [(f"{h}-{a}", round(p * 100, 1)) for (h, a), p in scores[:5]]
+
+    return {
+        "home": home_name, "away": away_name,
+        "date": datetime.now().strftime("%Y-%m-%d"),
+        "lh": round(lh, 2), "la": round(la, 2),
+        "lh_elo": round(elh, 2), "la_elo": round(ela, 2),
+        "elo_h": h_elo, "elo_a": a_elo,
+        "p1": round(ens["1"] * 100, 1),
+        "px": round(ens["X"] * 100, 1),
+        "p2": round(ens["2"] * 100, 1),
+        "btts_y": round(ens["btts"] * 100, 1),
+        "btts_n": round((1 - ens["btts"]) * 100, 1),
+        "o25": round(ens["o25"] * 100, 1),
+        "u25": round((1 - ens["o25"]) * 100, 1),
+        "o15": round(ens["o15"] * 100, 1),
+        "u15": round((1 - ens["o15"]) * 100, 1),
+        "scores": top,
+        "poi": {k: round(v * 100, 1) for k, v in poi.items()},
+        "dc": {k: round(v * 100, 1) for k, v in dc.items()},
+        "elo": {k: round(v * 100, 1) for k, v in elo_p.items()},
+        "h_news": h_news, "a_news": a_news,
+        "h_imp": round(h_imp * 100, 1), "a_imp": round(a_imp * 100, 1),
+        "h_form": h_stats["form_str"], "a_form": a_stats["form_str"],
+        "h_fpct": h_stats["form_pct"], "a_fpct": a_stats["form_pct"],
+        "h_n": h_stats["n"], "a_n": a_stats["n"],
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  PICKS SELECTION
+# ═══════════════════════════════════════════════════════════════════════════
+
+def get_picks(predictions):
+    all_picks = []
+    for pred in predictions:
+        bets = [
+            ("1 Local", "p1", "1"), ("X Empate", "px", "X"), ("2 Visitante", "p2", "2"),
+            ("BTTS Si", "btts_y", "btts"), ("BTTS No", "btts_n", None),
+            ("Over 2.5", "o25", "o25"), ("Under 2.5", "u25", None),
+            ("Over 1.5", "o15", "o15"),
+        ]
+        for label, key, sub_key in bets:
+            prob = pred.get(key, 0)
+            if prob < MED_CONFIDENCE:
+                continue
+
+            # Sub-model agreement
+            agree = 0
+            threshold = prob * 0.80
+            if sub_key:
+                pv = pred["poi"].get(sub_key, 0)
+                dv = pred["dc"].get(sub_key, 0)
+                ev = pred["elo"].get(sub_key, 0)
+            elif key == "u25":
+                pv = 100 - pred["poi"].get("o25", 50)
+                dv = 100 - pred["dc"].get("o25", 50)
+                ev = 100 - pred["elo"].get("o25", 50)
+            elif key == "btts_n":
+                pv = 100 - pred["poi"].get("btts", 50)
+                dv = 100 - pred["dc"].get("btts", 50)
+                ev = 100 - pred["elo"].get("btts", 50)
+            else:
+                pv = dv = ev = prob
+
+            if pv >= threshold: agree += 1
+            if dv >= threshold: agree += 1
+            if ev >= threshold: agree += 1
+            if agree < MIN_SUBMODELS:
+                continue
+
+            level = "high" if prob >= HIGH_CONFIDENCE else "med"
+            all_picks.append({
+                "match": f"{pred['home']} vs {pred['away']}",
+                "bet": label, "prob": prob,
+                "odds": prob_to_odds(prob), "level": level,
+                "agree": agree,
+                "subs": f"P={pv:.0f}% DC={dv:.0f}% E={ev:.0f}%",
+            })
+
+    all_picks.sort(key=lambda x: x["prob"], reverse=True)
+    return all_picks
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  HISTORY
+# ═══════════════════════════════════════════════════════════════════════════
+
+HIST_PATH = os.path.join(BASE_DIR, "resultados.json")
+
+
+def load_history():
+    if os.path.exists(HIST_PATH):
+        with open(HIST_PATH, encoding="utf-8") as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                return []
+    return []
+
+
+def save_entry(predictions, picks):
+    h = load_history()
+    h.append({
+        "ts": datetime.now().isoformat(),
+        "date": datetime.now().strftime("%Y-%m-%d"),
+        "predictions": predictions,
+        "picks": picks,
+        "results": None, "accuracy": None,
+    })
+    with open(HIST_PATH, "w", encoding="utf-8") as f:
+        json.dump(h, f, ensure_ascii=False, indent=2, default=str)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  PROCESS PIPELINE
+# ═══════════════════════════════════════════════════════════════════════════
+
+def process_matches(match_list):
+    """Full pipeline: find teams -> fetch data -> predict -> picks."""
+    predictions = []
+    log = []
+
+    for home_name, away_name in match_list:
+        entry_log = {"home_input": home_name, "away_input": away_name, "steps": []}
+        h_info = find_team(home_name)
+        a_info = find_team(away_name)
+
+        if h_info:
+            entry_log["steps"].append(f"{home_name} -> {h_info['name']} (ID:{h_info['id']})")
+        else:
+            entry_log["steps"].append(f"{home_name} -> NO ENCONTRADO")
+            h_info = {"id": None, "name": home_name, "short": home_name}
+
+        if a_info:
+            entry_log["steps"].append(f"{away_name} -> {a_info['name']} (ID:{a_info['id']})")
+        else:
+            entry_log["steps"].append(f"{away_name} -> NO ENCONTRADO")
+            a_info = {"id": None, "name": away_name, "short": away_name}
+
+        # Fetch matches
+        h_matches = fetch_matches(h_info["id"], 15) if h_info["id"] else []
+        a_matches = fetch_matches(a_info["id"], 15) if a_info["id"] else []
+        entry_log["steps"].append(f"Partidos: {len(h_matches)} + {len(a_matches)}")
+
+        # Stats
+        h_stats = compute_stats(h_matches, h_info["id"]) if h_info["id"] else compute_stats([], None)
+        a_stats = compute_stats(a_matches, a_info["id"]) if a_info["id"] else compute_stats([], None)
+        h_elo = int(ELO_INITIAL + h_stats["gd"] * 150)
+        a_elo = int(ELO_INITIAL + a_stats["gd"] * 150)
+
+        # News
+        h_news = fetch_news(h_info["name"])
+        a_news = fetch_news(a_info["name"])
+        entry_log["steps"].append(f"Noticias: {len(h_news)} + {len(a_news)}")
+
+        # Predict
+        pred = predict(home_name, away_name, h_stats, a_stats,
+                       h_elo, a_elo, h_news, a_news)
+        predictions.append(pred)
+        log.append(entry_log)
+
+        # Save to results_db for auto-tracking
+        try:
+            from calibration import save_prediction
+            save_prediction(pred)
+        except Exception:
+            pass
+
+    picks = get_picks(predictions)
+    save_entry(predictions, picks)
+    return predictions, picks, log
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  FLASK ROUTES
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/predict", methods=["POST"])
+def predict_route():
+    match_list = []
+    ocr_info = None
+
+    # Image upload
+    if "image" in request.files:
+        file = request.files["image"]
+        if file and file.filename:
+            ext = file.filename.rsplit(".", 1)[-1].lower()
+            if ext in ALLOWED_EXTENSIONS:
+                fname = secure_filename(f"upload_{int(time.time())}.{ext}")
+                fpath = os.path.join(UPLOAD_FOLDER, fname)
+                file.save(fpath)
+                match_list, ocr_info = ocr_extract_matches(fpath)
+
+    # Manual text
+    text = request.form.get("matches", "").strip()
+    if text:
+        manual = parse_matches(text)
+        match_list.extend(manual)
+
+    if not match_list:
+        flash("No se detectaron partidos. Escribe manualmente o sube otra imagen.")
+        return redirect(url_for("index"))
+
+    # Deduplicate
+    seen = set()
+    unique = []
+    for h, a in match_list:
+        key = (h.lower(), a.lower())
+        if key not in seen:
+            seen.add(key)
+            unique.append((h, a))
+    match_list = unique
+
+    try:
+        predictions, picks, log = process_matches(match_list)
+    except Exception as e:
+        flash(f"Error procesando: {e}")
+        traceback.print_exc()
+        return redirect(url_for("index"))
+
+    return render_template("results.html",
+                           predictions=predictions, picks=picks,
+                           log=log, ocr_info=ocr_info,
+                           HIGH=HIGH_CONFIDENCE, MED=MED_CONFIDENCE)
+
+
+@app.route("/history")
+def history():
+    h = load_history()
+    h.reverse()
+
+    total = len(h)
+    verified = [e for e in h if e.get("accuracy") is not None]
+    avg_acc = round(sum(e["accuracy"] for e in verified) / len(verified), 1) if verified else None
+
+    return render_template("history.html", entries=h[:50],
+                           total=total, verified=len(verified), avg_acc=avg_acc)
+
+
+@app.route("/result", methods=["POST"])
+def add_result():
+    match = request.form.get("match", "")
+    hg = request.form.get("home_goals", "")
+    ag = request.form.get("away_goals", "")
+
+    if not match or not hg.isdigit() or not ag.isdigit():
+        flash("Datos invalidos")
+        return redirect(url_for("history"))
+
+    hg, ag = int(hg), int(ag)
+    hist = load_history()
+    updated = False
+
+    for entry in reversed(hist):
+        if entry.get("results") is not None:
+            continue
+        for pred in entry.get("predictions", []):
+            label = f"{pred['home']} vs {pred['away']}"
+            if match.lower() in label.lower():
+                if entry["results"] is None:
+                    entry["results"] = {}
+                entry["results"][label] = {"hg": hg, "ag": ag}
+
+                correct = 0
+                p1x2 = "1" if pred["p1"] > max(pred["px"], pred["p2"]) else (
+                    "X" if pred["px"] > pred["p2"] else "2")
+                r1x2 = "1" if hg > ag else ("X" if hg == ag else "2")
+                if p1x2 == r1x2: correct += 1
+                if (pred["o25"] > 50) == (hg + ag > 2.5): correct += 1
+                if (pred["btts_y"] > 50) == (hg > 0 and ag > 0): correct += 1
+
+                entry["accuracy"] = round(correct / 3 * 100, 1)
+                updated = True
+                flash(f"Resultado guardado: {label} {hg}-{ag} | Acierto: {correct}/3")
+                break
+        if updated:
+            break
+
+    if updated:
+        with open(HIST_PATH, "w", encoding="utf-8") as f:
+            json.dump(hist, f, ensure_ascii=False, indent=2, default=str)
+    else:
+        flash(f"No encontre '{match}' pendiente")
+
+    return redirect(url_for("history"))
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  ODDS SCANNER ROUTE
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/scanner", methods=["GET", "POST"])
+def scanner():
+    if request.method == "POST":
+        # Obtener predicciones del ultimo analisis
+        hist = load_history()
+        if not hist:
+            flash("Primero analiza algunos partidos")
+            return redirect(url_for("index"))
+
+        last = hist[-1]
+        predictions = last.get("predictions", [])
+
+        # Parsear cuotas manuales del formulario
+        odds_list = []
+        for i, pred in enumerate(predictions):
+            h_odds = request.form.get(f"home_{i}", "")
+            d_odds = request.form.get(f"draw_{i}", "")
+            a_odds = request.form.get(f"away_{i}", "")
+            if h_odds and d_odds and a_odds:
+                try:
+                    odds_list.append({
+                        "home": float(h_odds),
+                        "draw": float(d_odds),
+                        "away": float(a_odds),
+                    })
+                except ValueError:
+                    odds_list.append(None)
+            else:
+                odds_list.append(None)
+
+        from odds_scanner import scan_all
+        scan_results = scan_all(predictions, odds_list)
+
+        return render_template("scanner.html",
+                               predictions=predictions,
+                               scan_results=scan_results)
+
+    # GET: show form with last predictions
+    hist = load_history()
+    predictions = hist[-1].get("predictions", []) if hist else []
+    return render_template("scanner.html",
+                           predictions=predictions,
+                           scan_results=None)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  DASHBOARD (Autoaprendizaje + Calibracion)
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/learn")
+def learn_redirect():
+    return redirect(url_for("dashboard_route"))
+
+
+@app.route("/dashboard", methods=["GET", "POST"])
+def dashboard_route():
+    from calibration import get_dashboard, calibrate, check_pending_results
+
+    cal_result = None
+    if request.method == "POST":
+        action = request.form.get("action", "")
+        if action == "calibrate":
+            result = calibrate()
+            if result["status"] == "calibrated":
+                cal_result = f"Calibrado con {result['n']} muestras. {result['errors']} errores analizados."
+                flash("Calibracion completada")
+            else:
+                flash(f"Necesitas al menos {result.get('min', 3)} resultados verificados")
+        elif action == "check_results":
+            updated = check_pending_results()
+            flash(f"{updated} resultados encontrados automaticamente" if updated else "Sin resultados nuevos")
+
+    dash = get_dashboard()
+    return render_template("dashboard.html", dash=dash, cal_result=cal_result)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  NOTIFICATIONS API
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/api/notifications")
+def get_notifications():
+    """Retorna notificaciones pendientes para el frontend."""
+    notifs = []
+
+    # Check for pending results
+    db_path = os.path.join(BASE_DIR, "results_db.json")
+    if os.path.exists(db_path):
+        with open(db_path, encoding="utf-8") as f:
+            try:
+                db = json.load(f)
+                pending = [e for e in db if not e.get("verified")]
+                overdue = [e for e in pending
+                           if e.get("check_after", "") < datetime.now().isoformat()]
+                if overdue:
+                    notifs.append({
+                        "type": "result",
+                        "title": f"{len(overdue)} resultado(s) por verificar",
+                        "body": "Toca para buscar resultados automaticamente",
+                        "url": "/dashboard",
+                    })
+            except: pass
+
+    # Check for value bets from last scan
+    hist = load_history()
+    if hist:
+        last = hist[-1]
+        for pick in last.get("picks", []):
+            if pick.get("prob", 0) >= 75:
+                notifs.append({
+                    "type": "pick",
+                    "title": f"Pick: {pick['bet']} ({pick['prob']}%)",
+                    "body": pick.get("match", ""),
+                    "url": "/history",
+                })
+
+    return jsonify(notifs)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  API JSON ENDPOINT
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/api/predict", methods=["POST"])
+def api_predict():
+    data = request.get_json()
+    if not data or "matches" not in data:
+        return jsonify({"error": "Campo 'matches' requerido"}), 400
+    match_list = parse_matches(data["matches"])
+    if not match_list:
+        return jsonify({"error": "No se detectaron partidos"}), 400
+    predictions, picks, log = process_matches(match_list)
+    return jsonify({"predictions": predictions, "picks": picks,
+                    "timestamp": datetime.now().isoformat()})
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  MAIN
+# ═══════════════════════════════════════════════════════════════════════════
+
+if __name__ == "__main__":
+    import socket
+    port = int(os.environ.get("PORT", 5000))
+
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        local_ip = s.getsockname()[0]
+        s.close()
+    except Exception:
+        local_ip = "0.0.0.0"
+
+    print(f"\n{'=' * 60}")
+    print(f"  NEME BET v5.0 — Predictor con IA y Autoaprendizaje")
+    print(f"  Ensemble: Poisson + Dixon-Coles + ELO")
+    print(f"  + Calibracion + Scanner de Cuotas + PWA Android")
+    print(f"{'=' * 60}")
+    print(f"\n  PC:       http://localhost:{port}")
+    print(f"  Telefono: http://{local_ip}:{port}")
+    print(f"\n  Ctrl+C para detener\n")
+
+    app.run(host="0.0.0.0", port=port, debug=False)

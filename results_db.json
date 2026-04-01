@@ -1,0 +1,28 @@
+[
+  {
+    "id": "Napoli_vs_Juventus_20260401_1745",
+    "home": "Napoli",
+    "away": "Juventus",
+    "predicted_at": "2026-04-01T17:45:53.314477",
+    "match_time": null,
+    "check_after": "2026-04-01T23:45:53.314480",
+    "p1": 50.1,
+    "px": 22.3,
+    "p2": 27.6,
+    "o25": 65.6,
+    "u25": 34.4,
+    "btts_y": 64.8,
+    "o15": 85.4,
+    "lh": 2.12,
+    "la": 1.33,
+    "elo_h": 1519,
+    "elo_a": 1620,
+    "h_form": "LWWWW",
+    "a_form": "WDWWD",
+    "result": null,
+    "home_goals": null,
+    "away_goals": null,
+    "verified": false,
+    "accuracy": null
+  }
+]

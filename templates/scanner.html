@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% set active = 'scanner' %}
+{% block title %}Scanner de Cuotas - NEME BET{% endblock %}
+{% block subtitle %}Detecta value bets y errores de cuotas{% endblock %}
+{% block content %}
+
+{% if not predictions %}
+<div class="no-picks">Primero analiza partidos en Inicio<br><span style="font-size:11px">Despues vuelve para comparar con cuotas del mercado</span></div>
+{% elif not scan_results %}
+<form method="POST" action="/scanner">
+    <div class="card">
+        <h2>Ingresa cuotas del mercado</h2>
+        <label>Copia las cuotas de bet365, Betway, Codere, etc.</label>
+        {% for pred in predictions %}
+        <div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--border)">
+            <div style="font-weight:700;margin-bottom:6px;font-size:14px">{{ pred.home if pred.home is defined else pred.home_team }} vs {{ pred.away if pred.away is defined else pred.away_team }}</div>
+            <div style="display:flex;gap:6px;margin-bottom:6px">
+                <div style="flex:1"><label style="font-size:10px">1 Local</label><input type="text" name="home_{{ loop.index0 }}" placeholder="1.85" inputmode="decimal"></div>
+                <div style="flex:1"><label style="font-size:10px">X Empate</label><input type="text" name="draw_{{ loop.index0 }}" placeholder="3.40" inputmode="decimal"></div>
+                <div style="flex:1"><label style="font-size:10px">2 Visit</label><input type="text" name="away_{{ loop.index0 }}" placeholder="4.50" inputmode="decimal"></div>
+            </div>
+            <div style="font-size:11px;color:var(--text2)">Modelo: 1={{ pred.p1 if pred.p1 is defined else pred.p_home_win }}% X={{ pred.px if pred.px is defined else pred.p_draw }}% 2={{ pred.p2 if pred.p2 is defined else pred.p_away_win }}%</div>
+        </div>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn">Escanear Value Bets</button>
+</form>
+{% else %}
+<div class="picks-section">
+    <h2>VALUE BETS</h2>
+    {% set ns = namespace(has=false) %}
+    {% for r in scan_results %}{% for vb in r.value_bets %}{% if vb.is_value %}{% set ns.has = true %}
+    <div class="{% if vb.edge > 25 %}value-alert urgent{% else %}value-alert{% endif %}">
+        <div class="pick-head">
+            <div class="pick-bet">{{ vb.outcome }}</div>
+            <div class="pick-prob high">+{{ vb.edge }}%</div>
+        </div>
+        <div class="pick-match">{{ vb.match }}</div>
+        {% if vb.edge > 25 %}<div style="color:var(--red);font-size:12px;font-weight:700;margin:4px 0">POSIBLE ERROR DE CUOTA</div>{% endif %}
+        <div style="display:flex;gap:6px;margin-top:8px">
+            <div style="flex:1;background:var(--bg3);padding:8px;border-radius:8px;text-align:center"><div style="color:var(--text2);font-size:10px">Modelo</div><div style="font-weight:700;color:var(--green)">{{ vb.model_prob }}%</div></div>
+            <div style="flex:1;background:var(--bg3);padding:8px;border-radius:8px;text-align:center"><div style="color:var(--text2);font-size:10px">Mercado</div><div style="font-weight:700">{{ vb.market_prob }}%</div></div>
+            <div style="flex:1;background:var(--bg3);padding:8px;border-radius:8px;text-align:center"><div style="color:var(--text2);font-size:10px">Cuota</div><div style="font-weight:700">{{ vb.market_odds }}</div></div>
+            <div style="flex:1;background:var(--bg3);padding:8px;border-radius:8px;text-align:center"><div style="color:var(--text2);font-size:10px">Kelly</div><div style="font-weight:700;color:var(--blue)">{{ vb.kelly_pct }}%</div></div>
+        </div>
+    </div>
+    {% endif %}{% endfor %}{% endfor %}
+    {% if not ns.has %}<div class="no-picks">Sin value bets detectadas<br><span style="font-size:11px">Las cuotas reflejan las probabilidades del modelo</span></div>{% endif %}
+</div>
+<a href="/scanner" class="btn" style="text-decoration:none;text-align:center;display:block">Nuevo escaneo</a>
+{% endif %}
+{% endblock %}

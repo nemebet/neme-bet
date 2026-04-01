@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% set active = 'home' %}
+{% block title %}Resultados - NEME BET{% endblock %}
+{% block subtitle %}{{ predictions|length }} partido(s) analizado(s){% endblock %}
+{% block content %}
+{% if ocr_info %}<div style="padding:8px 12px;background:var(--bg3);border-radius:8px;font-size:12px;color:var(--text2);margin-bottom:14px;border-left:3px solid var(--purple)">{{ ocr_info }}</div>{% endif %}
+
+<!-- TOP PICKS -->
+<div class="picks-section">
+    <h2>TOP PICKS</h2>
+    {% if picks %}
+        {% for pick in picks %}
+        <div class="pick-card {{ pick.level }}">
+            <div class="pick-head">
+                <div class="pick-bet">{{ pick.bet }}</div>
+                <div class="pick-prob {{ pick.level }}">{{ pick.prob }}%</div>
+            </div>
+            <div class="pick-match">{{ pick.match }}</div>
+            <div class="pick-meta">
+                <span>Cuota {{ pick.odds }}</span>
+                <span>{{ pick.agree }}/3 modelos</span>
+                <span>{{ pick.subs }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-picks">Sin picks con +{{ HIGH }}% de confianza<br><span style="font-size:11px">Revisa cada partido individualmente</span></div>
+    {% endif %}
+</div>
+
+<!-- PREDICTIONS -->
+{% for pred in predictions %}
+<div class="pred-card">
+    <div class="pred-head">
+        <div class="teams">{{ pred.home }}<span class="vs"> vs </span>{{ pred.away }}</div>
+        <div class="date">{{ pred.date }}</div>
+    </div>
+    <div class="pred-body">
+        <div class="prob-bar">
+            <div class="seg s1" style="flex:{{ pred.p1 }}">1: {{ pred.p1 }}%</div>
+            <div class="seg sx" style="flex:{{ pred.px }}">X: {{ pred.px }}%</div>
+            <div class="seg s2" style="flex:{{ pred.p2 }}">2: {{ pred.p2 }}%</div>
+        </div>
+
+        <div class="stat-row"><span class="label">Forma {{ pred.home }}</span><span class="val"><span class="form-dots">{% for c in pred.h_form %}<span class="form-dot {{ c }}">{{ c }}</span>{% endfor %}</span></span></div>
+        <div class="stat-row"><span class="label">Forma {{ pred.away }}</span><span class="val"><span class="form-dots">{% for c in pred.a_form %}<span class="form-dot {{ c }}">{{ c }}</span>{% endfor %}</span></span></div>
+        <div class="stat-row"><span class="label">ELO</span><span class="val">{{ pred.elo_h }} vs {{ pred.elo_a }}</span></div>
+        <div class="stat-row"><span class="label">Lambda</span><span class="val">{{ pred.lh }} - {{ pred.la }}</span></div>
+        <div class="stat-row"><span class="label">Over 2.5</span><span class="val" style="color:{% if pred.o25 > 60 %}var(--green){% elif pred.o25 < 40 %}var(--red){% else %}var(--text){% endif %}">{{ pred.o25 }}%</span></div>
+        <div class="stat-row"><span class="label">Under 2.5</span><span class="val">{{ pred.u25 }}%</span></div>
+        <div class="stat-row"><span class="label">BTTS Si</span><span class="val">{{ pred.btts_y }}%</span></div>
+        <div class="stat-row"><span class="label">Over 1.5</span><span class="val">{{ pred.o15 }}%</span></div>
+        <div class="stat-row"><span class="label">Cuotas justas</span><span class="val" style="font-size:12px">1={{ "%.2f"|format(100/pred.p1 if pred.p1 > 0 else 99) }} X={{ "%.2f"|format(100/pred.px if pred.px > 0 else 99) }} 2={{ "%.2f"|format(100/pred.p2 if pred.p2 > 0 else 99) }}</span></div>
+
+        <div style="margin-top:8px">
+            <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Marcadores probables</div>
+            <div class="scores">{% for sc, pct in pred.scores %}<div class="score-chip">{{ sc }}<span class="pct">{{ pct }}%</span></div>{% endfor %}</div>
+        </div>
+
+        <div class="coll">Sub-modelos</div>
+        <div class="coll-body">
+            <table class="sub-table">
+                <tr><th class="mn">Modelo</th><th>1</th><th>X</th><th>2</th><th>BTTS</th><th>O2.5</th></tr>
+                <tr><td class="mn">Poisson</td><td>{{ pred.poi['1'] }}%</td><td>{{ pred.poi['X'] }}%</td><td>{{ pred.poi['2'] }}%</td><td>{{ pred.poi['btts'] }}%</td><td>{{ pred.poi['o25'] }}%</td></tr>
+                <tr><td class="mn">Dixon-Coles</td><td>{{ pred.dc['1'] }}%</td><td>{{ pred.dc['X'] }}%</td><td>{{ pred.dc['2'] }}%</td><td>{{ pred.dc['btts'] }}%</td><td>{{ pred.dc['o25'] }}%</td></tr>
+                <tr><td class="mn">ELO</td><td>{{ pred.elo['1'] }}%</td><td>{{ pred.elo['X'] }}%</td><td>{{ pred.elo['2'] }}%</td><td>{{ pred.elo['btts'] }}%</td><td>{{ pred.elo['o25'] }}%</td></tr>
+                <tr><td class="mn">ENSEMBLE</td><td>{{ pred.p1 }}%</td><td>{{ pred.px }}%</td><td>{{ pred.p2 }}%</td><td>{{ pred.btts_y }}%</td><td>{{ pred.o25 }}%</td></tr>
+            </table>
+        </div>
+
+        {% if pred.h_news or pred.a_news %}
+        <div class="news-section">
+            <h4>Noticias 72h</h4>
+            {% for team, news, imp in [(pred.home, pred.h_news, pred.h_imp), (pred.away, pred.a_news, pred.a_imp)] %}
+            {% if news %}<div style="font-size:12px;font-weight:600;color:var(--text2);margin:6px 0 3px">{{ team }}{% if imp > 0 %} <span style="color:var(--red)">(-{{ imp }}%)</span>{% endif %}</div>
+            {% for n in news[:3] %}<div class="news-item"><span class="badge {{ n.type }}">{{ n.type }}</span><span>{{ n.title[:75] }}{% if n.title|length > 75 %}...{% endif %}</span></div>{% endfor %}{% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if pred.h_n < 5 or pred.a_n < 5 %}<div class="warning"><span>!</span> Pocos datos — prediccion menos fiable</div>{% endif %}
+        {% if pred.h_imp > 10 %}<div class="warning"><span>!</span> {{ pred.home }}: bajas ({{ pred.h_imp }}%)</div>{% endif %}
+        {% if pred.a_imp > 10 %}<div class="warning"><span>!</span> {{ pred.away }}: bajas ({{ pred.a_imp }}%)</div>{% endif %}
+    </div>
+</div>
+{% endfor %}
+
+{% if log %}
+<div class="coll">Log de procesamiento</div>
+<div class="coll-body">
+    {% for entry in log %}
+    <div style="background:var(--bg3);border-radius:8px;padding:10px;margin-bottom:6px;font-size:11px;color:var(--text2);font-family:monospace">
+        <div style="font-weight:700;margin-bottom:3px">{{ entry.home_input }} vs {{ entry.away_input }}</div>
+        {% for step in entry.steps %}<div>{{ step }}</div>{% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<a href="/" class="btn" style="text-decoration:none;text-align:center;display:block;margin-top:16px">Nuevo analisis</a>
+{% endblock %}

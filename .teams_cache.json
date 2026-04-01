@@ -1,0 +1,1702 @@
+{
+  "57": {
+    "id": 57,
+    "name": "Arsenal FC",
+    "short": "Arsenal",
+    "tla": "ARS",
+    "competitions": [
+      "PL",
+      "CL"
+    ]
+  },
+  "58": {
+    "id": 58,
+    "name": "Aston Villa FC",
+    "short": "Aston Villa",
+    "tla": "AVL",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "61": {
+    "id": 61,
+    "name": "Chelsea FC",
+    "short": "Chelsea",
+    "tla": "CHE",
+    "competitions": [
+      "PL",
+      "CL"
+    ]
+  },
+  "62": {
+    "id": 62,
+    "name": "Everton FC",
+    "short": "Everton",
+    "tla": "EVE",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "63": {
+    "id": 63,
+    "name": "Fulham FC",
+    "short": "Fulham",
+    "tla": "FUL",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "64": {
+    "id": 64,
+    "name": "Liverpool FC",
+    "short": "Liverpool",
+    "tla": "LIV",
+    "competitions": [
+      "PL",
+      "CL"
+    ]
+  },
+  "65": {
+    "id": 65,
+    "name": "Manchester City FC",
+    "short": "Man City",
+    "tla": "MCI",
+    "competitions": [
+      "PL",
+      "CL"
+    ]
+  },
+  "66": {
+    "id": 66,
+    "name": "Manchester United FC",
+    "short": "Man United",
+    "tla": "MUN",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "67": {
+    "id": 67,
+    "name": "Newcastle United FC",
+    "short": "Newcastle",
+    "tla": "NEW",
+    "competitions": [
+      "PL",
+      "CL"
+    ]
+  },
+  "71": {
+    "id": 71,
+    "name": "Sunderland AFC",
+    "short": "Sunderland",
+    "tla": "SUN",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "73": {
+    "id": 73,
+    "name": "Tottenham Hotspur FC",
+    "short": "Tottenham",
+    "tla": "TOT",
+    "competitions": [
+      "PL",
+      "CL"
+    ]
+  },
+  "76": {
+    "id": 76,
+    "name": "Wolverhampton Wanderers FC",
+    "short": "Wolverhampton",
+    "tla": "WOL",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "328": {
+    "id": 328,
+    "name": "Burnley FC",
+    "short": "Burnley",
+    "tla": "BUR",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "341": {
+    "id": 341,
+    "name": "Leeds United FC",
+    "short": "Leeds United",
+    "tla": "LEE",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "351": {
+    "id": 351,
+    "name": "Nottingham Forest FC",
+    "short": "Nottingham",
+    "tla": "NOT",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "354": {
+    "id": 354,
+    "name": "Crystal Palace FC",
+    "short": "Crystal Palace",
+    "tla": "CRY",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "397": {
+    "id": 397,
+    "name": "Brighton & Hove Albion FC",
+    "short": "Brighton Hove",
+    "tla": "BHA",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "402": {
+    "id": 402,
+    "name": "Brentford FC",
+    "short": "Brentford",
+    "tla": "BRE",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "563": {
+    "id": 563,
+    "name": "West Ham United FC",
+    "short": "West Ham",
+    "tla": "WHU",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "1044": {
+    "id": 1044,
+    "name": "AFC Bournemouth",
+    "short": "Bournemouth",
+    "tla": "BOU",
+    "competitions": [
+      "PL"
+    ]
+  },
+  "77": {
+    "id": 77,
+    "name": "Athletic Club",
+    "short": "Athletic",
+    "tla": "ATH",
+    "competitions": [
+      "PD",
+      "CL"
+    ]
+  },
+  "78": {
+    "id": 78,
+    "name": "Club Atlético de Madrid",
+    "short": "Atleti",
+    "tla": "ATL",
+    "competitions": [
+      "PD",
+      "CL"
+    ]
+  },
+  "79": {
+    "id": 79,
+    "name": "CA Osasuna",
+    "short": "Osasuna",
+    "tla": "OSA",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "80": {
+    "id": 80,
+    "name": "RCD Espanyol de Barcelona",
+    "short": "Espanyol",
+    "tla": "ESP",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "81": {
+    "id": 81,
+    "name": "FC Barcelona",
+    "short": "Barça",
+    "tla": "FCB",
+    "competitions": [
+      "PD",
+      "CL"
+    ]
+  },
+  "82": {
+    "id": 82,
+    "name": "Getafe CF",
+    "short": "Getafe",
+    "tla": "GET",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "86": {
+    "id": 86,
+    "name": "Real Madrid CF",
+    "short": "Real Madrid",
+    "tla": "RMA",
+    "competitions": [
+      "PD",
+      "CL"
+    ]
+  },
+  "87": {
+    "id": 87,
+    "name": "Rayo Vallecano de Madrid",
+    "short": "Rayo Vallecano",
+    "tla": "RAY",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "88": {
+    "id": 88,
+    "name": "Levante UD",
+    "short": "Levante",
+    "tla": "LEV",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "89": {
+    "id": 89,
+    "name": "RCD Mallorca",
+    "short": "Mallorca",
+    "tla": "MAL",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "90": {
+    "id": 90,
+    "name": "Real Betis Balompié",
+    "short": "Real Betis",
+    "tla": "BET",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "92": {
+    "id": 92,
+    "name": "Real Sociedad de Fútbol",
+    "short": "Real Sociedad",
+    "tla": "RSO",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "94": {
+    "id": 94,
+    "name": "Villarreal CF",
+    "short": "Villarreal",
+    "tla": "VIL",
+    "competitions": [
+      "PD",
+      "CL"
+    ]
+  },
+  "95": {
+    "id": 95,
+    "name": "Valencia CF",
+    "short": "Valencia",
+    "tla": "VAL",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "263": {
+    "id": 263,
+    "name": "Deportivo Alavés",
+    "short": "Alavés",
+    "tla": "ALA",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "285": {
+    "id": 285,
+    "name": "Elche CF",
+    "short": "Elche",
+    "tla": "ELC",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "298": {
+    "id": 298,
+    "name": "Girona FC",
+    "short": "Girona",
+    "tla": "GIR",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "558": {
+    "id": 558,
+    "name": "RC Celta de Vigo",
+    "short": "Celta",
+    "tla": "CEL",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "559": {
+    "id": 559,
+    "name": "Sevilla FC",
+    "short": "Sevilla FC",
+    "tla": "SEV",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "1048": {
+    "id": 1048,
+    "name": "Real Oviedo",
+    "short": "Real Oviedo",
+    "tla": "OVI",
+    "competitions": [
+      "PD"
+    ]
+  },
+  "98": {
+    "id": 98,
+    "name": "AC Milan",
+    "short": "Milan",
+    "tla": "MIL",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "99": {
+    "id": 99,
+    "name": "ACF Fiorentina",
+    "short": "Fiorentina",
+    "tla": "FIO",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "100": {
+    "id": 100,
+    "name": "AS Roma",
+    "short": "Roma",
+    "tla": "ROM",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "102": {
+    "id": 102,
+    "name": "Atalanta BC",
+    "short": "Atalanta",
+    "tla": "ATA",
+    "competitions": [
+      "SA",
+      "CL"
+    ]
+  },
+  "103": {
+    "id": 103,
+    "name": "Bologna FC 1909",
+    "short": "Bologna",
+    "tla": "BOL",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "104": {
+    "id": 104,
+    "name": "Cagliari Calcio",
+    "short": "Cagliari",
+    "tla": "CAG",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "107": {
+    "id": 107,
+    "name": "Genoa CFC",
+    "short": "Genoa",
+    "tla": "GEN",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "108": {
+    "id": 108,
+    "name": "FC Internazionale Milano",
+    "short": "Inter",
+    "tla": "INT",
+    "competitions": [
+      "SA",
+      "CL"
+    ]
+  },
+  "109": {
+    "id": 109,
+    "name": "Juventus FC",
+    "short": "Juventus",
+    "tla": "JUV",
+    "competitions": [
+      "SA",
+      "CL"
+    ]
+  },
+  "110": {
+    "id": 110,
+    "name": "SS Lazio",
+    "short": "Lazio",
+    "tla": "LAZ",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "112": {
+    "id": 112,
+    "name": "Parma Calcio 1913",
+    "short": "Parma",
+    "tla": "PAR",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "113": {
+    "id": 113,
+    "name": "SSC Napoli",
+    "short": "Napoli",
+    "tla": "NAP",
+    "competitions": [
+      "SA",
+      "CL"
+    ]
+  },
+  "115": {
+    "id": 115,
+    "name": "Udinese Calcio",
+    "short": "Udinese",
+    "tla": "UDI",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "450": {
+    "id": 450,
+    "name": "Hellas Verona FC",
+    "short": "Verona",
+    "tla": "HVE",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "457": {
+    "id": 457,
+    "name": "US Cremonese",
+    "short": "Cremonese",
+    "tla": "CRE",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "471": {
+    "id": 471,
+    "name": "US Sassuolo Calcio",
+    "short": "Sassuolo",
+    "tla": "SAS",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "487": {
+    "id": 487,
+    "name": "AC Pisa 1909",
+    "short": "AC Pisa",
+    "tla": "PIS",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "586": {
+    "id": 586,
+    "name": "Torino FC",
+    "short": "Torino",
+    "tla": "TOR",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "5890": {
+    "id": 5890,
+    "name": "US Lecce",
+    "short": "Lecce",
+    "tla": "USL",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "7397": {
+    "id": 7397,
+    "name": "Como 1907",
+    "short": "Como 1907",
+    "tla": "COM",
+    "competitions": [
+      "SA"
+    ]
+  },
+  "1": {
+    "id": 1,
+    "name": "1. FC Köln",
+    "short": "1. FC Köln",
+    "tla": "KOE",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "2": {
+    "id": 2,
+    "name": "TSG 1899 Hoffenheim",
+    "short": "Hoffenheim",
+    "tla": "TSG",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "3": {
+    "id": 3,
+    "name": "Bayer 04 Leverkusen",
+    "short": "Leverkusen",
+    "tla": "B04",
+    "competitions": [
+      "BL1",
+      "CL"
+    ]
+  },
+  "4": {
+    "id": 4,
+    "name": "Borussia Dortmund",
+    "short": "Dortmund",
+    "tla": "BVB",
+    "competitions": [
+      "BL1",
+      "CL"
+    ]
+  },
+  "5": {
+    "id": 5,
+    "name": "FC Bayern München",
+    "short": "Bayern",
+    "tla": "FCB",
+    "competitions": [
+      "BL1",
+      "CL"
+    ]
+  },
+  "7": {
+    "id": 7,
+    "name": "Hamburger SV",
+    "short": "HSV",
+    "tla": "HSV",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "10": {
+    "id": 10,
+    "name": "VfB Stuttgart",
+    "short": "Stuttgart",
+    "tla": "VFB",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "11": {
+    "id": 11,
+    "name": "VfL Wolfsburg",
+    "short": "Wolfsburg",
+    "tla": "WOB",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "12": {
+    "id": 12,
+    "name": "SV Werder Bremen",
+    "short": "Bremen",
+    "tla": "SVW",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "15": {
+    "id": 15,
+    "name": "1. FSV Mainz 05",
+    "short": "Mainz",
+    "tla": "M05",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "16": {
+    "id": 16,
+    "name": "FC Augsburg",
+    "short": "Augsburg",
+    "tla": "FCA",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "17": {
+    "id": 17,
+    "name": "SC Freiburg",
+    "short": "Freiburg",
+    "tla": "SCF",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "18": {
+    "id": 18,
+    "name": "Borussia Mönchengladbach",
+    "short": "M'gladbach",
+    "tla": "BMG",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "19": {
+    "id": 19,
+    "name": "Eintracht Frankfurt",
+    "short": "Frankfurt",
+    "tla": "SGE",
+    "competitions": [
+      "BL1",
+      "CL"
+    ]
+  },
+  "20": {
+    "id": 20,
+    "name": "FC St. Pauli 1910",
+    "short": "St. Pauli",
+    "tla": "STP",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "28": {
+    "id": 28,
+    "name": "1. FC Union Berlin",
+    "short": "Union Berlin",
+    "tla": "UNB",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "44": {
+    "id": 44,
+    "name": "1. FC Heidenheim 1846",
+    "short": "Heidenheim",
+    "tla": "HEI",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "721": {
+    "id": 721,
+    "name": "RB Leipzig",
+    "short": "RB Leipzig",
+    "tla": "RBL",
+    "competitions": [
+      "BL1"
+    ]
+  },
+  "511": {
+    "id": 511,
+    "name": "Toulouse FC",
+    "short": "Toulouse",
+    "tla": "TOU",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "512": {
+    "id": 512,
+    "name": "Stade Brestois 29",
+    "short": "Brest",
+    "tla": "BRE",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "516": {
+    "id": 516,
+    "name": "Olympique de Marseille",
+    "short": "Marseille",
+    "tla": "MAR",
+    "competitions": [
+      "FL1",
+      "CL"
+    ]
+  },
+  "519": {
+    "id": 519,
+    "name": "AJ Auxerre",
+    "short": "Auxerre",
+    "tla": "AJA",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "521": {
+    "id": 521,
+    "name": "Lille OSC",
+    "short": "Lille",
+    "tla": "LIL",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "522": {
+    "id": 522,
+    "name": "OGC Nice",
+    "short": "Nice",
+    "tla": "NIC",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "523": {
+    "id": 523,
+    "name": "Olympique Lyonnais",
+    "short": "Olympique Lyon",
+    "tla": "LYO",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "524": {
+    "id": 524,
+    "name": "Paris Saint-Germain FC",
+    "short": "PSG",
+    "tla": "PSG",
+    "competitions": [
+      "FL1",
+      "CL"
+    ]
+  },
+  "525": {
+    "id": 525,
+    "name": "FC Lorient",
+    "short": "Lorient",
+    "tla": "FCL",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "529": {
+    "id": 529,
+    "name": "Stade Rennais FC 1901",
+    "short": "Stade Rennais",
+    "tla": "REN",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "532": {
+    "id": 532,
+    "name": "Angers SCO",
+    "short": "Angers SCO",
+    "tla": "ANG",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "533": {
+    "id": 533,
+    "name": "Le Havre AC",
+    "short": "Le Havre",
+    "tla": "HAC",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "543": {
+    "id": 543,
+    "name": "FC Nantes",
+    "short": "Nantes",
+    "tla": "NAN",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "545": {
+    "id": 545,
+    "name": "FC Metz",
+    "short": "FC Metz",
+    "tla": "FCM",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "546": {
+    "id": 546,
+    "name": "Racing Club de Lens",
+    "short": "RC Lens",
+    "tla": "RCL",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "548": {
+    "id": 548,
+    "name": "AS Monaco FC",
+    "short": "Monaco",
+    "tla": "ASM",
+    "competitions": [
+      "FL1",
+      "CL"
+    ]
+  },
+  "576": {
+    "id": 576,
+    "name": "RC Strasbourg Alsace",
+    "short": "Strasbourg",
+    "tla": "RC ",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "1045": {
+    "id": 1045,
+    "name": "Paris FC",
+    "short": "Paris FC",
+    "tla": "PFC",
+    "competitions": [
+      "FL1"
+    ]
+  },
+  "498": {
+    "id": 498,
+    "name": "Sporting Clube de Portugal",
+    "short": "Sporting CP",
+    "tla": "SPO",
+    "competitions": [
+      "CL",
+      "PPL"
+    ]
+  },
+  "610": {
+    "id": 610,
+    "name": "Galatasaray SK",
+    "short": "Galatasaray",
+    "tla": "GAL",
+    "competitions": [
+      "CL"
+    ]
+  },
+  "611": {
+    "id": 611,
+    "name": "Qarabağ Ağdam FK",
+    "short": "Qarabağ Ağdam",
+    "tla": "QAR",
+    "competitions": [
+      "CL"
+    ]
+  },
+  "654": {
+    "id": 654,
+    "name": "PAE Olympiakos SFP",
+    "short": "Olympiakos",
+    "tla": "OLY",
+    "competitions": [
+      "CL"
+    ]
+  },
+  "674": {
+    "id": 674,
+    "name": "PSV",
+    "short": "PSV",
+    "tla": "PSV",
+    "competitions": [
+      "CL",
+      "DED"
+    ]
+  },
+  "678": {
+    "id": 678,
+    "name": "AFC Ajax",
+    "short": "Ajax",
+    "tla": "AJA",
+    "competitions": [
+      "CL",
+      "DED"
+    ]
+  },
+  "851": {
+    "id": 851,
+    "name": "Club Brugge KV",
+    "short": "Club Brugge",
+    "tla": "BRU",
+    "competitions": [
+      "CL"
+    ]
+  },
+  "930": {
+    "id": 930,
+    "name": "SK Slavia Praha",
+    "short": "Slavia Praha",
+    "tla": "SLP",
+    "competitions": [
+      "CL"
+    ]
+  },
+  "1876": {
+    "id": 1876,
+    "name": "FC København",
+    "short": "København",
+    "tla": "KOB",
+    "competitions": [
+      "CL"
+    ]
+  },
+  "1903": {
+    "id": 1903,
+    "name": "Sport Lisboa e Benfica",
+    "short": "SL Benfica",
+    "tla": "BEN",
+    "competitions": [
+      "CL",
+      "PPL"
+    ]
+  },
+  "3929": {
+    "id": 3929,
+    "name": "Royale Union Saint-Gilloise",
+    "short": "Union SG",
+    "tla": "USG",
+    "competitions": [
+      "CL"
+    ]
+  },
+  "5721": {
+    "id": 5721,
+    "name": "FK Bodø/Glimt",
+    "short": "Bodø/Glimt",
+    "tla": "FK",
+    "competitions": [
+      "CL"
+    ]
+  },
+  "10601": {
+    "id": 10601,
+    "name": "FK Kairat",
+    "short": "FK Kairat",
+    "tla": "KAI",
+    "competitions": [
+      "CL"
+    ]
+  },
+  "11034": {
+    "id": 11034,
+    "name": "Paphos FC",
+    "short": "Paphos FC",
+    "tla": "AEP",
+    "competitions": [
+      "CL"
+    ]
+  },
+  "666": {
+    "id": 666,
+    "name": "FC Twente '65",
+    "short": "Twente",
+    "tla": "TWE",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "670": {
+    "id": 670,
+    "name": "SBV Excelsior",
+    "short": "Excelsior",
+    "tla": "EXC",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "671": {
+    "id": 671,
+    "name": "Heracles Almelo",
+    "short": "Heracles",
+    "tla": "HER",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "673": {
+    "id": 673,
+    "name": "SC Heerenveen",
+    "short": "Heerenveen",
+    "tla": "HEE",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "675": {
+    "id": 675,
+    "name": "Feyenoord Rotterdam",
+    "short": "Feyenoord",
+    "tla": "FEY",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "676": {
+    "id": 676,
+    "name": "FC Utrecht",
+    "short": "Utrecht",
+    "tla": "UTR",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "677": {
+    "id": 677,
+    "name": "FC Groningen",
+    "short": "Groningen",
+    "tla": "GRO",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "681": {
+    "id": 681,
+    "name": "NAC Breda",
+    "short": "NAC",
+    "tla": "NAC",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "682": {
+    "id": 682,
+    "name": "AZ",
+    "short": "AZ",
+    "tla": "AZ",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "684": {
+    "id": 684,
+    "name": "PEC Zwolle",
+    "short": "Zwolle",
+    "tla": "ZWO",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "718": {
+    "id": 718,
+    "name": "Go Ahead Eagles",
+    "short": "Go Ahead",
+    "tla": "GOA",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "1912": {
+    "id": 1912,
+    "name": "Telstar 1963",
+    "short": "Telstar",
+    "tla": "TEL",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "1915": {
+    "id": 1915,
+    "name": "NEC",
+    "short": "NEC",
+    "tla": "NEC",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "1919": {
+    "id": 1919,
+    "name": "FC Volendam",
+    "short": "Volendam",
+    "tla": "VOL",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "1920": {
+    "id": 1920,
+    "name": "Fortuna Sittard",
+    "short": "Sittard",
+    "tla": "SIT",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "6806": {
+    "id": 6806,
+    "name": "Sparta Rotterdam",
+    "short": "Sparta",
+    "tla": "SPA",
+    "competitions": [
+      "DED"
+    ]
+  },
+  "496": {
+    "id": 496,
+    "name": "Rio Ave FC",
+    "short": "Rio Ave",
+    "tla": "RIO",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "503": {
+    "id": 503,
+    "name": "FC Porto",
+    "short": "Porto",
+    "tla": "FCP",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "582": {
+    "id": 582,
+    "name": "GD Estoril Praia",
+    "short": "Estoril Praia",
+    "tla": "EST",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "583": {
+    "id": 583,
+    "name": "Moreirense FC",
+    "short": "Moreirense",
+    "tla": "MOR",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "712": {
+    "id": 712,
+    "name": "FC Arouca",
+    "short": "Arouca",
+    "tla": "FCA",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "1049": {
+    "id": 1049,
+    "name": "CD Tondela",
+    "short": "Tondela",
+    "tla": "TON",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "5529": {
+    "id": 5529,
+    "name": "CD Nacional",
+    "short": "CD Nacional",
+    "tla": "CDN",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "5530": {
+    "id": 5530,
+    "name": "CD Santa Clara",
+    "short": "Santa Clara",
+    "tla": "CD ",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "5531": {
+    "id": 5531,
+    "name": "FC Famalicão",
+    "short": "Famalicão",
+    "tla": "FAM",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "5533": {
+    "id": 5533,
+    "name": "Gil Vicente FC",
+    "short": "Gil Vicente",
+    "tla": "GIL",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "5543": {
+    "id": 5543,
+    "name": "Vitória SC",
+    "short": "Vitória SC",
+    "tla": "GUI",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "5613": {
+    "id": 5613,
+    "name": "Sporting Clube de Braga",
+    "short": "Braga",
+    "tla": "SCB",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "6618": {
+    "id": 6618,
+    "name": "Casa Pia AC",
+    "short": "Casa Pia",
+    "tla": "CAS",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "7822": {
+    "id": 7822,
+    "name": "FC Alverca",
+    "short": "Alverca",
+    "tla": "ALV",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "9136": {
+    "id": 9136,
+    "name": "CF Estrela da Amadora",
+    "short": "Amadora",
+    "tla": "AMA",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "10340": {
+    "id": 10340,
+    "name": "AVS",
+    "short": "AVS",
+    "tla": "AVS",
+    "competitions": [
+      "PPL"
+    ]
+  },
+  "59": {
+    "id": 59,
+    "name": "Blackburn Rovers FC",
+    "short": "Blackburn",
+    "tla": "BLA",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "68": {
+    "id": 68,
+    "name": "Norwich City FC",
+    "short": "Norwich",
+    "tla": "NOR",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "69": {
+    "id": 69,
+    "name": "Queens Park Rangers FC",
+    "short": "QPR",
+    "tla": "QPR",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "70": {
+    "id": 70,
+    "name": "Stoke City FC",
+    "short": "Stoke",
+    "tla": "STK",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "72": {
+    "id": 72,
+    "name": "Swansea City AFC",
+    "short": "Swansea",
+    "tla": "SWA",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "74": {
+    "id": 74,
+    "name": "West Bromwich Albion FC",
+    "short": "West Brom",
+    "tla": "WBA",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "322": {
+    "id": 322,
+    "name": "Hull City AFC",
+    "short": "Hull City",
+    "tla": "HUL",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "325": {
+    "id": 325,
+    "name": "Portsmouth FC",
+    "short": "Portsmouth",
+    "tla": "POR",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "332": {
+    "id": 332,
+    "name": "Birmingham City FC",
+    "short": "Birmingham",
+    "tla": "BIR",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "338": {
+    "id": 338,
+    "name": "Leicester City FC",
+    "short": "Leicester City",
+    "tla": "LEI",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "340": {
+    "id": 340,
+    "name": "Southampton FC",
+    "short": "Southampton",
+    "tla": "SOU",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "342": {
+    "id": 342,
+    "name": "Derby County FC",
+    "short": "Derby County",
+    "tla": "DER",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "343": {
+    "id": 343,
+    "name": "Middlesbrough FC",
+    "short": "Middlesbrough",
+    "tla": "MID",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "345": {
+    "id": 345,
+    "name": "Sheffield Wednesday FC",
+    "short": "Sheffield Wed",
+    "tla": "SHE",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "346": {
+    "id": 346,
+    "name": "Watford FC",
+    "short": "Watford",
+    "tla": "WAT",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "348": {
+    "id": 348,
+    "name": "Charlton Athletic FC",
+    "short": "Charlton",
+    "tla": "CHA",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "349": {
+    "id": 349,
+    "name": "Ipswich Town FC",
+    "short": "Ipswich Town",
+    "tla": "IPS",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "356": {
+    "id": 356,
+    "name": "Sheffield United FC",
+    "short": "Sheffield Utd",
+    "tla": "SHE",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "384": {
+    "id": 384,
+    "name": "Millwall FC",
+    "short": "Millwall",
+    "tla": "MIL",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "387": {
+    "id": 387,
+    "name": "Bristol City FC",
+    "short": "Bristol City",
+    "tla": "BRI",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "404": {
+    "id": 404,
+    "name": "Wrexham AFC",
+    "short": "Wrexham",
+    "tla": "WRE",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "1076": {
+    "id": 1076,
+    "name": "Coventry City FC",
+    "short": "Coventry City",
+    "tla": "COV",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "1081": {
+    "id": 1081,
+    "name": "Preston North End FC",
+    "short": "Preston NE",
+    "tla": "PNE",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "1082": {
+    "id": 1082,
+    "name": "Oxford United FC",
+    "short": "Oxford United",
+    "tla": "OXF",
+    "competitions": [
+      "ELC"
+    ]
+  },
+  "1765": {
+    "id": 1765,
+    "name": "Fluminense FC",
+    "short": "Fluminense",
+    "tla": "FLU",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1766": {
+    "id": 1766,
+    "name": "CA Mineiro",
+    "short": "Mineiro",
+    "tla": "CAM",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1767": {
+    "id": 1767,
+    "name": "Grêmio FBPA",
+    "short": "Grêmio",
+    "tla": "FBP",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1768": {
+    "id": 1768,
+    "name": "CA Paranaense",
+    "short": "Paranaense",
+    "tla": "CAP",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1769": {
+    "id": 1769,
+    "name": "SE Palmeiras",
+    "short": "Palmeiras",
+    "tla": "PAL",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1770": {
+    "id": 1770,
+    "name": "Botafogo FR",
+    "short": "Botafogo",
+    "tla": "BOT",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1771": {
+    "id": 1771,
+    "name": "Cruzeiro EC",
+    "short": "Cruzeiro",
+    "tla": "CRU",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1772": {
+    "id": 1772,
+    "name": "Chapecoense AF",
+    "short": "Chapecoense",
+    "tla": "CHA",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1776": {
+    "id": 1776,
+    "name": "São Paulo FC",
+    "short": "São Paulo",
+    "tla": "PAU",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1777": {
+    "id": 1777,
+    "name": "EC Bahia",
+    "short": "Bahia",
+    "tla": "BAH",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1779": {
+    "id": 1779,
+    "name": "SC Corinthians Paulista",
+    "short": "Corinthians",
+    "tla": "COR",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1780": {
+    "id": 1780,
+    "name": "CR Vasco da Gama",
+    "short": "Vasco da Gama",
+    "tla": "VAS",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1782": {
+    "id": 1782,
+    "name": "EC Vitória",
+    "short": "Vitória",
+    "tla": "VIT",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "1783": {
+    "id": 1783,
+    "name": "CR Flamengo",
+    "short": "Flamengo",
+    "tla": "FLA",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "4241": {
+    "id": 4241,
+    "name": "Coritiba FBC",
+    "short": "Coritiba",
+    "tla": "COR",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "4286": {
+    "id": 4286,
+    "name": "RB Bragantino",
+    "short": "Bragantino",
+    "tla": "RBB",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "4287": {
+    "id": 4287,
+    "name": "Clube do Remo",
+    "short": "Clube do Remo",
+    "tla": "CRE",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "4364": {
+    "id": 4364,
+    "name": "Mirassol FC",
+    "short": "Mirassol",
+    "tla": "MIR",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "6684": {
+    "id": 6684,
+    "name": "SC Internacional",
+    "short": "Internacional",
+    "tla": "SCI",
+    "competitions": [
+      "BSA"
+    ]
+  },
+  "6685": {
+    "id": 6685,
+    "name": "Santos FC",
+    "short": "Santos",
+    "tla": "SAN",
+    "competitions": [
+      "BSA"
+    ]
+  }
+}

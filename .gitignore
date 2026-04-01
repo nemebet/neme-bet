@@ -1,6 +1,11 @@
 .env
 __pycache__/
 *.pyc
+venv/
+.claude/
+uploads/
+*.log
+
+# Large data files (fetched at runtime)
 data_matches.json
 team_stats.json
-.claude/

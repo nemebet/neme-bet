@@ -1,0 +1,903 @@
+[
+  {
+    "timestamp": "2026-04-01T17:02:24.602416",
+    "date": "2026-04-01",
+    "predictions": [
+      {
+        "home_team": "Real Madrid",
+        "away_team": "Barcelona",
+        "date": "2026-04-01",
+        "lambda_home": 1.32,
+        "lambda_away": 1.2,
+        "elo_home": 1500,
+        "elo_away": 1500,
+        "p_home_win": 43.0,
+        "p_draw": 27.5,
+        "p_away_win": 29.5,
+        "p_btts_yes": 50.0,
+        "p_btts_no": 50.0,
+        "p_over_25": 45.2,
+        "p_under_25": 54.8,
+        "p_over_15": 71.4,
+        "p_under_15": 28.6,
+        "top_scores": [
+          [
+            "1-1",
+            13.0
+          ],
+          [
+            "1-0",
+            11.1
+          ],
+          [
+            "0-0",
+            8.9
+          ],
+          [
+            "2-1",
+            8.7
+          ],
+          [
+            "0-1",
+            8.6
+          ]
+        ],
+        "sub_poisson": {
+          "1": 39.4,
+          "X": 26.8,
+          "2": 33.7,
+          "btts": 51.2,
+          "o25": 46.1,
+          "o15": 71.7
+        },
+        "sub_dixon_coles": {
+          "1": 37.8,
+          "X": 30.1,
+          "2": 32.1,
+          "btts": 52.9,
+          "o25": 46.1,
+          "o15": 73.3
+        },
+        "sub_elo": {
+          "1": 53.1,
+          "X": 25.7,
+          "2": 21.1,
+          "btts": 45.4,
+          "o25": 43.0,
+          "o15": 69.2
+        },
+        "home_injuries": [],
+        "away_injuries": [],
+        "home_injury_impact": 0.0,
+        "away_injury_impact": 0.0,
+        "home_form_pct": 50,
+        "away_form_pct": 50,
+        "home_matches": 0,
+        "away_matches": 0
+      },
+      {
+        "home_team": "Manchester City",
+        "away_team": "Liverpool",
+        "date": "2026-04-01",
+        "lambda_home": 1.32,
+        "lambda_away": 1.2,
+        "elo_home": 1500,
+        "elo_away": 1500,
+        "p_home_win": 43.0,
+        "p_draw": 27.5,
+        "p_away_win": 29.5,
+        "p_btts_yes": 50.0,
+        "p_btts_no": 50.0,
+        "p_over_25": 45.2,
+        "p_under_25": 54.8,
+        "p_over_15": 71.4,
+        "p_under_15": 28.6,
+        "top_scores": [
+          [
+            "1-1",
+            13.0
+          ],
+          [
+            "1-0",
+            11.1
+          ],
+          [
+            "0-0",
+            8.9
+          ],
+          [
+            "2-1",
+            8.7
+          ],
+          [
+            "0-1",
+            8.6
+          ]
+        ],
+        "sub_poisson": {
+          "1": 39.4,
+          "X": 26.8,
+          "2": 33.7,
+          "btts": 51.2,
+          "o25": 46.1,
+          "o15": 71.7
+        },
+        "sub_dixon_coles": {
+          "1": 37.8,
+          "X": 30.1,
+          "2": 32.1,
+          "btts": 52.9,
+          "o25": 46.1,
+          "o15": 73.3
+        },
+        "sub_elo": {
+          "1": 53.1,
+          "X": 25.7,
+          "2": 21.1,
+          "btts": 45.4,
+          "o25": 43.0,
+          "o15": 69.2
+        },
+        "home_injuries": [],
+        "away_injuries": [],
+        "home_injury_impact": 0.0,
+        "away_injury_impact": 0.0,
+        "home_form_pct": 50,
+        "away_form_pct": 50,
+        "home_matches": 0,
+        "away_matches": 0
+      }
+    ],
+    "top_picks": [
+      {
+        "match": "Real Madrid vs Barcelona",
+        "market": "Over 1.5",
+        "probability": 71.4,
+        "fair_odds": 1.4,
+        "edge": null,
+        "confidence": "MEDIA",
+        "sub_agreement": 3
+      },
+      {
+        "match": "Manchester City vs Liverpool",
+        "market": "Over 1.5",
+        "probability": 71.4,
+        "fair_odds": 1.4,
+        "edge": null,
+        "confidence": "MEDIA",
+        "sub_agreement": 3
+      }
+    ],
+    "results": null,
+    "accuracy": null
+  },
+  {
+    "timestamp": "2026-04-01T17:13:36.662017",
+    "date": "2026-04-01",
+    "predictions": [
+      {
+        "home_team": "Real Madrid",
+        "away_team": "Barcelona",
+        "date": "2026-04-01",
+        "lambda_home": 1.922,
+        "lambda_away": 0.736,
+        "lambda_home_elo": 2.461,
+        "lambda_away_elo": 0.726,
+        "elo_home": 1699,
+        "elo_away": 1590,
+        "p_home_win": 68.1,
+        "p_draw": 20.2,
+        "p_away_win": 11.8,
+        "p_btts_yes": 45.7,
+        "p_btts_no": 54.3,
+        "p_over_25": 53.2,
+        "p_under_25": 46.8,
+        "p_over_15": 77.2,
+        "top_scores": [
+          [
+            "2-0",
+            12.8
+          ],
+          [
+            "1-0",
+            12.1
+          ],
+          [
+            "1-1",
+            9.5
+          ],
+          [
+            "2-1",
+            9.4
+          ],
+          [
+            "3-0",
+            8.9
+          ]
+        ],
+        "sub_poisson": {
+          "1": 65.4,
+          "X": 21.0,
+          "2": 13.5,
+          "btts": 44.5,
+          "o25": 49.6,
+          "o15": 74.4
+        },
+        "sub_dixon_coles": {
+          "1": 64.2,
+          "X": 23.6,
+          "2": 12.2,
+          "btts": 45.8,
+          "o25": 49.6,
+          "o15": 75.6
+        },
+        "sub_elo": {
+          "1": 75.4,
+          "X": 15.6,
+          "2": 9.0,
+          "btts": 47.2,
+          "o25": 61.7,
+          "o15": 82.7
+        },
+        "home_injury_impact": 4.0,
+        "away_injury_impact": 0.0,
+        "home_form": "WWWWW",
+        "away_form": "WWLDL",
+        "home_form_pct": 80.0,
+        "away_form_pct": 55.6,
+        "home_matches": 15,
+        "away_matches": 15
+      },
+      {
+        "home_team": "Manchester City",
+        "away_team": "Liverpool",
+        "date": "2026-04-01",
+        "lambda_home": 0.799,
+        "lambda_away": 0.786,
+        "lambda_home_elo": 1.249,
+        "lambda_away_elo": 1.697,
+        "elo_home": 1500,
+        "elo_away": 1660,
+        "p_home_win": 30.8,
+        "p_draw": 33.0,
+        "p_away_win": 36.2,
+        "p_btts_yes": 38.9,
+        "p_btts_no": 61.1,
+        "p_over_25": 31.8,
+        "p_under_25": 68.2,
+        "p_over_15": 57.2,
+        "top_scores": [
+          [
+            "0-0",
+            16.4
+          ],
+          [
+            "0-1",
+            13.4
+          ],
+          [
+            "1-0",
+            12.9
+          ],
+          [
+            "1-1",
+            12.9
+          ],
+          [
+            "0-2",
+            6.7
+          ]
+        ],
+        "sub_poisson": {
+          "1": 32.6,
+          "X": 35.5,
+          "2": 31.9,
+          "btts": 29.9,
+          "o25": 21.3,
+          "o15": 47.0
+        },
+        "sub_dixon_coles": {
+          "1": 30.9,
+          "X": 38.9,
+          "2": 30.2,
+          "btts": 31.6,
+          "o25": 21.3,
+          "o15": 48.7
+        },
+        "sub_elo": {
+          "1": 28.2,
+          "X": 23.9,
+          "2": 47.9,
+          "btts": 58.3,
+          "o25": 56.5,
+          "o15": 79.3
+        },
+        "home_injury_impact": 8.0,
+        "away_injury_impact": 12.0,
+        "home_form": "WLLLL",
+        "away_form": "LLDWL",
+        "home_form_pct": 51.1,
+        "away_form_pct": 53.3,
+        "home_matches": 15,
+        "away_matches": 15
+      }
+    ],
+    "top_picks": [
+      {
+        "match": "Real Madrid vs Barcelona",
+        "market": "Over 1.5",
+        "probability": 77.2,
+        "fair_odds": 1.3,
+        "confidence": "ALTA",
+        "sub_agreement": 3,
+        "sub_detail": "Poi=74% DC=76% ELO=83%"
+      },
+      {
+        "match": "Manchester City vs Liverpool",
+        "market": "Under 2.5",
+        "probability": 68.2,
+        "fair_odds": 1.47,
+        "confidence": "MEDIA",
+        "sub_agreement": 2,
+        "sub_detail": "Poi=79% DC=79% ELO=44%"
+      },
+      {
+        "match": "Real Madrid vs Barcelona",
+        "market": "1 (Local)",
+        "probability": 68.1,
+        "fair_odds": 1.47,
+        "confidence": "MEDIA",
+        "sub_agreement": 3,
+        "sub_detail": "Poi=65% DC=64% ELO=75%"
+      }
+    ],
+    "results": null,
+    "accuracy": null
+  },
+  {
+    "timestamp": "2026-04-01T17:15:06.832283",
+    "date": "2026-04-01",
+    "predictions": [
+      {
+        "home_team": "Real Madrid",
+        "away_team": "Barcelona",
+        "date": "2026-04-01",
+        "lambda_home": 2.143,
+        "lambda_away": 0.884,
+        "lambda_home_elo": 1.929,
+        "lambda_away_elo": 1.525,
+        "elo_home": 1699,
+        "elo_away": 1789,
+        "p_home_win": 60.2,
+        "p_draw": 20.9,
+        "p_away_win": 18.9,
+        "p_btts_yes": 56.7,
+        "p_btts_no": 43.3,
+        "p_over_25": 60.9,
+        "p_under_25": 39.1,
+        "p_over_15": 82.5,
+        "top_scores": [
+          [
+            "2-1",
+            9.6
+          ],
+          [
+            "1-1",
+            9.6
+          ],
+          [
+            "2-0",
+            9.6
+          ],
+          [
+            "1-0",
+            8.7
+          ],
+          [
+            "3-0",
+            6.7
+          ]
+        ],
+        "sub_poisson": {
+          "1": 66.2,
+          "X": 19.4,
+          "2": 14.3,
+          "btts": 51.8,
+          "o25": 58.2,
+          "o15": 80.5
+        },
+        "sub_dixon_coles": {
+          "1": 65.0,
+          "X": 21.8,
+          "2": 13.2,
+          "btts": 53.0,
+          "o25": 58.2,
+          "o15": 81.7
+        },
+        "sub_elo": {
+          "1": 47.3,
+          "X": 22.0,
+          "2": 30.7,
+          "btts": 66.9,
+          "o25": 67.0,
+          "o15": 85.9
+        },
+        "home_injury_impact": 4.0,
+        "away_injury_impact": 20.0,
+        "home_form": "WWWWW",
+        "away_form": "WDWWW",
+        "home_form_pct": 80.0,
+        "away_form_pct": 82.2,
+        "home_matches": 15,
+        "away_matches": 15
+      },
+      {
+        "home_team": "Manchester City",
+        "away_team": "Liverpool",
+        "date": "2026-04-01",
+        "lambda_home": 1.104,
+        "lambda_away": 0.609,
+        "lambda_home_elo": 1.04,
+        "lambda_away_elo": 1.421,
+        "elo_home": 1519,
+        "elo_away": 1660,
+        "p_home_win": 41.0,
+        "p_draw": 31.6,
+        "p_away_win": 27.4,
+        "p_btts_yes": 36.5,
+        "p_btts_no": 63.5,
+        "p_over_25": 30.6,
+        "p_under_25": 69.4,
+        "p_over_15": 57.4,
+        "top_scores": [
+          [
+            "1-0",
+            16.1
+          ],
+          [
+            "0-0",
+            15.6
+          ],
+          [
+            "1-1",
+            12.7
+          ],
+          [
+            "0-1",
+            10.9
+          ],
+          [
+            "2-0",
+            9.1
+          ]
+        ],
+        "sub_poisson": {
+          "1": 47.4,
+          "X": 32.3,
+          "2": 20.2,
+          "btts": 30.5,
+          "o25": 24.6,
+          "o15": 51.1
+        },
+        "sub_dixon_coles": {
+          "1": 45.9,
+          "X": 35.5,
+          "2": 18.6,
+          "btts": 32.1,
+          "o25": 24.6,
+          "o15": 52.7
+        },
+        "sub_elo": {
+          "1": 27.6,
+          "X": 26.6,
+          "2": 45.8,
+          "btts": 49.1,
+          "o25": 44.6,
+          "o15": 70.5
+        },
+        "home_injury_impact": 18.0,
+        "away_injury_impact": 12.0,
+        "home_form": "WDLDL",
+        "away_form": "LLDWL",
+        "home_form_pct": 51.1,
+        "away_form_pct": 53.3,
+        "home_matches": 15,
+        "away_matches": 15
+      }
+    ],
+    "top_picks": [
+      {
+        "match": "Real Madrid vs Barcelona",
+        "market": "Over 1.5",
+        "probability": 82.5,
+        "fair_odds": 1.21,
+        "confidence": "ALTA",
+        "sub_agreement": 3,
+        "sub_detail": "Poi=80% DC=82% ELO=86%"
+      },
+      {
+        "match": "Manchester City vs Liverpool",
+        "market": "Under 2.5",
+        "probability": 69.4,
+        "fair_odds": 1.44,
+        "confidence": "MEDIA",
+        "sub_agreement": 2,
+        "sub_detail": "Poi=75% DC=75% ELO=55%"
+      }
+    ],
+    "results": null,
+    "accuracy": null
+  },
+  {
+    "ts": "2026-04-01T17:23:23.340887",
+    "date": "2026-04-01",
+    "predictions": [
+      {
+        "home": "Juventus",
+        "away": "Inter Milan",
+        "date": "2026-04-01",
+        "lh": 1.07,
+        "la": 0.99,
+        "lh_elo": 1.95,
+        "la_elo": 1.28,
+        "elo_h": 1620,
+        "elo_a": 1639,
+        "p1": 41.2,
+        "px": 28.8,
+        "p2": 30.0,
+        "btts_y": 48.0,
+        "btts_n": 52.0,
+        "o25": 42.6,
+        "u25": 57.4,
+        "o15": 68.2,
+        "u15": 31.8,
+        "scores": [
+          [
+            "1-1",
+            12.9
+          ],
+          [
+            "1-0",
+            11.3
+          ],
+          [
+            "0-0",
+            10.6
+          ],
+          [
+            "0-1",
+            9.8
+          ],
+          [
+            "2-1",
+            7.9
+          ]
+        ],
+        "poi": {
+          "1": 36.8,
+          "X": 30.3,
+          "2": 32.9,
+          "btts": 41.3,
+          "o25": 33.9,
+          "o15": 61.0
+        },
+        "dc": {
+          "1": 35.1,
+          "X": 33.8,
+          "2": 31.1,
+          "btts": 43.0,
+          "o25": 33.9,
+          "o15": 62.7
+        },
+        "elo": {
+          "1": 53.1,
+          "X": 22.0,
+          "2": 24.9,
+          "btts": 61.9,
+          "o25": 62.7,
+          "o15": 83.3
+        },
+        "h_news": [
+          {
+            "title": "Victor Osimhen injury update: Why Galatasaray star refused hospital discharge after surgery - Soccernet.ng",
+            "type": "DUDA",
+            "hours": 57
+          }
+        ],
+        "a_news": [],
+        "h_imp": 2.0,
+        "a_imp": 0.0,
+        "h_form": "WDWWD",
+        "a_form": "LWLDD",
+        "h_fpct": 55.6,
+        "a_fpct": 64.4,
+        "h_n": 15,
+        "a_n": 15
+      }
+    ],
+    "picks": [
+      {
+        "match": "Juventus vs Inter Milan",
+        "bet": "Over 1.5",
+        "prob": 68.2,
+        "odds": 1.47,
+        "level": "med",
+        "agree": 3,
+        "subs": "P=61% DC=63% E=83%"
+      }
+    ],
+    "results": null,
+    "accuracy": null
+  },
+  {
+    "ts": "2026-04-01T17:36:19.619790",
+    "date": "2026-04-01",
+    "predictions": [
+      {
+        "home": "Arsenal",
+        "away": "Chelsea",
+        "date": "2026-04-01",
+        "lh": 2.51,
+        "la": 1.07,
+        "lh_elo": 2.2,
+        "la_elo": 0.48,
+        "elo_h": 1680,
+        "elo_a": 1500,
+        "p1": 70.9,
+        "px": 17.4,
+        "p2": 11.7,
+        "btts_y": 52.8,
+        "btts_n": 47.2,
+        "o25": 63.6,
+        "u25": 36.4,
+        "o15": 83.8,
+        "u15": 16.2,
+        "scores": [
+          [
+            "2-0",
+            11.1
+          ],
+          [
+            "1-0",
+            9.1
+          ],
+          [
+            "2-1",
+            9.0
+          ],
+          [
+            "3-0",
+            8.8
+          ],
+          [
+            "1-1",
+            7.7
+          ]
+        ],
+        "poi": {
+          "1": 68.7,
+          "X": 17.1,
+          "2": 14.3,
+          "btts": 60.4,
+          "o25": 69.4,
+          "o15": 87.3
+        },
+        "dc": {
+          "1": 67.7,
+          "X": 19.0,
+          "2": 13.3,
+          "btts": 61.4,
+          "o25": 69.4,
+          "o15": 88.2
+        },
+        "elo": {
+          "1": 77.1,
+          "X": 16.3,
+          "2": 6.7,
+          "btts": 33.9,
+          "o25": 50.1,
+          "o15": 74.8
+        },
+        "h_news": [
+          {
+            "title": "Arsenal injury update: Rice, Saka, Madueke latest return dates - London Evening Standard",
+            "type": "DUDA",
+            "hours": 0
+          },
+          {
+            "title": "Arsenal: What games Noni Madueke will miss after injury timeline update - London Evening Standard",
+            "type": "BAJA",
+            "hours": 0
+          },
+          {
+            "title": "Arsenal conducting tests on defender as international break injury details emerge - football.london",
+            "type": "DUDA",
+            "hours": 3
+          },
+          {
+            "title": "Arsenal news: Gunners sent warning about 11 international break injuries as Ben White called out - dailystar.co.uk",
+            "type": "BAJA",
+            "hours": 8
+          },
+          {
+            "title": "Arsenal news: 11 players told they 'should be banned' as new Ben White theory emerges - The Mirror",
+            "type": "BAJA",
+            "hours": 14
+          },
+          {
+            "title": "Arsenal's 'suspicious' 12-man injury list in full amid 'should be banned' claim - dailystar.co.uk",
+            "type": "BAJA",
+            "hours": 24
+          },
+          {
+            "title": "Sonia Bompastor issues Chelsea injury updates ahead of Arsenal | News | Official Site - chelseafc.com",
+            "type": "DUDA",
+            "hours": 26
+          },
+          {
+            "title": "10-player Arsenal injury update with Mikel Arteta preparing unorthodox XI for Southampton - football.london",
+            "type": "BAJA",
+            "hours": 30
+          }
+        ],
+        "a_news": [
+          {
+            "title": "Sonia Bompastor issues Chelsea injury updates ahead of Arsenal | News | Official Site - chelseafc.com",
+            "type": "DUDA",
+            "hours": 26
+          },
+          {
+            "title": "Chelsea vs Port Vale early injury news as 7 ruled out and 2 doubts - londonworld.com",
+            "type": "BAJA",
+            "hours": 36
+          },
+          {
+            "title": "Chelsea's seven-man injury list in full as Liam Rosenior faces Champions League issue - football.london",
+            "type": "DUDA",
+            "hours": 49
+          }
+        ],
+        "h_imp": 20.0,
+        "a_imp": 8.0,
+        "h_form": "WWDWW",
+        "a_form": "WLLLL",
+        "h_fpct": 71.1,
+        "a_fpct": 51.1,
+        "h_n": 15,
+        "a_n": 15
+      }
+    ],
+    "picks": [
+      {
+        "match": "Arsenal vs Chelsea",
+        "bet": "Over 1.5",
+        "prob": 83.8,
+        "odds": 1.19,
+        "level": "high",
+        "agree": 3,
+        "subs": "P=87% DC=88% E=75%"
+      },
+      {
+        "match": "Arsenal vs Chelsea",
+        "bet": "1 Local",
+        "prob": 70.9,
+        "odds": 1.41,
+        "level": "med",
+        "agree": 3,
+        "subs": "P=69% DC=68% E=77%"
+      }
+    ],
+    "results": null,
+    "accuracy": null
+  },
+  {
+    "ts": "2026-04-01T17:45:53.314819",
+    "date": "2026-04-01",
+    "predictions": [
+      {
+        "home": "Napoli",
+        "away": "Juventus",
+        "date": "2026-04-01",
+        "lh": 2.12,
+        "la": 1.33,
+        "lh_elo": 1.63,
+        "la_elo": 1.59,
+        "elo_h": 1519,
+        "elo_a": 1620,
+        "p1": 50.1,
+        "px": 22.3,
+        "p2": 27.6,
+        "btts_y": 64.8,
+        "btts_n": 35.2,
+        "o25": 65.6,
+        "u25": 34.4,
+        "o15": 85.4,
+        "u15": 14.6,
+        "scores": [
+          [
+            "1-1",
+            9.7
+          ],
+          [
+            "2-1",
+            9.2
+          ],
+          [
+            "1-2",
+            6.7
+          ],
+          [
+            "2-0",
+            6.6
+          ],
+          [
+            "2-2",
+            6.4
+          ]
+        ],
+        "poi": {
+          "1": 55.4,
+          "X": 20.8,
+          "2": 23.7,
+          "btts": 64.7,
+          "o25": 66.9,
+          "o15": 85.8
+        },
+        "dc": {
+          "1": 54.3,
+          "X": 23.2,
+          "2": 22.6,
+          "btts": 65.9,
+          "o25": 66.9,
+          "o15": 87.0
+        },
+        "elo": {
+          "1": 39.0,
+          "X": 23.3,
+          "2": 37.6,
+          "btts": 64.0,
+          "o25": 62.4,
+          "o15": 83.1
+        },
+        "h_news": [],
+        "a_news": [
+          {
+            "title": "Victor Osimhen injury update: Why Galatasaray star refused hospital discharge after surgery - Soccernet.ng",
+            "type": "DUDA",
+            "hours": 57
+          }
+        ],
+        "h_imp": 0.0,
+        "a_imp": 2.0,
+        "h_form": "LWWWW",
+        "a_form": "WDWWD",
+        "h_fpct": 57.8,
+        "a_fpct": 55.6,
+        "h_n": 15,
+        "a_n": 15
+      }
+    ],
+    "picks": [
+      {
+        "match": "Napoli vs Juventus",
+        "bet": "Over 1.5",
+        "prob": 85.4,
+        "odds": 1.17,
+        "level": "high",
+        "agree": 3,
+        "subs": "P=86% DC=87% E=83%"
+      },
+      {
+        "match": "Napoli vs Juventus",
+        "bet": "Over 2.5",
+        "prob": 65.6,
+        "odds": 1.52,
+        "level": "med",
+        "agree": 3,
+        "subs": "P=67% DC=67% E=62%"
+      }
+    ],
+    "results": null,
+    "accuracy": null
+  }
+]

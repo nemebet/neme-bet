@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% set active = 'dashboard' %}
+{% block title %}Rendimiento IA - NEME BET{% endblock %}
+{% block subtitle %}Autoaprendizaje y calibracion del modelo{% endblock %}
+{% block content %}
+
+<!-- Stats overview -->
+<div class="stats-grid">
+    <div class="stat-box"><div class="num">{{ dash.verified }}</div><div class="lbl">Verificadas</div></div>
+    <div class="stat-box"><div class="num">{{ dash.acc_all if dash.acc_all else '-' }}{% if dash.acc_all %}%{% endif %}</div><div class="lbl">Acierto total</div></div>
+    <div class="stat-box"><div class="num">{{ dash.pending }}</div><div class="lbl">Pendientes</div></div>
+</div>
+
+<!-- Time windows -->
+<div class="pred-card">
+    <div class="pred-head"><div class="teams">Acierto 1X2 por periodo</div></div>
+    <div class="pred-body">
+        <div class="stat-row"><span class="label">Ultimos 7 dias</span><span class="val" style="color:{% if dash.acc_7d and dash.acc_7d >= 50 %}var(--green){% elif dash.acc_7d %}var(--red){% else %}var(--text2){% endif %}">{{ dash.acc_7d if dash.acc_7d else '-' }}{% if dash.acc_7d %}%{% endif %}</span></div>
+        <div class="stat-row"><span class="label">Ultimos 30 dias</span><span class="val" style="color:{% if dash.acc_30d and dash.acc_30d >= 50 %}var(--green){% elif dash.acc_30d %}var(--red){% else %}var(--text2){% endif %}">{{ dash.acc_30d if dash.acc_30d else '-' }}{% if dash.acc_30d %}%{% endif %}</span></div>
+        <div class="stat-row"><span class="label">Todo el historial</span><span class="val">{{ dash.acc_all if dash.acc_all else '-' }}{% if dash.acc_all %}%{% endif %}</span></div>
+    </div>
+</div>
+
+<!-- Market accuracy -->
+<div class="pred-card">
+    <div class="pred-head"><div class="teams">Precision por mercado</div></div>
+    <div class="pred-body">
+        {% for mkt, data in dash.markets.items() %}
+        <div class="stat-row"><span class="label">{{ mkt|upper }}</span><span class="val">{{ data.accuracy if data.accuracy else '-' }}{% if data.accuracy %}% ({{ data.n }}){% endif %}</span></div>
+        {% if data.accuracy %}
+        <div class="prog-bar"><div class="prog-fill green" style="width:{{ data.accuracy }}%"></div></div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Ensemble weights -->
+<div class="pred-card">
+    <div class="pred-head"><div class="teams">Pesos del Ensemble</div></div>
+    <div class="pred-body">
+        {% if dash.weights %}
+        {% set w = dash.weights %}
+        <div class="stat-row"><span class="label">Poisson</span><span class="val" style="color:var(--green)">{{ ((w.w_poisson or 0.4) * 100)|round(1) }}%</span></div>
+        <div class="prog-bar"><div class="prog-fill green" style="width:{{ (w.w_poisson or 0.4) * 100 }}%"></div></div>
+        <div class="stat-row"><span class="label">Dixon-Coles</span><span class="val" style="color:var(--purple)">{{ ((w.w_dixon_coles or 0.3) * 100)|round(1) }}%</span></div>
+        <div class="prog-bar"><div class="prog-fill purple" style="width:{{ (w.w_dixon_coles or 0.3) * 100 }}%"></div></div>
+        <div class="stat-row"><span class="label">ELO</span><span class="val" style="color:var(--blue)">{{ ((w.w_elo or 0.3) * 100)|round(1) }}%</span></div>
+        <div class="prog-bar"><div class="prog-fill blue" style="width:{{ (w.w_elo or 0.3) * 100 }}%"></div></div>
+        <div class="stat-row"><span class="label">Ventaja local</span><span class="val">x{{ w.home_advantage or 1.10 }}</span></div>
+        <div class="stat-row"><span class="label">Version</span><span class="val">v{{ w.version or 1 }}</span></div>
+        {% else %}
+        <div style="color:var(--text2);font-size:13px">Pesos por defecto (40/30/30)</div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Recent errors -->
+{% if dash.recent_errors %}
+<div class="pred-card">
+    <div class="pred-head"><div class="teams">Errores recientes</div></div>
+    <div class="pred-body">
+        {% for err in dash.recent_errors %}
+        <div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+            <div style="font-weight:700">{{ err.match }} ({{ err.result }})</div>
+            <div style="color:var(--text2)">Pred: {{ err.predicted }} | Real: {{ err.actual }}</div>
+            <div style="color:var(--yellow);margin-top:2px">{{ err.analysis }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Actions -->
+<form method="POST" action="/dashboard">
+    <button type="submit" name="action" value="calibrate" class="btn" {% if dash.verified < 3 %}disabled{% endif %}>
+        {% if dash.verified >= 3 %}Ejecutar calibracion ({{ dash.verified }} muestras){% else %}Necesitas {{ 3 - dash.verified }} resultado(s) mas{% endif %}
+    </button>
+</form>
+<form method="POST" action="/dashboard" style="margin-top:8px">
+    <button type="submit" name="action" value="check_results" class="btn" style="background:var(--bg3)">
+        Buscar resultados pendientes automaticamente
+    </button>
+</form>
+
+{% if cal_result %}
+<div class="card" style="margin-top:14px;border-left:3px solid var(--green)">
+    <h2>Calibracion completada</h2>
+    <div style="font-size:13px;color:var(--text2)">{{ cal_result }}</div>
+</div>
+{% endif %}
+
+<!-- How it works -->
+<div class="coll" style="margin-top:12px">Como funciona el autoaprendizaje</div>
+<div class="coll-body">
+    <div class="card" style="font-size:12px;color:var(--text2);line-height:1.6">
+        <p><strong>1.</strong> Predices partidos</p>
+        <p><strong>2.</strong> Registras resultados reales (o se buscan automaticamente)</p>
+        <p><strong>3.</strong> El sistema compara prediccion vs realidad</p>
+        <p><strong>4.</strong> Detecta sesgos: sobreestima locales, subestima empates, etc.</p>
+        <p><strong>5.</strong> Ajusta pesos del ensemble y factores de correccion</p>
+        <p><strong>6.</strong> Los nuevos pesos se aplican automaticamente</p>
+        <p style="color:var(--green);margin-top:6px">Mas resultados = mejor calibracion</p>
+    </div>
+</div>
+{% endblock %}

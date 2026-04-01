@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}NEME BET{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="icon" href="/static/icon-192.png">
+    <link rel="apple-touch-icon" href="/static/icon-192.png">
+    <meta name="theme-color" content="#0F6E56">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="/static/logo.svg" alt="NEME BET" class="logo">
+            <div class="sub">{% block subtitle %}Predictor con IA v5.0{% endblock %}</div>
+        </div>
+
+        <!-- Install banner -->
+        <div class="install-banner" id="installBanner" onclick="installApp()">
+            <div class="title">Instalar NEME BET en tu telefono</div>
+            <div class="sub">Toca para agregar como app nativa</div>
+        </div>
+
+        <div class="nav">
+            <a href="/" {% if active == 'home' %}class="active"{% endif %}>Inicio</a>
+            <a href="/scanner" {% if active == 'scanner' %}class="active"{% endif %}>Cuotas</a>
+            <a href="/dashboard" {% if active == 'dashboard' %}class="active"{% endif %}>IA</a>
+            <a href="/history" {% if active == 'history' %}class="active"{% endif %}>Historial</a>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}{% for msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}{% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+        <div class="footer">NEME BET v5.0 &copy; 2026 | Modelo estadistico, no es consejo de apuestas</div>
+    </div>
+
+    <script>
+    // PWA Install
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', e => {
+        e.preventDefault();
+        deferredPrompt = e;
+        document.getElementById('installBanner').classList.add('show');
+    });
+    function installApp() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(r => {
+                document.getElementById('installBanner').classList.remove('show');
+                deferredPrompt = null;
+            });
+        }
+    }
+    // Register SW
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/static/sw.js').catch(() => {});
+    }
+    // Notification permission
+    if ('Notification' in window && Notification.permission === 'default') {
+        setTimeout(() => Notification.requestPermission(), 5000);
+    }
+    // Collapsibles
+    document.addEventListener('click', e => {
+        if (e.target.classList.contains('coll')) {
+            e.target.classList.toggle('open');
+            const body = e.target.nextElementSibling;
+            if (body) body.classList.toggle('show');
+        }
+    });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

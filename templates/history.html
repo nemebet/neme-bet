@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% set active = 'history' %}
+{% block title %}Historial - NEME BET{% endblock %}
+{% block subtitle %}Seguimiento y verificacion de predicciones{% endblock %}
+{% block content %}
+
+<div class="stats-grid">
+    <div class="stat-box"><div class="num">{{ total }}</div><div class="lbl">Sesiones</div></div>
+    <div class="stat-box"><div class="num">{{ verified }}</div><div class="lbl">Verificadas</div></div>
+    <div class="stat-box"><div class="num">{{ avg_acc if avg_acc is not none else '-' }}{% if avg_acc is not none %}%{% endif %}</div><div class="lbl">Acierto</div></div>
+</div>
+
+<div class="result-form">
+    <h3>Registrar resultado real</h3>
+    <form method="POST" action="/result">
+        <div class="result-row">
+            <input type="text" name="match" placeholder="Equipo (ej: Madrid)" required>
+            <input type="number" name="home_goals" placeholder="L" min="0" max="20" style="max-width:48px" required>
+            <input type="number" name="away_goals" placeholder="V" min="0" max="20" style="max-width:48px" required>
+            <button type="submit" class="btn-sm">OK</button>
+        </div>
+    </form>
+</div>
+
+{% for entry in entries[:30] %}
+<div class="hist-entry">
+    <div class="hist-date">{{ entry.date }}</div>
+    <div class="hist-matches">
+        {% for pred in entry.predictions[:4] %}{{ pred.home if pred.home is defined else pred.home_team }} vs {{ pred.away if pred.away is defined else pred.away_team }}{% if not loop.last %}, {% endif %}{% endfor %}
+    </div>
+    {% if entry.picks %}<div style="font-size:12px;margin-top:3px">{% for p in entry.picks[:3] %}<strong>{{ p.bet }}</strong> {{ p.prob }}%{% if not loop.last %}, {% endif %}{% endfor %}</div>{% endif %}
+    {% if entry.results %}<div style="font-size:12px;margin-top:3px">{% for m, r in entry.results.items() %}{{ m }}: {{ r.hg if r.hg is defined else r.home_goals }}-{{ r.ag if r.ag is defined else r.away_goals }}{% endfor %}</div>{% endif %}
+    {% if entry.accuracy is not none %}
+    <div class="hist-acc {% if entry.accuracy >= 66 %}good{% elif entry.accuracy >= 33 %}mid{% else %}bad{% endif %}">{{ entry.accuracy }}%</div>
+    {% else %}<div style="font-size:11px;color:var(--text2);margin-top:3px">Pendiente</div>{% endif %}
+</div>
+{% endfor %}
+
+{% if not entries %}<div class="no-picks">Sin historial<br><span style="font-size:11px">Haz tu primera prediccion</span></div>{% endif %}
+{% endblock %}

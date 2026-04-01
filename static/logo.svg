@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0F6E56"/>
+      <stop offset="100%" style="stop-color:#1AE89B"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="60" rx="12" fill="#0A0A0A"/>
+  <rect x="1" y="1" width="198" height="58" rx="11" fill="none" stroke="url(#g)" stroke-width="1.5"/>
+  <text x="18" y="42" font-family="system-ui,-apple-system,sans-serif" font-size="32" font-weight="800" fill="white">NEME</text>
+  <text x="122" y="42" font-family="system-ui,-apple-system,sans-serif" font-size="32" font-weight="800" fill="#1AE89B">BET</text>
+  <circle cx="183" cy="20" r="6" fill="#0F6E56"/>
+  <path d="M180 20 L183 14 L186 20" stroke="#1AE89B" stroke-width="1.5" fill="none"/>
+</svg>

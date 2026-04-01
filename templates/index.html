@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% set active = 'home' %}
+{% block subtitle %}Sube imagen o escribe partidos{% endblock %}
+{% block content %}
+<form method="POST" action="/predict" enctype="multipart/form-data" id="mainForm">
+    <div class="card">
+        <h2>Subir imagen</h2>
+        <label>Screenshot de BeSoccer, bet365, Flashscore, etc.</label>
+        <label class="file-label" for="imageInput">
+            <span style="font-size:28px">+</span>
+            <span id="fileText">Toca para seleccionar foto</span>
+        </label>
+        <input type="file" id="imageInput" name="image" accept="image/*" capture="environment">
+        <div class="file-name" id="fileName"></div>
+    </div>
+
+    <div class="or-sep">o escribe manualmente</div>
+
+    <div class="card">
+        <h2>Escribir partidos</h2>
+        <label>Formato: Equipo1 vs Equipo2 (uno por linea o separados por coma)</label>
+        <textarea name="matches" placeholder="Real Madrid vs Barcelona&#10;Man City vs Liverpool&#10;Bayern Munich vs PSG"></textarea>
+    </div>
+
+    <button type="submit" class="btn" id="submitBtn">Analizar partidos</button>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div>Analizando...</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:6px">Buscando datos, noticias y ejecutando modelo v5</div>
+    </div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById('imageInput').addEventListener('change', function() {
+    if (this.files[0]) {
+        document.getElementById('fileName').textContent = this.files[0].name;
+        document.getElementById('fileText').textContent = 'Imagen seleccionada';
+    }
+});
+document.getElementById('mainForm').addEventListener('submit', function() {
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').textContent = 'Procesando...';
+    document.getElementById('loading').classList.add('show');
+});
+</script>
+{% endblock %}
