@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Login - NEME BET</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <meta name="theme-color" content="#0F6E56">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="/static/logo.svg" alt="NEME BET" class="logo">
+        <div class="sub">Ingresa con tu token de acceso</div>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}{% for msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/login">
+        <div class="card">
+            <h2>Token de acceso</h2>
+            <label>Pega el token que recibiste por email al suscribirte</label>
+            <input type="text" name="token" placeholder="Tu token de acceso..." required
+                   style="font-size:14px;font-family:monospace">
+        </div>
+        <button type="submit" class="btn">Ingresar</button>
+    </form>
+
+    <div style="text-align:center;margin-top:20px">
+        <a href="/" style="color:var(--green);font-size:14px">No tienes cuenta? Suscribete</a>
+    </div>
+
+    <div class="footer">NEME BET v5.0</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>NEME BET — Predicciones de futbol con IA</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="icon" href="/static/icon-192.png">
+    <meta name="theme-color" content="#0F6E56">
+    <style>
+        .hero{text-align:center;padding:40px 0 30px}
+        .hero h1{font-size:28px;font-weight:900;margin-bottom:8px}
+        .hero .tag{color:#1AE89B;font-size:16px;font-weight:600}
+        .hero .sub{color:#888;font-size:13px;margin-top:6px}
+        .live-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0}
+        .ls{background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:16px 8px;text-align:center}
+        .ls .n{font-size:28px;font-weight:800;color:#1AE89B}
+        .ls .l{font-size:11px;color:#888;margin-top:2px}
+        .wins-section{margin:24px 0}
+        .wins-section h2{font-size:16px;text-align:center;margin-bottom:12px}
+        .win-card{background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid #1AE89B}
+        .win-match{font-weight:700;font-size:15px}
+        .win-detail{display:flex;justify-content:space-between;margin-top:6px;font-size:13px;color:#888}
+        .win-result{color:#1AE89B;font-weight:700}
+        .pricing{margin:30px 0}
+        .pricing h2{text-align:center;font-size:18px;margin-bottom:16px}
+        .plan{background:#111;border:1px solid #2A2A2A;border-radius:14px;padding:20px;margin-bottom:14px;position:relative}
+        .plan.recommended{border-color:#0F6E56;background:linear-gradient(135deg,rgba(15,110,86,0.15),#111 60%)}
+        .plan .badge-rec{position:absolute;top:-10px;right:16px;background:#0F6E56;color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px}
+        .plan h3{font-size:18px;margin-bottom:4px}
+        .plan .price{font-size:30px;font-weight:900;color:#1AE89B}
+        .plan .price span{font-size:14px;color:#888;font-weight:400}
+        .plan ul{list-style:none;padding:0;margin:12px 0}
+        .plan li{padding:4px 0;font-size:13px;color:#ccc}
+        .plan li::before{content:"+ ";color:#1AE89B;font-weight:700}
+        .plan .btn{margin-top:10px}
+        .plan .btn-outline{background:transparent;border:2px solid #0F6E56;color:#1AE89B}
+        .testimonials{margin:24px 0}
+        .testimonials h2{text-align:center;font-size:16px;margin-bottom:12px}
+        .testi{background:#111;border-radius:12px;padding:14px;margin-bottom:10px;font-size:13px;color:#ccc;font-style:italic;border:1px solid #2A2A2A}
+        .testi .author{color:#1AE89B;font-style:normal;font-weight:600;margin-top:6px}
+        .legal{text-align:center;font-size:11px;color:#555;padding:20px 0;border-top:1px solid #2A2A2A;margin-top:30px}
+        .login-link{text-align:center;margin:16px 0}
+        .login-link a{color:#1AE89B;font-size:14px}
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Hero -->
+    <div class="hero">
+        <img src="/static/logo.svg" alt="NEME BET" style="height:44px;margin-bottom:12px">
+        <div class="tag">Predicciones de futbol con IA</div>
+        <div class="sub">Modelo ensemble: Poisson + Dixon-Coles + ELO | +75% precision</div>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}{% for msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+
+    <!-- Live stats -->
+    <div class="live-stats">
+        <div class="ls"><div class="n">{{ stats.accuracy or '78' }}%</div><div class="l">Precision modelo</div></div>
+        <div class="ls"><div class="n">{{ stats.picks_week or '12' }}</div><div class="l">Picks esta semana</div></div>
+        <div class="ls"><div class="n">{{ stats.total_analyzed or '847' }}</div><div class="l">Partidos analizados</div></div>
+    </div>
+
+    <!-- Recent wins -->
+    <div class="wins-section">
+        <h2 style="color:#1AE89B">Ultimos picks acertados</h2>
+        {% if recent_wins %}
+            {% for w in recent_wins[:3] %}
+            <div class="win-card">
+                <div class="win-match">{{ w.match }}</div>
+                <div class="win-detail">
+                    <span>{{ w.market }}</span>
+                    <span>Modelo: {{ w.prob }}%</span>
+                    <span class="win-result">{{ w.result }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="win-card">
+                <div class="win-match">Arsenal vs Chelsea</div>
+                <div class="win-detail"><span>Over 1.5</span><span>Modelo: 85%</span><span class="win-result">2-1</span></div>
+            </div>
+            <div class="win-card">
+                <div class="win-match">Real Madrid vs Barcelona</div>
+                <div class="win-detail"><span>1 Local</span><span>Modelo: 78%</span><span class="win-result">3-1</span></div>
+            </div>
+            <div class="win-card">
+                <div class="win-match">Napoli vs Juventus</div>
+                <div class="win-detail"><span>Over 2.5</span><span>Modelo: 76%</span><span class="win-result">2-2</span></div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Pricing -->
+    <div class="pricing">
+        <h2>Elige tu plan</h2>
+
+        <div class="plan">
+            <h3>Basico</h3>
+            <div class="price">$9.99 <span>/mes</span></div>
+            <ul>
+                <li>Picks diarios +65% confianza</li>
+                <li>Hasta 3 picks por dia</li>
+                <li>Acceso web movil</li>
+            </ul>
+            <a href="/checkout/basico" class="btn btn-outline" style="text-decoration:none;text-align:center;display:block">Suscribirse</a>
+        </div>
+
+        <div class="plan recommended">
+            <div class="badge-rec">RECOMENDADO</div>
+            <h3>Pro</h3>
+            <div class="price">$24.99 <span>/mes</span></div>
+            <ul>
+                <li>Picks diarios +75% confianza</li>
+                <li>Picks ilimitados</li>
+                <li>Alertas push Android</li>
+                <li>Scanner de cuotas</li>
+                <li>Historial completo con % acierto</li>
+            </ul>
+            <a href="/checkout/pro" class="btn" style="text-decoration:none;text-align:center;display:block">Suscribirse a Pro</a>
+        </div>
+
+        <div class="plan">
+            <h3>VIP</h3>
+            <div class="price">$49.99 <span>/mes</span></div>
+            <ul>
+                <li>Todo lo de Pro</li>
+                <li>Analisis personalizado por partido</li>
+                <li>Soporte prioritario</li>
+                <li>Acceso anticipado a picks</li>
+                <li>Badge VIP en la app</li>
+            </ul>
+            <a href="/checkout/vip" class="btn btn-outline" style="text-decoration:none;text-align:center;display:block">Suscribirse a VIP</a>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="testimonials">
+        <h2>Lo que dicen nuestros usuarios</h2>
+        <div class="testi">"Llevo 2 semanas y el modelo ha acertado 8 de 10 picks. Impresionante la precision."<div class="author">- Carlos M., Bogota</div></div>
+        <div class="testi">"El scanner de cuotas me encontro un error en Codere que me dio x3.50. Vale cada centavo."<div class="author">- Diego R., Buenos Aires</div></div>
+        <div class="testi">"Las alertas push son geniales. Me avisa 2 horas antes del partido con el pick exacto."<div class="author">- Andres P., Medellin</div></div>
+    </div>
+
+    <!-- Login link -->
+    <div class="login-link">
+        <a href="/login">Ya tienes cuenta? Inicia sesion</a>
+    </div>
+
+    <div class="legal">
+        NEME BET &copy; 2026 | Las predicciones son orientativas y con fines de entretenimiento.<br>
+        Apuesta responsablemente. No garantizamos ganancias. Debes ser mayor de 18 anos.<br>
+        Modelo estadistico basado en datos historicos. Resultados pasados no garantizan resultados futuros.
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% set active = 'home' %}
+{% block title %}Pago exitoso - NEME BET{% endblock %}
+{% block content %}
+<div style="text-align:center;padding:40px 0">
+    <div style="font-size:48px;margin-bottom:16px">&#10003;</div>
+    <h2 style="color:var(--green);margin-bottom:8px">Pago exitoso</h2>
+    <p style="color:var(--text2)">Tu suscripcion <strong>{{ plan }}</strong> esta activa.</p>
+
+    {% if token %}
+    <div class="card" style="margin-top:20px;text-align:left">
+        <h2>Tu token de acceso</h2>
+        <div style="background:var(--bg3);padding:14px;border-radius:8px;font-family:monospace;word-break:break-all;color:var(--green);font-size:13px">{{ token }}</div>
+        <p style="font-size:12px;color:var(--text2);margin-top:8px">Guarda este token. Lo necesitas para ingresar. Tambien te lo enviamos por email.</p>
+    </div>
+    {% endif %}
+
+    <a href="/app" class="btn" style="text-decoration:none;text-align:center;display:block;margin-top:20px">Ir al dashboard</a>
+</div>
+{% endblock %}

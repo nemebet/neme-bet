@@ -807,9 +807,150 @@ def process_matches(match_list):
 #  FLASK ROUTES
 # ═══════════════════════════════════════════════════════════════════════════
 
+# ═══════════════════════════════════════════════════════════════════════════
+#  LANDING + AUTH + STRIPE ROUTES
+# ═══════════════════════════════════════════════════════════════════════════
+
 @app.route("/")
-def index():
-    return render_template("index.html")
+def landing():
+    """Landing page publica con precios y stats."""
+    from auth import get_current_user
+    user = get_current_user()
+    if user:
+        return redirect(url_for("app_home"))
+
+    # Gather live stats
+    stats = {"accuracy": None, "picks_week": 0, "total_analyzed": 0}
+    hist_path = os.path.join(BASE_DIR, "resultados.json")
+    if os.path.exists(hist_path):
+        try:
+            with open(hist_path, encoding="utf-8") as f:
+                hist = json.load(f)
+            verified = [e for e in hist if e.get("accuracy") is not None]
+            if verified:
+                stats["accuracy"] = round(sum(e["accuracy"] for e in verified) / len(verified), 0)
+            stats["total_analyzed"] = sum(len(e.get("predictions", [])) for e in hist)
+            # Picks this week
+            from datetime import timedelta
+            week_ago = (datetime.now() - timedelta(days=7)).isoformat()
+            week_entries = [e for e in hist if e.get("ts", e.get("timestamp", "")) >= week_ago]
+            stats["picks_week"] = sum(len(e.get("picks", [])) for e in week_entries)
+        except Exception:
+            pass
+
+    # Recent wins
+    recent_wins = []
+    db_path = os.path.join(BASE_DIR, "results_db.json")
+    if os.path.exists(db_path):
+        try:
+            with open(db_path, encoding="utf-8") as f:
+                db = json.load(f)
+            for e in reversed(db):
+                if e.get("verified") and e.get("accuracy", {}).get("1x2_ok"):
+                    recent_wins.append({
+                        "match": f"{e['home']} vs {e['away']}",
+                        "market": f"1X2 ({e['accuracy']['1x2_pred']})",
+                        "prob": e["p1"] if e["accuracy"]["1x2_pred"] == "1" else (e["px"] if e["accuracy"]["1x2_pred"] == "X" else e["p2"]),
+                        "result": f"{e['home_goals']}-{e['away_goals']}",
+                    })
+                if len(recent_wins) >= 3:
+                    break
+        except Exception:
+            pass
+
+    return render_template("landing.html", stats=stats, recent_wins=recent_wins)
+
+
+@app.route("/app")
+def app_home():
+    """Dashboard principal (requiere login)."""
+    from auth import get_current_user
+    user = get_current_user()
+    if not user:
+        return redirect(url_for("landing"))
+    return render_template("index.html", user=user)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login_page():
+    if request.method == "POST":
+        token = request.form.get("token", "").strip()
+        from stripe_handler import verify_token
+        user = verify_token(token)
+        if user:
+            session["token"] = token
+            session.permanent = True
+            app.permanent_session_lifetime = timedelta(days=30)
+            flash(f"Bienvenido! Plan: {user['plan'].upper()}")
+            return redirect(url_for("app_home"))
+        else:
+            flash("Token invalido o suscripcion vencida")
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.pop("token", None)
+    flash("Sesion cerrada")
+    return redirect(url_for("landing"))
+
+
+@app.route("/checkout/<plan>")
+def checkout(plan):
+    if plan not in ("basico", "pro", "vip"):
+        flash("Plan no valido")
+        return redirect(url_for("landing"))
+
+    stripe_key = os.environ.get("STRIPE_SECRET_KEY", "")
+    if not stripe_key:
+        flash("Stripe no configurado. Contacta al administrador.")
+        return redirect(url_for("landing"))
+
+    from stripe_handler import create_checkout_session
+    base = request.url_root.rstrip("/")
+    sess, error = create_checkout_session(
+        plan,
+        success_url=f"{base}/success",
+        cancel_url=f"{base}/",
+    )
+    if error:
+        flash(f"Error: {error}")
+        return redirect(url_for("landing"))
+
+    return redirect(sess.url, code=303)
+
+
+@app.route("/success")
+def success():
+    session_id = request.args.get("session_id", "")
+    user = None
+    if session_id:
+        from stripe_handler import handle_checkout_success
+        user = handle_checkout_success(session_id)
+        if user:
+            session["token"] = user["token"]
+            session.permanent = True
+            app.permanent_session_lifetime = timedelta(days=30)
+
+    plan = user["plan"] if user else "?"
+    token = user["token"] if user else None
+    return render_template("success.html", plan=plan, token=token)
+
+
+@app.route("/cancel")
+def cancel():
+    flash("Pago cancelado. Puedes intentar de nuevo.")
+    return redirect(url_for("landing"))
+
+
+@app.route("/stripe-webhook", methods=["POST"])
+def stripe_webhook():
+    payload = request.get_data()
+    sig = request.headers.get("Stripe-Signature", "")
+    from stripe_handler import handle_webhook
+    if handle_webhook(payload, sig):
+        return "ok", 200
+    return "error", 400
 
 
 @app.route("/health")
