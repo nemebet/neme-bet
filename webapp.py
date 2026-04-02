@@ -1790,6 +1790,34 @@ def admin_dashboard():
 # ═══════════════════════════════════════════════════════════════════════════
 
 @app.route("/api/recent-wins")
+def _get_recent_wins():
+    """Analisis acertados de las ultimas 48 horas."""
+    cutoff = (datetime.now() - timedelta(hours=48)).isoformat()
+    wins = []
+    db_path = _dp("results_db.json")
+    if os.path.exists(db_path):
+        try:
+            with open(db_path, encoding="utf-8") as f:
+                db = json.load(f)
+            for e in reversed(db):
+                pa = e.get("predicted_at", e.get("created", ""))
+                if pa and pa < cutoff:
+                    continue
+                if e.get("verified") and e.get("accuracy", {}).get("1x2_ok"):
+                    p1x2 = e["accuracy"]["1x2_pred"]
+                    prob = e["p1"] if p1x2 == "1" else (e["px"] if p1x2 == "X" else e["p2"])
+                    label = {"1": "Gana Local", "X": "Empate", "2": "Gana Visitante"}.get(p1x2, p1x2)
+                    wins.append({"match": f"{e['home']} vs {e['away']}", "market": label,
+                                 "prob": prob, "result": f"{e['home_goals']}-{e['away_goals']}",
+                                 "date": pa[:10] if pa else ""})
+                if len(wins) >= 3:
+                    break
+        except Exception:
+            pass
+    return wins
+
+
+@app.route("/api/recent-wins")
 def api_recent_wins():
     """Retorna analisis acertados recientes para auto-refresh."""
     wins = _get_recent_wins()
