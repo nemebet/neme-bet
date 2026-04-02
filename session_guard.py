@@ -58,11 +58,13 @@ def get_device_name(user_agent):
     return "Navegador web"
 
 
-def get_max_devices(plan):
-    """Limite de dispositivos por plan."""
+def get_max_devices(plan, user=None):
+    """Limite de dispositivos por plan. Admin = sin limite."""
+    if user and user.get("max_devices_override"):
+        return user["max_devices_override"]
     if plan == "vip":
         return 2
-    return 1  # basico, pro, free_trial
+    return 1
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -89,7 +91,7 @@ def create_session(email, request):
     location = get_location_from_ip(ip)
     device = get_device_name(ua)
     plan = user.get("plan", "free_trial")
-    max_devices = get_max_devices(plan)
+    max_devices = get_max_devices(plan, user)
 
     # New session token
     new_session = secrets.token_urlsafe(32)
@@ -97,9 +99,9 @@ def create_session(email, request):
     # Current active sessions
     sessions = user.get("active_sessions", [])
 
-    # Check for suspicious location change
+    # Check for suspicious location change (skip for admin)
     suspicious = False
-    if sessions:
+    if sessions and not user.get("skip_location_check"):
         last = sessions[-1]
         last_country = last.get("location", "").split(",")[-1].strip()
         current_country = location.split(",")[-1].strip()

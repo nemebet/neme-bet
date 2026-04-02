@@ -1824,7 +1824,19 @@ def inject_picks_count():
                 count = len(data.get("high_confidence_picks", []))
         except Exception:
             pass
-    return {"picks_count": count}
+    # Check if current user is admin
+    is_admin = False
+    user_plan = None
+    try:
+        from auth import get_current_user
+        u = get_current_user()
+        if u:
+            is_admin = u.get("rol") == "admin"
+            user_plan = u.get("plan", "")
+    except Exception:
+        pass
+
+    return {"picks_count": count, "is_admin": is_admin, "user_plan": user_plan}
 
 
 # ═══════════════════════════════════════════════════════════════════════════

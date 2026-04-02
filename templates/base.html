@@ -28,6 +28,8 @@
     <div class="container">
         <div class="header">
             <img src="/static/logo.svg" alt="NEMEBET" style="width:200px;max-width:60vw;height:auto">
+            {% if is_admin %}<div style="display:inline-block;background:rgba(245,166,35,0.15);color:#FFD700;font-size:10px;font-weight:700;padding:3px 10px;border-radius:5px;margin-top:4px;letter-spacing:1px">ADMINISTRADOR</div>{% endif %}
+            {% if user_plan == 'vip' and not is_admin %}<div style="display:inline-block;background:rgba(245,166,35,0.15);color:#FFD700;font-size:10px;font-weight:700;padding:3px 10px;border-radius:5px;margin-top:4px">VIP</div>{% endif %}
             <div class="sub">{% block subtitle %}Analisis estadistico avanzado v5.0{% endblock %}</div>
         </div>
 
