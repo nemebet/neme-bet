@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% set active = 'scanner' %}
 {% block title %}Scanner de Cuotas - NEME BET{% endblock %}
-{% block subtitle %}Detecta value bets y errores de cuotas{% endblock %}
+{% block subtitle %}Detecta apuestas con ventaja y errores de cuotas{% endblock %}
 {% block content %}
 
 {% if not predictions %}
@@ -23,11 +23,11 @@
         </div>
         {% endfor %}
     </div>
-    <button type="submit" class="btn">Escanear Value Bets</button>
+    <button type="submit" class="btn">Buscar Ventaja Estadistica</button>
 </form>
 {% else %}
 <div class="picks-section">
-    <h2>VALUE BETS</h2>
+    <h2>APUESTAS CON VENTAJA</h2>
     {% set ns = namespace(has=false) %}
     {% for r in scan_results %}{% for vb in r.value_bets %}{% if vb.is_value %}{% set ns.has = true %}
     <div class="{% if vb.edge > 25 %}value-alert urgent{% else %}value-alert{% endif %}">
@@ -45,7 +45,7 @@
         </div>
     </div>
     {% endif %}{% endfor %}{% endfor %}
-    {% if not ns.has %}<div class="no-picks">Sin value bets detectadas<br><span style="font-size:11px">Las cuotas reflejan las probabilidades del modelo</span></div>{% endif %}
+    {% if not ns.has %}<div class="no-picks">Sin ventaja estadistica detectada<br><span style="font-size:11px">Las cuotas reflejan las probabilidades del modelo</span></div>{% endif %}
 </div>
 <a href="/scanner" class="btn" style="text-decoration:none;text-align:center;display:block">Nuevo escaneo</a>
 {% endif %}

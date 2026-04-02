@@ -210,9 +210,9 @@ def scan_match(prediction, market_odds=None, odds_api_key=None):
 
     for source in odds_sources:
         for outcome, prob, odds_key in [
-            ("1 Local", p1, "home"),
-            ("X Empate", px, "draw"),
-            ("2 Visitante", p2, "away"),
+            ("Gana Local", p1, "home"),
+            ("Empate", px, "draw"),
+            ("Gana Visitante", p2, "away"),
         ]:
             odds = source.get(odds_key, 0)
             if odds <= 1.0:

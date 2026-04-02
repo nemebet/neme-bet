@@ -35,14 +35,14 @@
         </div>
     </div>
 
-    <!-- Picks del dia -->
+    <!-- Analisis del dia -->
     <div class="pred-card">
-        <div class="pred-head"><div class="teams">Picks del dia</div></div>
+        <div class="pred-head"><div class="teams">Analisis del dia</div></div>
         <div class="pred-body">
             {% if picks_data %}
             <div class="stat-row"><span class="label">Partidos analizados</span><span class="val">{{ picks_data.analyzed }}</span></div>
-            <div class="stat-row"><span class="label">Picks +75%</span><span class="val" style="color:var(--green)">{{ picks_data.high_confidence_picks|length }}</span></div>
-            <div class="stat-row"><span class="label">Picks 65-75%</span><span class="val" style="color:var(--yellow)">{{ picks_data.medium_confidence_picks|length }}</span></div>
+            <div class="stat-row"><span class="label">Analisis +75%</span><span class="val" style="color:var(--green)">{{ picks_data.high_confidence_picks|length }}</span></div>
+            <div class="stat-row"><span class="label">Analisis 65-75%</span><span class="val" style="color:var(--yellow)">{{ picks_data.medium_confidence_picks|length }}</span></div>
             <div class="stat-row"><span class="label">Ultimo escaneo</span><span class="val" style="font-size:12px">{{ picks_data.analyzed_at[:16] if picks_data.analyzed_at else 'nunca' }}</span></div>
             {% else %}
             <div style="color:var(--text2);font-size:13px">Sin picks hoy</div>

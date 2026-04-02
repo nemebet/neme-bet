@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% set active = 'picks' %}
-{% block title %}Picks del Dia - NEME BET{% endblock %}
+{% block title %}Analisis del Dia - NEME BET{% endblock %}
 {% block subtitle %}{% if data %}{{ data.date }} | {{ data.total_picks }} picks{% else %}Sin datos aun{% endif %}{% endblock %}
 {% block content %}
 
 {% if not data %}
 <div class="no-picks">
-    Sin picks del dia<br>
+    Sin analisis del dia<br>
     <span style="font-size:11px">El scanner automatico se ejecuta a las 9AM o puedes ejecutarlo manualmente</span>
 </div>
 <form method="POST" action="/picks/scan">
@@ -17,13 +17,13 @@
 <!-- Stats -->
 <div class="stats-grid">
     <div class="stat-box"><div class="num">{{ data.analyzed }}</div><div class="lbl">Analizados</div></div>
-    <div class="stat-box"><div class="num" style="color:var(--green)">{{ data.high_confidence_picks|length }}</div><div class="lbl">Picks +75%</div></div>
-    <div class="stat-box"><div class="num" style="color:var(--yellow)">{{ data.medium_confidence_picks|length }}</div><div class="lbl">Picks 65-75%</div></div>
+    <div class="stat-box"><div class="num" style="color:var(--green)">{{ data.high_confidence_picks|length }}</div><div class="lbl">Analisis +75%</div></div>
+    <div class="stat-box"><div class="num" style="color:var(--yellow)">{{ data.medium_confidence_picks|length }}</div><div class="lbl">Analisis 65-75%</div></div>
 </div>
 
 <!-- High confidence picks -->
 {% if data.high_confidence_picks %}
-<div style="text-align:center;font-size:14px;font-weight:700;color:var(--green);margin:16px 0 10px">PICKS DE ALTA CONFIANZA (+75%)</div>
+<div style="text-align:center;font-size:14px;font-weight:700;color:var(--green);margin:16px 0 10px">ANALISIS DE ALTA CONFIANZA (+75%)</div>
 {% for pick in data.high_confidence_picks %}
 <div class="pick-card high">
     <div class="pick-head">
@@ -42,7 +42,7 @@
 
 <!-- Medium confidence picks -->
 {% if data.medium_confidence_picks %}
-<div style="text-align:center;font-size:13px;font-weight:600;color:var(--yellow);margin:16px 0 10px">PICKS MODERADOS (65-75%)</div>
+<div style="text-align:center;font-size:13px;font-weight:600;color:var(--yellow);margin:16px 0 10px">ANALISIS MODERADOS (65-75%)</div>
 {% for pick in data.medium_confidence_picks %}
 <div class="pick-card med">
     <div class="pick-head">
@@ -60,7 +60,7 @@
 
 {% if not data.high_confidence_picks and not data.medium_confidence_picks %}
 <div class="no-picks">
-    Sin picks que superen el 65% de confianza hoy<br>
+    Sin analisis que superen el 65% de confianza hoy<br>
     <span style="font-size:11px">{{ data.analyzed }} partidos analizados, ninguno con valor claro</span>
 </div>
 {% endif %}
@@ -81,9 +81,9 @@
                 <div class="seg sx" style="flex:{{ pred.px }}">X:{{ pred.px }}%</div>
                 <div class="seg s2" style="flex:{{ pred.p2 }}">2:{{ pred.p2 }}%</div>
             </div>
-            <div class="stat-row"><span class="label">O2.5</span><span class="val">{{ pred.o25 }}%</span></div>
-            <div class="stat-row"><span class="label">BTTS</span><span class="val">{{ pred.btts_y }}%</span></div>
-            <div class="stat-row"><span class="label">O1.5</span><span class="val">{{ pred.o15 }}%</span></div>
+            <div class="stat-row"><span class="label">+2.5 goles</span><span class="val">{{ pred.o25 }}%</span></div>
+            <div class="stat-row"><span class="label">Ambos Marcan</span><span class="val">{{ pred.btts_y }}%</span></div>
+            <div class="stat-row"><span class="label">+1.5 goles</span><span class="val">{{ pred.o15 }}%</span></div>
         </div>
     </div>
     {% endfor %}

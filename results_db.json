@@ -24,5 +24,31 @@
     "away_goals": null,
     "verified": false,
     "accuracy": null
+  },
+  {
+    "id": "Arsenal_vs_Chelsea_20260401_1949",
+    "home": "Arsenal",
+    "away": "Chelsea",
+    "predicted_at": "2026-04-01T19:49:10.055314",
+    "match_time": null,
+    "check_after": "2026-04-02T01:49:10.055317",
+    "p1": 70.9,
+    "px": 17.4,
+    "p2": 11.7,
+    "o25": 63.6,
+    "u25": 36.4,
+    "btts_y": 52.8,
+    "o15": 83.8,
+    "lh": 2.51,
+    "la": 1.07,
+    "elo_h": 1680,
+    "elo_a": 1500,
+    "h_form": "WWDWW",
+    "a_form": "WLLLL",
+    "result": null,
+    "home_goals": null,
+    "away_goals": null,
+    "verified": false,
+    "accuracy": null
   }
 ]

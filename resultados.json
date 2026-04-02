@@ -899,5 +899,205 @@
     ],
     "results": null,
     "accuracy": null
+  },
+  {
+    "ts": "2026-04-01T19:49:10.055705",
+    "date": "2026-04-01",
+    "predictions": [
+      {
+        "home": "Arsenal",
+        "away": "Chelsea",
+        "date": "2026-04-01",
+        "lh": 2.51,
+        "la": 1.07,
+        "lh_elo": 2.2,
+        "la_elo": 0.48,
+        "elo_h": 1680,
+        "elo_a": 1500,
+        "p1": 70.9,
+        "px": 17.4,
+        "p2": 11.7,
+        "btts_y": 52.8,
+        "btts_n": 47.2,
+        "o25": 63.6,
+        "u25": 36.4,
+        "o15": 83.8,
+        "u15": 16.2,
+        "scores": [
+          [
+            "2-0",
+            11.1
+          ],
+          [
+            "1-0",
+            9.1
+          ],
+          [
+            "2-1",
+            9.0
+          ],
+          [
+            "3-0",
+            8.8
+          ],
+          [
+            "1-1",
+            7.7
+          ]
+        ],
+        "poi": {
+          "1": 68.7,
+          "X": 17.1,
+          "2": 14.3,
+          "btts": 60.4,
+          "o25": 69.4,
+          "o15": 87.3
+        },
+        "dc": {
+          "1": 67.7,
+          "X": 19.0,
+          "2": 13.3,
+          "btts": 61.4,
+          "o25": 69.4,
+          "o15": 88.2
+        },
+        "elo": {
+          "1": 77.1,
+          "X": 16.3,
+          "2": 6.7,
+          "btts": 33.9,
+          "o25": 50.1,
+          "o15": 74.8
+        },
+        "h_news": [
+          {
+            "title": "Arsenal conducting tests on defender as international break injury details emerge - Football London",
+            "type": "DUDA",
+            "hours": 5
+          },
+          {
+            "title": "Arsenal news: Gunners sent warning about 11 international break injuries as Ben White called out - Daily Star",
+            "type": "BAJA",
+            "hours": 10
+          },
+          {
+            "title": "Arsenal news: 11 players told they 'should be banned' as new Ben White theory emerges - mirror.co.uk",
+            "type": "BAJA",
+            "hours": 16
+          },
+          {
+            "title": "Arsenal injury update: Rice, Saka, Madueke latest return dates - London Evening Standard",
+            "type": "DUDA",
+            "hours": 20
+          },
+          {
+            "title": "Arsenal's 'suspicious' 12-man injury list in full amid 'should be banned' claim - Daily Star",
+            "type": "BAJA",
+            "hours": 27
+          },
+          {
+            "title": "Sonia Bompastor issues Chelsea injury updates ahead of Arsenal | News | Official Site - chelseafc.com",
+            "type": "DUDA",
+            "hours": 29
+          },
+          {
+            "title": "10-player Arsenal injury update with Mikel Arteta preparing unorthodox XI for Southampton - Football London",
+            "type": "BAJA",
+            "hours": 32
+          },
+          {
+            "title": "Arsenal players 'should be banned' as Premier League action demanded - Football London",
+            "type": "BAJA",
+            "hours": 32
+          }
+        ],
+        "a_news": [
+          {
+            "title": "Sonia Bompastor issues Chelsea injury updates ahead of Arsenal | News | Official Site - chelseafc.com",
+            "type": "DUDA",
+            "hours": 29
+          },
+          {
+            "title": "Chelsea vs Port Vale early injury news as 7 ruled out and 2 doubts - londonworld.com",
+            "type": "BAJA",
+            "hours": 38
+          },
+          {
+            "title": "Chelsea's seven-man injury list in full as Liam Rosenior faces Champions League issue - Football London",
+            "type": "DUDA",
+            "hours": 51
+          }
+        ],
+        "h_imp": 20.0,
+        "a_imp": 8.0,
+        "h_form": "WWDWW",
+        "a_form": "WLLLL",
+        "h_fpct": 71.1,
+        "a_fpct": 51.1,
+        "h_n": 15,
+        "a_n": 15,
+        "lineup": {
+          "source": "Google News",
+          "confirmed": false,
+          "confirmed_at": "2026-04-01T19:49:10.055020",
+          "news": {
+            "home": [
+              {
+                "title": "Team news: Three changes for UWCL second leg - Arsenal.com",
+                "date": "2026-04-01 19:21",
+                "hours_ago": 0
+              },
+              {
+                "title": "Tuchel told to snub Arsenal star to 'win World Cup' as Palmer named in England starting XI - Football365",
+                "date": "2026-04-01 20:39",
+                "hours_ago": 0
+              },
+              {
+                "title": "Chelsea vs. Arsenal, Women’s Champions League: Confirmed lineups; how to watch - weaintgotnohistory.sbnation.com",
+                "date": "2026-04-01 17:52",
+                "hours_ago": 1
+              }
+            ],
+            "away": [
+              {
+                "title": "Team news: Three changes for UWCL second leg - Arsenal.com",
+                "date": "2026-04-01 19:21",
+                "hours_ago": 0
+              },
+              {
+                "title": "Chelsea vs. Arsenal, Women’s Champions League: Confirmed lineups; how to watch - weaintgotnohistory.sbnation.com",
+                "date": "2026-04-01 17:52",
+                "hours_ago": 1
+              }
+            ]
+          },
+          "teams": []
+        },
+        "lineup_html": "<div style=\"padding:12px;background:var(--bg3);border-radius:10px;margin-top:10px\"><div style=\"font-size:13px;color:var(--text2);text-align:center\">Alineacion no confirmada — se actualizara automaticamente</div><div style=\"margin-top:8px;font-size:12px;color:var(--text2)\"><div style=\"margin:3px 0\">- Team news: Three changes for UWCL second leg - Arsenal.com... (hace 0h)</div><div style=\"margin:3px 0\">- Tuchel told to snub Arsenal star to 'win World Cup' as Palmer named in... (hace 0h)</div></div><div style=\"margin-top:8px;font-size:12px;color:var(--text2)\"><div style=\"margin:3px 0\">- Team news: Three changes for UWCL second leg - Arsenal.com... (hace 0h)</div><div style=\"margin:3px 0\">- Chelsea vs. Arsenal, Women’s Champions League: Confirmed lineups; how ... (hace 1h)</div></div></div>",
+        "lineup_confirmed": false
+      }
+    ],
+    "picks": [
+      {
+        "match": "Arsenal vs Chelsea",
+        "bet": "Mas de 1.5 goles",
+        "prob": 83.8,
+        "odds": 1.19,
+        "level": "high",
+        "agree": 3,
+        "subs": "P=87% DC=88% E=75%"
+      },
+      {
+        "match": "Arsenal vs Chelsea",
+        "bet": "Gana Local",
+        "prob": 70.9,
+        "odds": 1.41,
+        "level": "med",
+        "agree": 3,
+        "subs": "P=69% DC=68% E=77%"
+      }
+    ],
+    "results": null,
+    "accuracy": null
   }
 ]

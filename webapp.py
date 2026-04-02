@@ -674,10 +674,10 @@ def get_picks(predictions):
     all_picks = []
     for pred in predictions:
         bets = [
-            ("1 Local", "p1", "1"), ("X Empate", "px", "X"), ("2 Visitante", "p2", "2"),
-            ("BTTS Si", "btts_y", "btts"), ("BTTS No", "btts_n", None),
-            ("Over 2.5", "o25", "o25"), ("Under 2.5", "u25", None),
-            ("Over 1.5", "o15", "o15"),
+            ("Gana Local", "p1", "1"), ("Empate", "px", "X"), ("Gana Visitante", "p2", "2"),
+            ("Ambos Marcan: Si", "btts_y", "btts"), ("Ambos Marcan: No", "btts_n", None),
+            ("Mas de 2.5 goles", "o25", "o25"), ("Menos de 2.5 goles", "u25", None),
+            ("Mas de 1.5 goles", "o15", "o15"),
         ]
         for label, key, sub_key in bets:
             prob = pred.get(key, 0)
@@ -796,6 +796,20 @@ def process_matches(match_list):
         # Predict
         pred = predict(home_name, away_name, h_stats, a_stats,
                        h_elo, a_elo, h_news, a_news)
+
+        # Fetch lineups
+        try:
+            from lineups import get_lineup, format_lineup_html
+            lineup_data = get_lineup(home_name, away_name)
+            pred["lineup"] = lineup_data
+            pred["lineup_html"] = format_lineup_html(lineup_data, home_name, away_name)
+            pred["lineup_confirmed"] = bool(lineup_data and lineup_data.get("teams"))
+            entry_log["steps"].append(f"Alineacion: {'confirmada' if pred['lineup_confirmed'] else 'pendiente'}")
+        except Exception:
+            pred["lineup"] = None
+            pred["lineup_html"] = ""
+            pred["lineup_confirmed"] = False
+
         predictions.append(pred)
         log.append(entry_log)
 

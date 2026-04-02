@@ -1,0 +1,39 @@
+{
+  "arsenal_chelsea_2026-04-01": {
+    "source": "Google News",
+    "confirmed": false,
+    "confirmed_at": "2026-04-01T19:49:10.055020",
+    "news": {
+      "home": [
+        {
+          "title": "Team news: Three changes for UWCL second leg - Arsenal.com",
+          "date": "2026-04-01 19:21",
+          "hours_ago": 0
+        },
+        {
+          "title": "Tuchel told to snub Arsenal star to 'win World Cup' as Palmer named in England starting XI - Football365",
+          "date": "2026-04-01 20:39",
+          "hours_ago": 0
+        },
+        {
+          "title": "Chelsea vs. Arsenal, Women’s Champions League: Confirmed lineups; how to watch - weaintgotnohistory.sbnation.com",
+          "date": "2026-04-01 17:52",
+          "hours_ago": 1
+        }
+      ],
+      "away": [
+        {
+          "title": "Team news: Three changes for UWCL second leg - Arsenal.com",
+          "date": "2026-04-01 19:21",
+          "hours_ago": 0
+        },
+        {
+          "title": "Chelsea vs. Arsenal, Women’s Champions League: Confirmed lineups; how to watch - weaintgotnohistory.sbnation.com",
+          "date": "2026-04-01 17:52",
+          "hours_ago": 1
+        }
+      ]
+    },
+    "teams": []
+  }
+}

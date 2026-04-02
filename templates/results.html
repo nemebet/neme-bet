@@ -5,9 +5,9 @@
 {% block content %}
 {% if ocr_info %}<div style="padding:8px 12px;background:var(--bg3);border-radius:8px;font-size:12px;color:var(--text2);margin-bottom:14px;border-left:3px solid var(--purple)">{{ ocr_info }}</div>{% endif %}
 
-<!-- TOP PICKS -->
+<!-- MEJORES ANALISIS -->
 <div class="picks-section">
-    <h2>TOP PICKS</h2>
+    <h2>MEJORES ANALISIS</h2>
     {% if picks %}
         {% for pick in picks %}
         <div class="pick-card {{ pick.level }}">
@@ -46,10 +46,10 @@
         <div class="stat-row"><span class="label">Forma {{ pred.away }}</span><span class="val"><span class="form-dots">{% for c in pred.a_form %}<span class="form-dot {{ c }}">{{ c }}</span>{% endfor %}</span></span></div>
         <div class="stat-row"><span class="label">ELO</span><span class="val">{{ pred.elo_h }} vs {{ pred.elo_a }}</span></div>
         <div class="stat-row"><span class="label">Lambda</span><span class="val">{{ pred.lh }} - {{ pred.la }}</span></div>
-        <div class="stat-row"><span class="label">Over 2.5</span><span class="val" style="color:{% if pred.o25 > 60 %}var(--green){% elif pred.o25 < 40 %}var(--red){% else %}var(--text){% endif %}">{{ pred.o25 }}%</span></div>
-        <div class="stat-row"><span class="label">Under 2.5</span><span class="val">{{ pred.u25 }}%</span></div>
-        <div class="stat-row"><span class="label">BTTS Si</span><span class="val">{{ pred.btts_y }}%</span></div>
-        <div class="stat-row"><span class="label">Over 1.5</span><span class="val">{{ pred.o15 }}%</span></div>
+        <div class="stat-row"><span class="label">Mas de 2.5 goles</span><span class="val" style="color:{% if pred.o25 > 60 %}var(--green){% elif pred.o25 < 40 %}var(--red){% else %}var(--text){% endif %}">{{ pred.o25 }}%</span></div>
+        <div class="stat-row"><span class="label">Menos de 2.5 goles</span><span class="val">{{ pred.u25 }}%</span></div>
+        <div class="stat-row"><span class="label">Ambos Marcan: Si</span><span class="val">{{ pred.btts_y }}%</span></div>
+        <div class="stat-row"><span class="label">Mas de 1.5 goles</span><span class="val">{{ pred.o15 }}%</span></div>
         <div class="stat-row"><span class="label">Cuotas justas</span><span class="val" style="font-size:12px">1={{ "%.2f"|format(100/pred.p1 if pred.p1 > 0 else 99) }} X={{ "%.2f"|format(100/pred.px if pred.px > 0 else 99) }} 2={{ "%.2f"|format(100/pred.p2 if pred.p2 > 0 else 99) }}</span></div>
 
         <div style="margin-top:8px">
@@ -60,7 +60,7 @@
         <div class="coll">Sub-modelos</div>
         <div class="coll-body">
             <table class="sub-table">
-                <tr><th class="mn">Modelo</th><th>1</th><th>X</th><th>2</th><th>BTTS</th><th>O2.5</th></tr>
+                <tr><th class="mn">Modelo</th><th>1</th><th>X</th><th>2</th><th>AM</th><th>+2.5</th></tr>
                 <tr><td class="mn">Poisson</td><td>{{ pred.poi['1'] }}%</td><td>{{ pred.poi['X'] }}%</td><td>{{ pred.poi['2'] }}%</td><td>{{ pred.poi['btts'] }}%</td><td>{{ pred.poi['o25'] }}%</td></tr>
                 <tr><td class="mn">Dixon-Coles</td><td>{{ pred.dc['1'] }}%</td><td>{{ pred.dc['X'] }}%</td><td>{{ pred.dc['2'] }}%</td><td>{{ pred.dc['btts'] }}%</td><td>{{ pred.dc['o25'] }}%</td></tr>
                 <tr><td class="mn">ELO</td><td>{{ pred.elo['1'] }}%</td><td>{{ pred.elo['X'] }}%</td><td>{{ pred.elo['2'] }}%</td><td>{{ pred.elo['btts'] }}%</td><td>{{ pred.elo['o25'] }}%</td></tr>
@@ -78,7 +78,18 @@
         </div>
         {% endif %}
 
-        {% if pred.h_n < 5 or pred.a_n < 5 %}<div class="warning"><span>!</span> Pocos datos — prediccion menos fiable</div>{% endif %}
+        <!-- Alineaciones -->
+        {% if pred.lineup_html %}
+        <div class="news-section">
+            <h4>Alineaciones{% if pred.lineup_confirmed %} <span style="color:var(--green);font-weight:700">oficiales</span>{% endif %}</h4>
+            {{ pred.lineup_html|safe }}
+            {% if pred.lineup_confirmed %}
+            <div style="margin-top:6px;font-size:11px;color:var(--green);text-align:center">Analisis actualizado con alineacion oficial</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if pred.h_n < 5 or pred.a_n < 5 %}<div class="warning"><span>!</span> Pocos datos — analisis menos fiable</div>{% endif %}
         {% if pred.h_imp > 10 %}<div class="warning"><span>!</span> {{ pred.home }}: bajas ({{ pred.h_imp }}%)</div>{% endif %}
         {% if pred.a_imp > 10 %}<div class="warning"><span>!</span> {{ pred.away }}: bajas ({{ pred.a_imp }}%)</div>{% endif %}
     </div>
