@@ -19,10 +19,11 @@ from math import log
 from collections import defaultdict
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "results_db.json")
-CAL_PATH = os.path.join(BASE_DIR, "calibration.json")
-ERRORS_PATH = os.path.join(BASE_DIR, "error_memory.json")
-WEIGHTS_PATH = os.path.join(BASE_DIR, "learned_weights.json")
+from data_dir import data_path
+DB_PATH = data_path("results_db.json")
+CAL_PATH = data_path("calibration.json")
+ERRORS_PATH = data_path("error_memory.json")
+WEIGHTS_PATH = data_path("learned_weights.json")
 
 def _load_env():
     env = {}

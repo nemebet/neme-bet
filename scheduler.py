@@ -135,7 +135,8 @@ def job_check_results():
 def _notify_picks(picks):
     """Envia notificaciones push para picks de alta confianza."""
     try:
-        subs_path = os.path.join(BASE_DIR, "push_subscriptions.json")
+        from data_dir import data_path as _dp2
+        subs_path = _dp2("push_subscriptions.json")
         if not os.path.exists(subs_path):
             return
 
@@ -164,7 +165,8 @@ def _notify_picks(picks):
 
 def _log_job(name, message):
     """Log de jobs ejecutados."""
-    log_path = os.path.join(BASE_DIR, "scheduler_log.json")
+    from data_dir import data_path as _dp
+    log_path = _dp("scheduler_log.json")
     logs = []
     if os.path.exists(log_path):
         try:

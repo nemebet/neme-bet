@@ -8,7 +8,8 @@ import os
 from datetime import datetime, timedelta
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-USERS_PATH = os.path.join(BASE_DIR, "users.json")
+from data_dir import data_path
+USERS_PATH = data_path("users.json")
 
 TEST_TOKEN = "GN6Xzul7mHyS156YVsRYxLFtkLSbNw_S-41wh6IY69M"
 

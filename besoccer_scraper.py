@@ -14,7 +14,8 @@ from datetime import datetime, date
 from bs4 import BeautifulSoup
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_PATH = os.path.join(BASE_DIR, "partidos_hoy.json")
+from data_dir import data_path
+OUTPUT_PATH = data_path("partidos_hoy.json")
 
 LIGAS_RELEVANTES = {
     # Nombre parcial -> nombre normalizado

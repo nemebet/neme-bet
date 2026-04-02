@@ -17,8 +17,9 @@ from math import log, exp
 from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-HIST_PATH = os.path.join(BASE_DIR, "resultados.json")
-WEIGHTS_PATH = os.path.join(BASE_DIR, "learned_weights.json")
+from data_dir import data_path
+HIST_PATH = data_path("resultados.json")
+WEIGHTS_PATH = data_path("learned_weights.json")
 
 # Pesos por defecto (v5 original)
 DEFAULT_WEIGHTS = {

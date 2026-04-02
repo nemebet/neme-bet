@@ -85,7 +85,8 @@ ELO_HOME_ADVANTAGE = 100
 
 def get_weights():
     """Carga pesos aprendidos si existen, o usa defaults."""
-    wp = os.path.join(BASE_DIR, "learned_weights.json")
+    from data_dir import data_path as _dp
+    wp = _dp("learned_weights.json")
     if os.path.exists(wp):
         with open(wp, encoding="utf-8") as f:
             w = json.load(f)
@@ -725,7 +726,8 @@ def get_picks(predictions):
 #  HISTORY
 # ═══════════════════════════════════════════════════════════════════════════
 
-HIST_PATH = os.path.join(BASE_DIR, "resultados.json")
+from data_dir import data_path as _dp
+HIST_PATH = _dp("resultados.json")
 
 
 def load_history():
@@ -843,7 +845,7 @@ def landing():
 
     # Gather live stats
     stats = {"accuracy": None, "picks_week": 0, "total_analyzed": 0}
-    hist_path = os.path.join(BASE_DIR, "resultados.json")
+    hist_path = _dp("resultados.json")
     if os.path.exists(hist_path):
         try:
             with open(hist_path, encoding="utf-8") as f:
@@ -880,7 +882,7 @@ def _get_recent_wins():
     cutoff = (datetime.now() - timedelta(hours=48)).isoformat()
     wins = []
 
-    db_path = os.path.join(BASE_DIR, "results_db.json")
+    db_path = _dp("results_db.json")
     if os.path.exists(db_path):
         try:
             with open(db_path, encoding="utf-8") as f:
@@ -1338,7 +1340,7 @@ def get_notifications():
     notifs = []
 
     # Check for pending results
-    db_path = os.path.join(BASE_DIR, "results_db.json")
+    db_path = _dp("results_db.json")
     if os.path.exists(db_path):
         with open(db_path, encoding="utf-8") as f:
             try:
@@ -1377,7 +1379,7 @@ def get_notifications():
 
 @app.route("/picks")
 def picks_route():
-    picks_path = os.path.join(BASE_DIR, "picks_del_dia.json")
+    picks_path = _dp("picks_del_dia.json")
     data = None
     if os.path.exists(picks_path):
         with open(picks_path, encoding="utf-8") as f:
@@ -1475,7 +1477,7 @@ def admin_dashboard():
     if not key:
         return jsonify({"error": "Unauthorized. Use ?key=YOUR_ADMIN_KEY"}), 403
 
-    users_path = os.path.join(BASE_DIR, "users.json")
+    users_path = _dp("users.json")
     users = {}
     if os.path.exists(users_path):
         with open(users_path, encoding="utf-8") as f:
@@ -1541,7 +1543,7 @@ def admin_dashboard():
     }
 
     # Picks data
-    picks_path = os.path.join(BASE_DIR, "picks_del_dia.json")
+    picks_path = _dp("picks_del_dia.json")
     picks_data = None
     if os.path.exists(picks_path):
         with open(picks_path, encoding="utf-8") as f:
@@ -1558,7 +1560,7 @@ def admin_dashboard():
         pass
 
     # Scheduler logs
-    slog_path = os.path.join(BASE_DIR, "scheduler_log.json")
+    slog_path = _dp("scheduler_log.json")
     scheduler_logs = []
     if os.path.exists(slog_path):
         with open(slog_path, encoding="utf-8") as f:
@@ -1614,7 +1616,7 @@ def api_predict():
 
 @app.context_processor
 def inject_picks_count():
-    picks_path = os.path.join(BASE_DIR, "picks_del_dia.json")
+    picks_path = _dp("picks_del_dia.json")
     count = 0
     if os.path.exists(picks_path):
         try:

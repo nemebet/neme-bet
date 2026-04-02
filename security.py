@@ -17,8 +17,10 @@ from functools import wraps
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECURITY_LOG = os.path.join(BASE_DIR, "security.log")
 ERROR_LOG = os.path.join(BASE_DIR, "error.log")
-BACKUP_DIR = os.path.join(BASE_DIR, "backups")
-BLOCKED_IPS_PATH = os.path.join(BASE_DIR, "blocked_ips.json")
+from data_dir import DATA_DIR as _DDIR
+BACKUP_DIR = os.path.join(_DDIR, "backups")
+from data_dir import data_path
+BLOCKED_IPS_PATH = data_path("blocked_ips.json")
 
 os.makedirs(BACKUP_DIR, exist_ok=True)
 

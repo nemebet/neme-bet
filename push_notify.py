@@ -8,8 +8,9 @@ import json
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-VAPID_PATH = os.path.join(BASE_DIR, "vapid_keys.json")
-SUBS_PATH = os.path.join(BASE_DIR, "push_subscriptions.json")
+from data_dir import data_path
+VAPID_PATH = data_path("vapid_keys.json")
+SUBS_PATH = data_path("push_subscriptions.json")
 
 
 def generate_vapid_keys():

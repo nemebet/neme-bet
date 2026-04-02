@@ -10,7 +10,8 @@ import hmac
 from datetime import datetime, timedelta
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-USERS_PATH = os.path.join(BASE_DIR, "users.json")
+from data_dir import data_path
+USERS_PATH = data_path("users.json")
 
 PLANS = {
     "basico": {"name": "Basico", "price_monthly": 9.99, "picks_limit": 3, "min_confidence": 65},

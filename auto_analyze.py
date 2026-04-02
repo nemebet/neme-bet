@@ -12,8 +12,9 @@ import time
 from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-INPUT_PATH = os.path.join(BASE_DIR, "partidos_hoy.json")
-PICKS_PATH = os.path.join(BASE_DIR, "picks_del_dia.json")
+INPUT_PATH = data_path("partidos_hoy.json")
+from data_dir import data_path
+PICKS_PATH = data_path("picks_del_dia.json")
 
 # Import prediction engine
 sys.path.insert(0, BASE_DIR)

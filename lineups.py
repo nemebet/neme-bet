@@ -15,7 +15,8 @@ from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-LINEUPS_CACHE = os.path.join(BASE_DIR, "lineups_cache.json")
+from data_dir import data_path
+LINEUPS_CACHE = data_path("lineups_cache.json")
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120.0.0.0 Mobile Safari/537.36",
