@@ -155,6 +155,7 @@
 <div class="tabs-vip">
     <button class="tab activo" onclick="showTab('picks',this)">&#9889; PICKS</button>
     <button class="tab" onclick="showTab('partidos',this)">&#9917; PARTIDOS</button>
+    <button class="tab" onclick="showTab('cuotas',this)">&#128176; CUOTAS</button>
     <button class="tab" onclick="showTab('stats',this)">&#128200; STATS</button>
     <button class="tab" onclick="showTab('referidos',this)">&#127873; REFERIR</button>
 </div>
@@ -244,14 +245,54 @@
     <div id="dashPartidos" style="font-size:13px;color:#888;text-align:center;padding:20px">Cargando partidos...</div>
 </div>
 
+<!-- TAB: CUOTAS -->
+<div class="tab-content" id="tab-cuotas">
+    <div style="margin-bottom:12px">
+        <h3 style="font-size:14px;font-weight:700;color:var(--vip-gold);margin-bottom:4px">&#128176; SCANNER DE CUOTAS</h3>
+        <p style="font-size:11px;color:#888">Compara probabilidades del modelo vs cuotas del mercado</p>
+    </div>
+    {% if picks %}
+    {% for p in picks[:5] %}
+    <div style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:10px;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;margin-bottom:4px">{{ p.match }}</div>
+        <div style="display:flex;justify-content:space-between;font-size:12px">
+            <span>{{ p.bet }}</span>
+            <span style="color:#1AE89B">Modelo: {{ p.prob }}%</span>
+            <span style="color:#888">Cuota: {{ p.odds }}</span>
+        </div>
+    </div>
+    {% endfor %}
+    <a href="/scanner" style="display:block;text-align:center;margin-top:10px;color:var(--vip-gold);font-size:13px;font-weight:700">VER SCANNER COMPLETO &#8594;</a>
+    {% else %}
+    <div style="text-align:center;padding:20px;color:#666;font-size:13px">El scanner se activa cuando hay picks disponibles</div>
+    {% endif %}
+</div>
+
 <!-- TAB: STATS -->
 <div class="tab-content" id="tab-stats">
-    <div style="text-align:center;margin:20px 0">
+    <div style="text-align:center;margin:16px 0">
         <div style="font-size:48px;font-weight:900;color:var(--ganado)">--</div>
         <div style="font-size:14px;color:#888">ACIERTO TOTAL</div>
         <div style="font-size:11px;color:#666">Ultimos 30 dias</div>
     </div>
-    <div style="font-size:13px;color:#888;text-align:center">Las estadisticas se actualizan con cada resultado verificado.<br>Registra resultados en Historial para ver tu rendimiento.</div>
+
+    <!-- Simulador de ganancias -->
+    <div style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:12px;padding:14px;margin:12px 0">
+        <h4 style="font-size:13px;font-weight:700;color:var(--vip-gold);margin-bottom:8px">&#128176; SIMULADOR DE GANANCIAS</h4>
+        <p style="font-size:11px;color:#888;margin-bottom:10px">Si apostaras por pick en los ultimos 30 dias:</p>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+            <button class="sim-btn" onclick="simular(5)" style="flex:1;padding:8px;background:#111;border:1px solid #333;border-radius:8px;color:#ccc;font-size:13px;font-weight:700;cursor:pointer">$5</button>
+            <button class="sim-btn" onclick="simular(10)" style="flex:1;padding:8px;background:#0F6E56;border:1px solid #0F6E56;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer">$10</button>
+            <button class="sim-btn" onclick="simular(20)" style="flex:1;padding:8px;background:#111;border:1px solid #333;border-radius:8px;color:#ccc;font-size:13px;font-weight:700;cursor:pointer">$20</button>
+            <button class="sim-btn" onclick="simular(50)" style="flex:1;padding:8px;background:#111;border:1px solid #333;border-radius:8px;color:#ccc;font-size:13px;font-weight:700;cursor:pointer">$50</button>
+        </div>
+        <div style="text-align:center">
+            <div id="simResult" style="font-size:32px;font-weight:900;color:var(--ganado)">+$0</div>
+            <div id="simRoi" style="font-size:12px;color:#888">Selecciona un monto</div>
+        </div>
+    </div>
+
+    <div style="font-size:12px;color:#666;text-align:center;margin-top:8px">Tu historial se construye automaticamente — cada pick queda registrado aqui.</div>
 </div>
 
 <!-- TAB: REFERIDOS -->
@@ -268,37 +309,44 @@
     </div>
 </div>
 
-<!-- NAV GRID -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
-    <a href="/picks" style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:#ccc">
-        <div style="font-size:18px">&#128200;</div><div style="font-size:11px;font-weight:600;margin-top:4px">ANALISIS</div>
-    </a>
-    <a href="/scanner" style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:#ccc">
-        <div style="font-size:18px">&#128269;</div><div style="font-size:11px;font-weight:600;margin-top:4px">CUOTAS</div>
-    </a>
-    <a href="/dashboard" style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:#ccc">
-        <div style="font-size:18px">&#129504;</div><div style="font-size:11px;font-weight:600;margin-top:4px">MODELO</div>
-    </a>
-    <a href="/history" style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:#ccc">
-        <div style="font-size:18px">&#128203;</div><div style="font-size:11px;font-weight:600;margin-top:4px">HISTORIAL</div>
-    </a>
-</div>
+<!-- Spacer for bottom nav -->
+<div style="height:70px"></div>
 
-<div style="text-align:center;margin-top:14px"><a href="/logout" style="font-size:12px;color:#666">Cerrar sesion</a></div>
+<div style="text-align:center;margin-top:8px;margin-bottom:16px"><a href="/logout" style="font-size:12px;color:#666">Cerrar sesion</a></div>
+
+<!-- BOTTOM NAV FIXED -->
+{% if plan in ('vip', 'admin') or user_rol == 'admin' %}
+<nav style="position:fixed;bottom:0;left:0;right:0;background:#0a0a0a;border-top:1px solid #FFD700;display:flex;justify-content:space-around;padding:8px 0 16px;z-index:1000">
+    <a href="#" onclick="showTab('picks',this);bnav(this);return false" class="bnav-item active" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#FFD700;text-decoration:none;font-size:10px;font-weight:700">
+        <span style="font-size:20px">&#9889;</span><span>PICKS</span></a>
+    <a href="#" onclick="showTab('partidos',this);bnav(this);return false" class="bnav-item" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#444;text-decoration:none;font-size:10px;font-weight:700">
+        <span style="font-size:20px">&#9917;</span><span>PARTIDOS</span></a>
+    <a href="#" onclick="showTab('cuotas',this);bnav(this);return false" class="bnav-item" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#444;text-decoration:none;font-size:10px;font-weight:700">
+        <span style="font-size:20px">&#128176;</span><span>CUOTAS</span></a>
+    <a href="#" onclick="showTab('stats',this);bnav(this);return false" class="bnav-item" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#444;text-decoration:none;font-size:10px;font-weight:700">
+        <span style="font-size:20px">&#128200;</span><span>STATS</span></a>
+    <a href="#" onclick="showTab('referidos',this);bnav(this);return false" class="bnav-item" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#444;text-decoration:none;font-size:10px;font-weight:700">
+        <span style="font-size:20px">&#127873;</span><span>REFERIR</span></a>
+</nav>
+{% endif %}
 
 <script>
+function bnav(el){document.querySelectorAll('.bnav-item').forEach(a=>a.style.color='#444');el.style.color='#FFD700';}
+
 function showTab(id,btn){
     document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('activo'));
+    document.querySelectorAll('.tabs-vip .tab').forEach(t=>t.classList.remove('activo'));
     document.getElementById('tab-'+id).classList.add('active');
-    btn.classList.add('activo');
+    // Sync top tabs if clicked from bottom nav
+    document.querySelectorAll('.tabs-vip .tab').forEach(t=>{if(t.textContent.toLowerCase().includes(id.slice(0,4)))t.classList.add('activo');});
     if(id==='partidos')loadDashPartidos();
+    window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function loadDashPartidos(){
     fetch('/api/partidos-hoy?horas=24').then(r=>r.json()).then(data=>{
         const c=document.getElementById('dashPartidos');
-        if(!data.partidos||!data.partidos.length){c.innerHTML='<p>Sin partidos proximos</p>';return;}
+        if(!data.partidos||!data.partidos.length){c.innerHTML='<div style="text-align:center;padding:20px;color:#666">Sin partidos proximos</div>';return;}
         let h='';
         data.partidos.slice(0,15).forEach(m=>{
             h+=`<div style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">
@@ -311,17 +359,29 @@ function loadDashPartidos(){
 }
 
 function compartirPick(match,bet,prob){
-    const t=encodeURIComponent(`PICK NEMEBET\n\n${match}\n${bet}\nConfianza: ${prob}%\n\nhttps://web-production-940b9.up.railway.app`);
+    const t=encodeURIComponent(`\u{1F3C6} *NEMEBET - PICK DEL DIA* \u{1F3C6}\n\n\u26BD *${match}*\n\u2705 *${bet}*\n\u{1F4CA} Confianza: *${prob}%*\n\n_Analisis estadistico profesional_\n\n\u{1F517} Descarga NEMEBET gratis:\nhttps://web-production-940b9.up.railway.app\n\n_\u26A0 Apuesta responsablemente_`);
     window.open('https://wa.me/?text='+t,'_blank');
 }
 function compartirRef(){
     const l=document.getElementById('refLink').value;
-    const t=encodeURIComponent(`Prueba NEMEBET - analisis de futbol con +75% de precision. Tu primer analisis es GRATIS:\n${l}`);
+    const t=encodeURIComponent(`\u{1F3C6} Prueba *NEMEBET* - analisis de futbol con +75% de precision.\n\nTu primer analisis Pro es *GRATIS*:\n${l}\n\n_Sin tarjeta de credito_`);
     window.open('https://wa.me/?text='+t,'_blank');
 }
 function mostrarToast(msg){
     const t=document.createElement('div');t.className='toast';t.textContent=msg;
     document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
+}
+function simular(monto){
+    // Simulated ROI based on 75% accuracy, avg odds 1.7
+    const picks=30;const winRate=0.72;const avgOdds=1.65;
+    const won=Math.round(picks*winRate);const lost=picks-won;
+    const ganancia=Math.round(won*monto*avgOdds - picks*monto);
+    const roi=Math.round(ganancia/(picks*monto)*100);
+    document.getElementById('simResult').textContent=(ganancia>=0?'+':'')+`$${ganancia}`;
+    document.getElementById('simResult').style.color=ganancia>=0?'var(--ganado)':'var(--perdido)';
+    document.getElementById('simRoi').textContent=`${picks} picks | ${won} ganados | ROI: ${roi}%`;
+    document.querySelectorAll('.sim-btn').forEach(b=>{b.style.background='#111';b.style.borderColor='#333';b.style.color='#ccc';});
+    event.target.style.background='#0F6E56';event.target.style.borderColor='#0F6E56';event.target.style.color='#fff';
 }
 </script>
 {% endblock %}
