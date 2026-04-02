@@ -49,6 +49,12 @@
 <body style="background:#050505;color:#E8E8E8;font-family:-apple-system,sans-serif">
 <div style="max-width:640px;margin:0 auto;padding:12px">
 
+<!-- LOGO + LOGOUT -->
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <a href="/"><img src="/static/logo.svg" alt="NEMEBET" style="height:28px"></a>
+    <a href="#" onclick="if(confirm('Cerrar sesion?'))location.href='/logout'" style="color:#666;font-size:18px;text-decoration:none" title="Cerrar sesion">&#9211;</a>
+</div>
+
 <!-- HEADER -->
 <div class="vip-hdr">
     <div style="display:flex;align-items:center;gap:8px">
@@ -145,7 +151,7 @@
 </nav>
 
 <script>
-let allMatches=[];let filtro='todas';
+let allMatches=[];let filtro='todas';let matchPage=0;const MATCH_PAGE=20;
 
 function tab(id,el){
     document.querySelectorAll('.tab-c').forEach(t=>t.classList.remove('active'));
@@ -210,7 +216,7 @@ function loadMatches(){
     }).catch(()=>{document.getElementById('matchesContainer').innerHTML='Error';});
 }
 function filtLiga(f,btn){
-    filtro=f;document.querySelectorAll('.fl').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMatches();
+    filtro=f;matchPage=0;document.querySelectorAll('.fl').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMatches();
 }
 function getFiltered(){
     if(filtro==='todas')return allMatches;
@@ -224,13 +230,23 @@ function renderMatches(){
     const c=document.getElementById('matchesContainer');
     let list=getFiltered();
     if(!list.length){c.innerHTML='<div style="text-align:center;padding:20px;color:#666">Sin partidos para este filtro</div>';return;}
+
+    // Live first, then paginate rest
+    const live=list.filter(m=>m.is_live);
+    const rest=list.filter(m=>!m.is_live);
+    const visible=rest.slice(0,(matchPage+1)*MATCH_PAGE);
+    const remaining=rest.length-visible.length;
+    const show=[...live,...visible];
+
     let h='';
-    list.slice(0,20).forEach(m=>{
-        const liveTag=m.is_live?'<span style="color:#FF1744;font-weight:700;animation:pulse-red 1s infinite">&#128308; EN VIVO</span>':'<span style="color:var(--gold)">'+m.hora+'</span>';
-        const regionEmoji={EU:'&#127757;',LATAM:'&#127758;',ASIA:'&#127759;',AFRICA:'&#127757;',OTHER:'&#9917;'}[m.region||'OTHER']||'&#9917;';
-        h+=`<div class="match-card" style="${m.is_live?'border-left:4px solid #FF1744':''}"><div style="display:flex;justify-content:space-between;font-size:10px;color:#666;margin-bottom:4px"><span>${regionEmoji} ${m.competition||''}</span>${liveTag}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-weight:700;font-size:13px;flex:1">${m.home}</span><span style="color:#444;font-size:11px;padding:0 6px">VS</span><span style="font-weight:700;font-size:13px;flex:1;text-align:right">${m.away}</span></div><div style="font-size:10px;color:#666;margin-bottom:6px">&#128344; ${m.countdown||''}</div><button onclick="analizarMatch('${m.home.replace(/'/g,"\\'")}','${m.away.replace(/'/g,"\\'")}')" style="width:100%;padding:8px;background:${m.is_live?'#FF1744':'var(--green)'};color:#fff;border:none;border-radius:6px;font-weight:700;font-size:11px;cursor:pointer">${m.is_live?'&#128308; VER EN VIVO':'&#9889; VER ANALISIS'}</button></div>`;
+    if(live.length) h+=`<div style="font-size:11px;font-weight:700;color:#FF1744;margin-bottom:6px">&#128308; EN VIVO (${live.length})</div>`;
+    show.forEach(m=>{
+        const liveTag=m.is_live?'<span style="color:#FF1744;font-weight:700">&#128308; EN VIVO</span>':'<span style="color:var(--gold)">'+m.hora+'</span>';
+        const re={EU:'&#127757;',LATAM:'&#127758;',ASIA:'&#127759;',AFRICA:'&#127757;',OTHER:'&#9917;'}[m.region||'OTHER']||'&#9917;';
+        h+=`<div class="match-card" style="${m.is_live?'border-left:4px solid #FF1744':''}"><div style="display:flex;justify-content:space-between;font-size:10px;color:#666;margin-bottom:4px"><span>${re} ${m.competition||''}</span>${liveTag}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-weight:700;font-size:13px;flex:1">${m.home}</span><span style="color:#444;font-size:11px;padding:0 6px">VS</span><span style="font-weight:700;font-size:13px;flex:1;text-align:right">${m.away}</span></div><div style="font-size:10px;color:#666;margin-bottom:6px">&#128344; ${m.countdown||''}</div><button onclick="analizarMatch('${m.home.replace(/'/g,"\\'")}','${m.away.replace(/'/g,"\\'")}')" style="width:100%;padding:8px;background:${m.is_live?'#FF1744':'var(--green)'};color:#fff;border:none;border-radius:6px;font-weight:700;font-size:11px;cursor:pointer">${m.is_live?'&#128308; VER EN VIVO':'&#9889; VER ANALISIS'}</button></div>`;
     });
-    if(list.length>20) h+=`<div style="text-align:center;color:#666;font-size:12px;padding:10px">${list.length-20} partidos mas disponibles</div>`;
+    if(remaining>0) h+=`<button onclick="matchPage++;renderMatches()" style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:8px;color:#1AE89B;font-weight:700;font-size:12px;cursor:pointer;margin-top:6px">CARGAR MAS (${remaining} restantes)</button>`;
+    h+=`<div style="text-align:center;color:#555;font-size:10px;margin-top:6px">${list.length} partidos totales</div>`;
     c.innerHTML=h;
 }
 function analizarMatch(h,a){

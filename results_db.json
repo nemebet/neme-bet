@@ -50,5 +50,31 @@
     "away_goals": null,
     "verified": false,
     "accuracy": null
+  },
+  {
+    "id": "America de Cali_vs_Bucaramanga_20260401_2243",
+    "home": "America de Cali",
+    "away": "Bucaramanga",
+    "predicted_at": "2026-04-01T22:43:54.102311",
+    "match_time": null,
+    "check_after": "2026-04-02T04:43:54.102315",
+    "p1": 56.0,
+    "px": 24.7,
+    "p2": 19.2,
+    "o25": 48.4,
+    "u25": 51.6,
+    "btts_y": 49.0,
+    "o15": 73.8,
+    "lh": 1.79,
+    "la": 0.92,
+    "elo_h": 1500,
+    "elo_a": 1500,
+    "h_form": "?",
+    "a_form": "?",
+    "result": null,
+    "home_goals": null,
+    "away_goals": null,
+    "verified": false,
+    "accuracy": null
   }
 ]

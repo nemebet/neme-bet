@@ -1099,5 +1099,120 @@
     ],
     "results": null,
     "accuracy": null
+  },
+  {
+    "ts": "2026-04-01T22:43:54.102813",
+    "date": "2026-04-01",
+    "predictions": [
+      {
+        "home": "America de Cali",
+        "away": "Bucaramanga",
+        "date": "2026-04-01",
+        "lh": 1.79,
+        "la": 0.92,
+        "lh_elo": 1.54,
+        "la_elo": 0.86,
+        "elo_h": 1500,
+        "elo_a": 1500,
+        "p1": 56.0,
+        "px": 24.7,
+        "p2": 19.2,
+        "btts_y": 49.0,
+        "btts_n": 51.0,
+        "o25": 48.4,
+        "u25": 51.6,
+        "o15": 73.8,
+        "u15": 26.2,
+        "scores": [
+          [
+            "1-0",
+            12.1
+          ],
+          [
+            "1-1",
+            11.7
+          ],
+          [
+            "2-0",
+            10.7
+          ],
+          [
+            "2-1",
+            9.6
+          ],
+          [
+            "0-0",
+            7.8
+          ]
+        ],
+        "poi": {
+          "1": 57.9,
+          "X": 23.1,
+          "2": 19.0,
+          "btts": 50.0,
+          "o25": 50.7,
+          "o15": 75.2
+        },
+        "dc": {
+          "1": 56.5,
+          "X": 25.9,
+          "2": 17.6,
+          "btts": 51.4,
+          "o25": 50.7,
+          "o15": 76.6
+        },
+        "elo": {
+          "1": 53.1,
+          "X": 25.7,
+          "2": 21.1,
+          "btts": 45.4,
+          "o25": 43.0,
+          "o15": 69.2
+        },
+        "h_news": [
+          {
+            "title": "America de Cali vs Alianza Atletico - live score, predicted lineups and H2H stats - FotMob",
+            "type": "ALINEACION",
+            "hours": 8
+          },
+          {
+            "title": "Tigre vs America de Cali H2H Statistic, Lineups and Standings 30 April 2026 - dailysports.net",
+            "type": "ALINEACION",
+            "hours": 21
+          }
+        ],
+        "a_news": [],
+        "h_imp": 0.0,
+        "a_imp": 0.0,
+        "h_form": "?",
+        "a_form": "?",
+        "h_fpct": 50,
+        "a_fpct": 50,
+        "h_n": 0,
+        "a_n": 0,
+        "lineup": {
+          "source": null,
+          "confirmed": false,
+          "confirmed_at": null,
+          "message": "Alineacion no confirmada — se actualizara automaticamente",
+          "teams": []
+        },
+        "lineup_html": "<div style=\"padding:12px;background:var(--bg3);border-radius:10px;margin-top:10px\"><div style=\"font-size:13px;color:var(--text2);text-align:center\">Alineacion no confirmada — se actualizara automaticamente</div></div>",
+        "lineup_confirmed": false
+      }
+    ],
+    "picks": [
+      {
+        "match": "America de Cali vs Bucaramanga",
+        "bet": "Mas de 1.5 goles",
+        "prob": 73.8,
+        "odds": 1.36,
+        "level": "med",
+        "agree": 3,
+        "subs": "P=75% DC=77% E=69%"
+      }
+    ],
+    "results": null,
+    "accuracy": null
   }
 ]
