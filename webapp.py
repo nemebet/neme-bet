@@ -897,9 +897,18 @@ def login_page():
             flash("Acceso bloqueado temporalmente. Intenta mas tarde.")
             return render_template("login.html")
 
-        token = sanitize(request.form.get("token", ""), max_length=64)
-        from stripe_handler import verify_token
+        token = request.form.get("token", "").strip()
+        print(f"[LOGIN DEBUG] Token recibido: '{token}' (len={len(token)})")
+
+        from stripe_handler import verify_token, _load_users
+        users = _load_users()
+        print(f"[LOGIN DEBUG] Users en archivo: {len(users)} keys")
+        print(f"[LOGIN DEBUG] Keys: {list(users.keys())[:3]}")
+        print(f"[LOGIN DEBUG] Token en users: {token in users}")
+
         user = verify_token(token)
+        print(f"[LOGIN DEBUG] verify_token result: {user}")
+
         if user:
             record_successful_login(ip, user.get("email", ""))
             session["token"] = token
@@ -976,6 +985,41 @@ def stripe_webhook():
     if handle_webhook(payload, sig):
         return "ok", 200
     return "error", 400
+
+
+@app.route("/debug-users")
+def debug_users():
+    """Diagnostico temporal: muestra estado de users.json."""
+    users_path = os.path.join(BASE_DIR, "users.json")
+    info = {"file_exists": os.path.exists(users_path)}
+
+    if info["file_exists"]:
+        info["file_size"] = os.path.getsize(users_path)
+        try:
+            with open(users_path, encoding="utf-8") as f:
+                raw = f.read()
+            info["raw_preview"] = raw[:200]
+            data = json.loads(raw)
+            info["type"] = type(data).__name__
+            info["num_keys"] = len(data)
+            info["keys_preview"] = [k[:15] + "..." for k in list(data.keys())[:5]]
+            # Show structure of first user without sensitive data
+            if data:
+                first_key = list(data.keys())[0]
+                first_user = data[first_key]
+                info["first_user_fields"] = list(first_user.keys()) if isinstance(first_user, dict) else str(type(first_user))
+                info["first_user_plan"] = first_user.get("plan", "?") if isinstance(first_user, dict) else "?"
+                info["first_user_active"] = first_user.get("active", "?") if isinstance(first_user, dict) else "?"
+                info["first_user_expires"] = first_user.get("expires", "?") if isinstance(first_user, dict) else "?"
+        except Exception as e:
+            info["parse_error"] = str(e)
+    else:
+        info["note"] = "users.json does not exist on disk"
+
+    # Check if setup_railway ran
+    info["setup_railway_token"] = "GN6Xzul7mHyS156YVsRYxLFtkLSbNw_S-41wh6IY69M"[:15] + "..."
+
+    return jsonify(info)
 
 
 @app.route("/health")
