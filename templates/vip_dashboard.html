@@ -183,7 +183,13 @@ function loadPicks(){
             });
             c.innerHTML=h;
         } else {
-            c.innerHTML=`<div style="text-align:center;padding:24px"><div style="font-size:36px;margin-bottom:8px">&#9917;</div><h3 style="font-size:15px;margin-bottom:4px">SIN PICKS AHORA</h3><p style="font-size:12px;color:#888">Los partidos de ligas principales se analizan cuando estan disponibles (4 AM - 3 PM hora Colombia)</p><p style="font-size:11px;color:#666;margin-top:6px">Toca ESCANEAR para buscar partidos analizables</p></div>`;
+            const h=new Date().getHours();
+            const isNight=h>=18||h<4;
+            if(isNight){
+                c.innerHTML=`<div style="text-align:center;padding:24px"><div style="font-size:36px;margin-bottom:8px">&#127769;</div><h3 style="font-size:15px;margin-bottom:4px;color:var(--gold)">ANALISIS NOCTURNOS</h3><p style="font-size:12px;color:#888">Las ligas europeas terminaron — buscando partidos de esta noche</p><p style="font-size:11px;color:#1AE89B;margin-top:6px">BetPlay &middot; Liga Argentina &middot; MLS &middot; Liga MX &middot; Brasileirao &middot; Libertadores</p><p style="font-size:11px;color:#666;margin-top:6px">Toca ESCANEAR para analizar partidos LATAM</p></div>`;
+            } else {
+                c.innerHTML=`<div style="text-align:center;padding:24px"><div style="font-size:36px;margin-bottom:8px">&#9917;</div><h3 style="font-size:15px;margin-bottom:4px">PREPARANDO ANALISIS</h3><p style="font-size:12px;color:#888">El modelo esta procesando los partidos del dia</p><p style="font-size:11px;color:#666;margin-top:6px">Toca ESCANEAR para buscar partidos</p></div>`;
+            }
         }
     }).catch(()=>{
         document.getElementById('picksContainer').innerHTML='<div style="text-align:center;padding:20px;color:#666">Error cargando picks</div>';

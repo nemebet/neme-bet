@@ -100,12 +100,24 @@ def _fetch_football_data():
 #  SOURCE 2: API-Football
 # ═══════════════════════════════════════════════════════════════
 
+# LATAM leagues for night picks (6PM-11PM Colombia)
+LATAM_LEAGUE_IDS = [239, 128, 253, 262, 71, 13, 14]  # BetPlay, Argentina, MLS, Liga MX, Brasileirao, Libertadores, Sudamericana
+LATAM_LEAGUE_NAMES = {
+    239: "Liga BetPlay", 128: "Liga Argentina", 253: "MLS",
+    262: "Liga MX", 71: "Brasileirao", 13: "Copa Libertadores",
+    14: "Copa Sudamericana",
+}
+
+
 def _fetch_api_football():
     key = _env_key("API_FOOTBALL_KEY")
     if not key:
         return []
 
     today = datetime.utcnow().strftime("%Y-%m-%d")
+    all_matches = []
+
+    # General fixtures
     url = f"https://v3.football.api-sports.io/fixtures?date={today}&status=NS"
     req = urllib.request.Request(url)
     req.add_header("x-apisports-key", key)
@@ -113,12 +125,58 @@ def _fetch_api_football():
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
             data = json.loads(resp.read().decode())
+        for fix in data.get("response", []):
+            teams = fix.get("teams", {})
+            fixture = fix.get("fixture", {})
+            league = fix.get("league", {})
+            lid = league.get("id", 0)
+            all_matches.append({
+                "home": teams.get("home", {}).get("name", "?"),
+                "away": teams.get("away", {}).get("name", "?"),
+                "competition": league.get("name", "?"),
+                "utc_date": fixture.get("date", ""),
+                "source": "api-football",
+                "league_id": lid,
+                "is_latam": lid in LATAM_LEAGUE_IDS,
+            })
     except Exception as e:
-        print(f"[FEATURED] API-Football error: {e}")
-        return []
+        print(f"[FEATURED] API-Football general error: {e}")
 
+    # Specific LATAM leagues search (ensures we never miss them)
+    latam_count = sum(1 for m in all_matches if m.get("is_latam"))
+    if latam_count < 3:
+        for lid in LATAM_LEAGUE_IDS:
+            try:
+                url2 = f"https://v3.football.api-sports.io/fixtures?date={today}&league={lid}&status=NS"
+                req2 = urllib.request.Request(url2)
+                req2.add_header("x-apisports-key", key)
+                with urllib.request.urlopen(req2, timeout=8) as resp2:
+                    data2 = json.loads(resp2.read().decode())
+                for fix in data2.get("response", []):
+                    teams = fix.get("teams", {})
+                    fixture = fix.get("fixture", {})
+                    league = fix.get("league", {})
+                    all_matches.append({
+                        "home": teams.get("home", {}).get("name", "?"),
+                        "away": teams.get("away", {}).get("name", "?"),
+                        "competition": LATAM_LEAGUE_NAMES.get(lid, league.get("name", "?")),
+                        "utc_date": fixture.get("date", ""),
+                        "source": "api-football-latam",
+                        "league_id": lid,
+                        "is_latam": True,
+                    })
+            except Exception:
+                continue
+
+    matches = all_matches
+    print(f"[FEATURED] API-Football: {len(matches)} ({sum(1 for m in matches if m.get('is_latam'))} LATAM)")
+    return matches
+
+
+def _OLD_fetch_api_football_backup():
+    """Backup — never called."""
     matches = []
-    for fix in data.get("response", []):
+    for fix in []:
         teams = fix.get("teams", {})
         fixture = fix.get("fixture", {})
         league = fix.get("league", {})
@@ -171,12 +229,17 @@ def _process_matches(raw_matches, max_hours=12):
         score = 0
         home, away = m["home"], m["away"]
         comp = m.get("competition", "")
+        is_latam = m.get("is_latam", False)
         if _is_top(home): score += 5
         if _is_top(away): score += 5
         if _is_top(home) and _is_top(away): score += 10
         if "Champions" in comp: score += 15
         elif "Europa" in comp: score += 10
         elif any(x in comp for x in ["Premier", "Liga", "Serie A", "Bundesliga", "Ligue 1"]): score += 8
+        # LATAM boost
+        if is_latam: score += 12
+        if any(x in comp.lower() for x in ["betplay", "libertadores", "sudamericana"]): score += 14
+        elif any(x in comp.lower() for x in ["liga mx", "brasileir", "mls", "argentin"]): score += 11
 
         processed.append({
             "home": home,
