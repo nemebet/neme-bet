@@ -1417,6 +1417,12 @@ try:
 except Exception as e:
     print(f"[INIT_DB] {e}")
 
+try:
+    from setup_railway import inicializar
+    inicializar()
+except Exception as e:
+    print(f"[SETUP] {e}")
+
 start_scheduler()
 
 
