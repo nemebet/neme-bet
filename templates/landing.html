@@ -165,8 +165,9 @@
 
     <!-- PARTIDOS PROXIMOS (AJAX) -->
     <div style="margin:24px 0">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-            <h2 style="font-size:16px;color:#1AE89B;margin:0">Partidos proximos</h2>
+        <h2 style="color:#FFD700;font-size:18px;font-weight:800;text-align:center;margin-bottom:4px">&#9917; PARTIDOS DE HOY</h2>
+        <div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:14px">
+            <span style="font-size:11px;color:#555">Actualizado cada 30 min</span>
             <span id="partidosTimestamp" style="font-size:10px;color:#555"></span>
         </div>
         <div id="listaPartidos">
@@ -268,9 +269,28 @@
 
 <script>
 function openModal(e){
-    e.preventDefault();
-    document.getElementById('modalEmail').value=document.getElementById('heroEmail').value;
+    if(e) e.preventDefault();
+    document.getElementById('modalEmail').value=document.getElementById('heroEmail').value||'';
     document.getElementById('registerModal').classList.add('show');
+}
+
+function verAnalisis(local, visitante, e){
+    if(e) e.preventDefault();
+    // Submit to /analizar-partido via form POST
+    const form=document.createElement('form');
+    form.method='POST';form.action='/analizar-partido';
+    const h=document.createElement('input');h.type='hidden';h.name='home';h.value=local;
+    const a=document.createElement('input');a.type='hidden';a.name='away';a.value=visitante;
+    form.appendChild(h);form.appendChild(a);
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function mostrarMensaje(texto){
+    const msg=document.createElement('div');
+    msg.style.cssText='position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0F6E56;color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;text-align:center;max-width:90vw';
+    msg.textContent=texto;document.body.appendChild(msg);
+    setTimeout(()=>msg.remove(),3000);
 }
 
 // Countdown to next 9 AM
@@ -314,18 +334,21 @@ function loadPartidos(){
             if(isRec) rec='<div style="text-align:center;margin-bottom:6px"><span style="background:rgba(245,166,35,0.15);color:#F5A623;font-size:10px;font-weight:700;padding:3px 10px;border-radius:5px">&#11088; RECOMENDADO</span></div>';
             const bg=isRec?'linear-gradient(135deg,#B8860B,#F5A623)':'linear-gradient(135deg,#0F6E56,#0D8B6A)';
 
-            html+=`<div style="background:#111;${border};border-radius:12px;padding:14px;margin-bottom:8px">
+            html+=`<div style="background:#111;${border};border-left:4px solid #0F6E56;border-radius:12px;padding:14px;margin-bottom:10px">
                 ${rec}
-                <div style="display:flex;justify-content:space-between;align-items:center">
-                    <div>
-                        <div style="font-size:15px;font-weight:700">${m.home} <span style="color:#888">vs</span> ${m.away}</div>
-                        <div style="font-size:11px;color:#888;margin-top:2px">${m.competition} | ${m.hora}</div>
-                    </div>
-                    <div style="text-align:right">
-                        <div class="cnt" data-mins="${m.mins_until}" style="font-size:12px;color:#1AE89B;font-weight:600">${m.countdown}</div>
-                    </div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+                    <span style="color:#0F6E56;font-size:11px;font-weight:600">${m.competition}</span>
+                    <span style="color:#FFD700;font-size:11px;font-weight:700">${m.hora}</span>
                 </div>
-                <button onclick="openModal(event)" style="width:100%;margin-top:10px;padding:12px;background:${bg};color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">VER ANALISIS</button>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                    <span style="color:#fff;font-weight:700;font-size:14px;flex:1;text-align:left">${m.home}</span>
+                    <span style="color:#666;font-size:12px;padding:0 10px">VS</span>
+                    <span style="color:#fff;font-weight:700;font-size:14px;flex:1;text-align:right">${m.away}</span>
+                </div>
+                <div style="color:#666;font-size:11px;margin-bottom:10px;text-align:center">
+                    &#128344; <span class="cnt" data-mins="${m.mins_until}">${m.countdown}</span>
+                </div>
+                <button onclick="verAnalisis('${m.home.replace(/'/g,"\\'")}','${m.away.replace(/'/g,"\\'")}',event)" style="width:100%;padding:10px;background:${bg};color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;letter-spacing:0.5px">&#9889; VER ANALISIS</button>
             </div>`;
         });
         c.innerHTML=html;
