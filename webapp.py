@@ -1511,6 +1511,12 @@ def get_notifications():
 
 @app.route("/picks")
 def picks_route():
+    from auth import get_current_user
+    from stripe_handler import filtrar_por_plan
+
+    user = get_current_user()
+    plan = user.get("plan", "free_trial") if user else "free_trial"
+
     picks_path = _dp("picks_del_dia.json")
     data = None
     if os.path.exists(picks_path):
@@ -1519,7 +1525,14 @@ def picks_route():
                 data = json.load(f)
             except Exception:
                 pass
-    return render_template("picks.html", data=data)
+
+    # Filter picks by plan confidence level
+    if data:
+        all_picks = data.get("high_confidence_picks", []) + data.get("medium_confidence_picks", [])
+        data["filtered_picks"] = filtrar_por_plan(all_picks, plan)
+        data["plan"] = plan
+
+    return render_template("picks.html", data=data, plan=plan)
 
 
 @app.route("/picks/scan", methods=["POST"])

@@ -14,10 +14,36 @@ from data_dir import data_path
 USERS_PATH = data_path("users.json")
 
 PLANS = {
-    "basico": {"name": "Basico", "price_monthly": 9.99, "picks_limit": 3, "min_confidence": 65},
-    "pro": {"name": "Pro", "price_monthly": 24.99, "picks_limit": 999, "min_confidence": 75},
-    "vip": {"name": "VIP", "price_monthly": 49.99, "picks_limit": 999, "min_confidence": 65},
+    "free_trial": {"name": "Gratuito", "price_monthly": 0, "picks_limit": 1,
+                   "min_conf": 55, "max_conf": 59, "markets": ["1x2"]},
+    "basico": {"name": "Basico", "price_monthly": 9.99, "picks_limit": 3,
+               "min_conf": 60, "max_conf": 64, "markets": ["1x2"]},
+    "pro": {"name": "Pro", "price_monthly": 24.99, "picks_limit": 999,
+            "min_conf": 65, "max_conf": 75, "markets": ["1x2", "btts", "ou", "corners"]},
+    "vip": {"name": "VIP", "price_monthly": 49.99, "picks_limit": 999,
+            "min_conf": 76, "max_conf": 100, "markets": ["1x2", "btts", "ou", "corners", "scanner", "lineups"]},
 }
+
+
+def filtrar_por_plan(analisis, plan):
+    """Filtra analisis segun nivel de confianza del plan."""
+    p = PLANS.get(plan, PLANS["free_trial"])
+    min_c, max_c = p["min_conf"], p["max_conf"]
+    limit = p["picks_limit"]
+    filtered = [a for a in analisis if min_c <= a.get("prob", 0) <= max_c]
+    return filtered[:limit]
+
+
+def get_plan_badge(prob):
+    """Retorna badge visual segun nivel de confianza."""
+    if prob >= 76:
+        return {"label": "VIP", "color": "#F5A623", "bg": "rgba(245,166,35,0.15)", "icon": "star"}
+    elif prob >= 65:
+        return {"label": "Pro", "color": "#1AE89B", "bg": "rgba(26,232,155,0.15)", "icon": ""}
+    elif prob >= 60:
+        return {"label": "Basico", "color": "#4A9EFF", "bg": "rgba(74,158,255,0.15)", "icon": ""}
+    else:
+        return {"label": "Gratuito", "color": "#888", "bg": "rgba(136,136,136,0.1)", "icon": ""}
 
 
 def _get_stripe():
