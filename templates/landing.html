@@ -175,6 +175,20 @@
                 <span id="proxima-actualizacion" style="color:#FFD700;font-size:14px;font-weight:700;font-family:monospace">5:00</span>
             </div>
         </div>
+        <!-- League filters -->
+        <div id="filtrosLiga" style="display:flex;gap:6px;overflow-x:auto;padding:4px 0;margin-bottom:12px;-webkit-overflow-scrolling:touch">
+            <button class="fl active" onclick="filtrarLiga('todas',this)">TODAS</button>
+            <button class="fl" onclick="filtrarLiga('champions',this)">UCL</button>
+            <button class="fl" onclick="filtrarLiga('premier',this)">PL</button>
+            <button class="fl" onclick="filtrarLiga('liga',this)">LaLiga</button>
+            <button class="fl" onclick="filtrarLiga('serie a',this)">Serie A</button>
+            <button class="fl" onclick="filtrarLiga('bundesliga',this)">Bundes</button>
+            <button class="fl" onclick="filtrarLiga('ligue 1',this)">Ligue 1</button>
+            <button class="fl" onclick="filtrarLiga('colombia',this)">COL</button>
+            <button class="fl" onclick="filtrarLiga('argentin',this)">ARG</button>
+        </div>
+        <style>.fl{flex-shrink:0;padding:6px 12px;background:#111;border:1px solid #2A2A2A;border-radius:8px;color:#888;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}.fl.active{background:#0F6E56;color:#fff;border-color:#0F6E56}</style>
+
         <div id="listaPartidos">
             <div class="skel-card"></div>
             <div class="skel-card"></div>
@@ -315,47 +329,74 @@ setInterval(updateCountdown,1000);updateCountdown();
 const vc=document.getElementById('viewerCount');
 if(vc) setInterval(()=>{vc.textContent=Math.floor(Math.random()*16)+8;},30000);
 
-// ═══ SCANNER AUTOMATICO CADA 5 MINUTOS ═══
+// ═══ SCANNER + PAGINATION + FILTERS ═══
 let scanSecs=300;
+let allPartidos=[];
+let filtroActual='todas';
+let paginaActual=0;
+const POR_PAGINA=20;
+const TOP_LEAGUES=['champions','premier','primera division','serie a','bundesliga','ligue 1','betplay','liga profesional','copa libertadores'];
+
+function esTopLeague(comp){
+    const c=(comp||'').toLowerCase();
+    return TOP_LEAGUES.some(t=>c.includes(t));
+}
 
 function ejecutarScan(){
     const st=document.getElementById('scanner-status');
     if(st){st.innerHTML='&#128260; ESCANEANDO...';st.style.color='#FFD700';}
-
     fetch('/api/partidos-hoy?horas=24').then(r=>r.json()).then(data=>{
-        renderPartidos(data.partidos||[],data.rango_horas||24);
-        if(st){st.innerHTML=`&#9989; ${data.total||0} partidos encontrados`;st.style.color='#0F6E56';}
+        // Sort: top leagues first, then by time
+        allPartidos=(data.partidos||[]).sort((a,b)=>{
+            const at=esTopLeague(a.competition)?0:1;
+            const bt=esTopLeague(b.competition)?0:1;
+            if(at!==bt)return at-bt;
+            return (a.mins_until||0)-(b.mins_until||0);
+        });
+        paginaActual=0;
+        renderPartidos();
+        if(st){st.innerHTML=`&#9989; ${data.total||0} partidos`;st.style.color='#0F6E56';}
         scanSecs=300;
     }).catch(()=>{
-        if(st){st.innerHTML='&#9888; Error al escanear';st.style.color='#ff4444';}
+        if(st){st.innerHTML='&#9888; Error';st.style.color='#ff4444';}
     });
 }
 
-function renderPartidos(partidos,rango){
+function filtrarLiga(filtro,btn){
+    filtroActual=filtro;paginaActual=0;
+    document.querySelectorAll('.fl').forEach(b=>b.classList.remove('active'));
+    if(btn)btn.classList.add('active');
+    renderPartidos();
+}
+
+function getFiltered(){
+    if(filtroActual==='todas')return allPartidos;
+    return allPartidos.filter(p=>(p.competition||'').toLowerCase().includes(filtroActual));
+}
+
+function renderPartidos(){
     const c=document.getElementById('listaPartidos');
-    if(!partidos.length){
-        c.innerHTML='<div style="text-align:center;padding:30px;color:#666"><div style="font-size:40px">&#9917;</div><p style="color:#fff;font-weight:600">SIN PARTIDOS EN LAS PROXIMAS '+rango+'H</p><p style="font-size:12px">El scanner actualizara automaticamente</p></div>';
+    const filtered=getFiltered();
+    if(!filtered.length){
+        c.innerHTML='<div style="text-align:center;padding:30px;color:#666"><div style="font-size:40px">&#9917;</div><p style="color:#fff;font-weight:600">SIN PARTIDOS</p><p style="font-size:12px">El scanner actualizara en unos minutos</p></div>';
         return;
     }
-
+    const visible=filtered.slice(0,(paginaActual+1)*POR_PAGINA);
+    const remaining=filtered.length-visible.length;
     // Group by hour
     const byHour={};
-    partidos.forEach(p=>{
-        const h=p.hora||'--:--';
-        if(!byHour[h])byHour[h]=[];
-        byHour[h].push(p);
-    });
+    visible.forEach(p=>{const h=p.hora||'--:--';if(!byHour[h])byHour[h]=[];byHour[h].push(p);});
 
     let html='';
     Object.keys(byHour).sort().forEach(hora=>{
         html+=`<div style="color:#FFD700;font-size:11px;font-weight:700;padding:8px 0 4px;border-bottom:1px solid #1a1a1a;margin-bottom:8px">&#128344; ${hora}</div>`;
         byHour[hora].forEach(m=>{
-            const isRec=m.recommended||false;
-            const bc=isRec?'#FFD700':'#0F6E56';
+            const isRec=m.recommended||false;const isTop=esTopLeague(m.competition);
+            const bc=isRec?'#FFD700':isTop?'#0F6E56':'#2A2A2A';
             const bg=isRec?'linear-gradient(135deg,#FFD700,#FFA500)':'#0F6E56';
             const tc=isRec?'#000':'#fff';
-            const badge=isRec?'<div style="background:#FFD700;color:#000;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:6px">&#11088; RECOMENDADO POR NEMEBET</div>':'';
-            const h=m.home||'';const a=m.away||'';
+            const badge=isRec?'<div style="background:#FFD700;color:#000;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:6px">&#11088; RECOMENDADO</div>':'';
+            const h=m.home||'',a=m.away||'';
             html+=`<div style="background:#111;border:1px solid #1a3a2a;border-left:4px solid ${bc};border-radius:12px;padding:12px;margin-bottom:8px">
                 ${badge}
                 <div style="display:flex;justify-content:space-between;margin-bottom:6px">
@@ -371,18 +412,21 @@ function renderPartidos(partidos,rango){
             </div>`;
         });
     });
+    if(remaining>0){
+        html+=`<button onclick="paginaActual++;renderPartidos()" style="width:100%;padding:12px;background:#111;border:1px solid #2A2A2A;border-radius:10px;color:#1AE89B;font-weight:700;font-size:13px;cursor:pointer;margin-top:4px">VER MAS PARTIDOS (${remaining} restantes)</button>`;
+    }
     c.innerHTML=html;
 }
 
-// 5-min countdown + auto scan
+// 5-min countdown
 setInterval(()=>{
     scanSecs--;
     const el=document.getElementById('proxima-actualizacion');
     if(el){const m=Math.floor(scanSecs/60),s=scanSecs%60;el.textContent=m+':'+String(s).padStart(2,'0');}
-    if(scanSecs<=0) ejecutarScan();
+    if(scanSecs<=0)ejecutarScan();
 },1000);
 
-// Update match countdowns every minute
+// Match countdowns
 setInterval(()=>{
     document.querySelectorAll('.cnt').forEach(el=>{
         let mins=parseInt(el.dataset.mins)||0;mins=Math.max(0,mins-1);el.dataset.mins=mins;
@@ -391,7 +435,6 @@ setInterval(()=>{
     });
 },60000);
 
-// Start immediately
 ejecutarScan();
 </script>
 </body>

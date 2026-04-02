@@ -31,35 +31,35 @@
 {% if user_rol == 'admin' %}
 <div style="text-align:center;margin-bottom:14px">
     <span class="plan-badge admin">ADMINISTRADOR</span>
-    <h2 style="font-size:18px;font-weight:800;margin:6px 0">PANEL COMPLETO</h2>
-    <p style="font-size:12px;color:var(--text2)">Acceso total a todos los analisis</p>
-    <a href="/admin?key={{ admin_key }}" style="font-size:12px;color:var(--green)">Ir al panel admin</a>
+    <h2 style="font-size:16px;font-weight:800;margin:6px 0">Bienvenido {{ user.nombre or 'Oscar' }}</h2>
+    <p style="font-size:12px;color:var(--text2)">Panel de administracion — acceso total</p>
+    <a href="/admin?key={{ admin_key }}" style="font-size:12px;color:var(--green)">IR AL PANEL ADMIN</a>
 </div>
 {% elif plan == 'vip' %}
 <div style="text-align:center;margin-bottom:14px">
     <span class="plan-badge vip">VIP</span>
-    <h2 style="font-size:18px;font-weight:800;margin:6px 0">TUS ANALISIS EXCLUSIVOS</h2>
-    <p style="font-size:12px;color:var(--text2)">Los analisis con mayor precision — mas del 76%</p>
+    <h2 style="font-size:16px;font-weight:800;margin:6px 0">Bienvenido {{ user.nombre or user.email.split('@')[0] }}</h2>
+    <p style="font-size:12px;color:var(--text2)">Tus analisis VIP exclusivos estan listos</p>
 </div>
 {% elif plan == 'pro' %}
 <div style="text-align:center;margin-bottom:14px">
     <span class="plan-badge pro">PLAN PRO</span>
-    <h2 style="font-size:18px;font-weight:800;margin:6px 0">TUS ANALISIS DE HOY</h2>
-    <p style="font-size:12px;color:var(--text2)">Confianza 65-75%</p>
+    <h2 style="font-size:16px;font-weight:800;margin:6px 0">Bienvenido {{ user.nombre or user.email.split('@')[0] }}</h2>
+    <p style="font-size:12px;color:var(--text2)">{{ picks|length }} analisis Pro disponibles hoy</p>
 </div>
-<div class="upgrade-strip"><span>Actualiza a VIP para los analisis mas precisos</span><a href="/#pricing">VER VIP</a></div>
+<div class="upgrade-strip"><span>Actualiza a VIP para los mas precisos</span><a href="/#pricing">VER VIP</a></div>
 {% elif plan == 'basico' %}
 <div style="text-align:center;margin-bottom:14px">
     <span class="plan-badge basico">PLAN BASICO</span>
-    <h2 style="font-size:18px;font-weight:800;margin:6px 0">TUS ANALISIS DE HOY</h2>
-    <p style="font-size:12px;color:var(--text2)">Confianza 60-64% | Maximo 3 por dia</p>
+    <h2 style="font-size:16px;font-weight:800;margin:6px 0">Bienvenido {{ user.nombre or user.email.split('@')[0] }}</h2>
+    <p style="font-size:12px;color:var(--text2)">{{ picks|length }} analisis disponibles hoy (max 3)</p>
 </div>
-<div class="upgrade-strip"><span>Actualiza a Pro para analisis de mayor confianza</span><a href="/#pricing">VER PRO</a></div>
+<div class="upgrade-strip"><span>Actualiza a Pro para mayor confianza</span><a href="/#pricing">VER PRO</a></div>
 {% elif plan == 'free_trial' %}
 <div style="text-align:center;margin-bottom:14px">
     <span class="plan-badge pro">ANALISIS PRO GRATUITO</span>
-    <h2 style="font-size:18px;font-weight:800;margin:6px 0">TU ANALISIS GRATIS</h2>
-    <p style="font-size:12px;color:var(--text2)">Nivel Pro — 65-75% confianza</p>
+    <h2 style="font-size:16px;font-weight:800;margin:6px 0">Bienvenido {{ user.nombre or user.email.split('@')[0] }}</h2>
+    <p style="font-size:12px;color:var(--text2)">Tienes 1 analisis Pro gratuito</p>
 </div>
 {% endif %}
 
