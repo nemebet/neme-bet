@@ -19,11 +19,12 @@
     {% endwith %}
 
     <form method="POST" action="/login">
+        <div style="position:absolute;left:-9999px"><input type="text" name="website_url" tabindex="-1" autocomplete="off"></div>
         <div class="card">
             <h2>Token de acceso</h2>
             <label>Pega el token que recibiste por email al suscribirte</label>
             <input type="text" name="token" placeholder="Tu token de acceso..." required
-                   style="font-size:14px;font-family:monospace">
+                   style="font-size:14px;font-family:monospace" autocomplete="off">
         </div>
         <button type="submit" class="btn">Ingresar</button>
     </form>

@@ -56,6 +56,15 @@ def init_scheduler(app):
         replace_existing=True,
     )
 
+    # 3:00 AM — Backup diario + integridad
+    scheduler.add_job(
+        func=job_backup,
+        trigger=CronTrigger(hour=3, minute=0),
+        id="daily_backup",
+        name="Backup diario + verificacion integridad",
+        replace_existing=True,
+    )
+
     scheduler.start()
     atexit.register(scheduler.shutdown)
 
@@ -94,6 +103,21 @@ def job_analyze():
     except Exception as e:
         print(f"[JOB ERROR] analyze: {e}")
         _log_job("analyze", f"ERROR: {e}")
+
+
+def job_backup():
+    """Tarea: backup diario + verificacion de integridad."""
+    print(f"\n[JOB] Backup {datetime.now()}")
+    try:
+        from security import create_backup, verify_data_integrity
+        corrupted = verify_data_integrity()
+        if corrupted:
+            _log_job("backup", f"CORRUPTION DETECTED: {corrupted} -> restored from backup")
+        path = create_backup()
+        _log_job("backup", f"Created: {os.path.basename(path)}")
+    except Exception as e:
+        print(f"[JOB ERROR] backup: {e}")
+        _log_job("backup", f"ERROR: {e}")
 
 
 def job_check_results():

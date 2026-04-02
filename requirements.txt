@@ -10,3 +10,5 @@ pywebpush
 lxml
 cryptography
 stripe
+flask-limiter
+flask-talisman

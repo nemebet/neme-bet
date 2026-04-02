@@ -5,8 +5,21 @@ venv/
 .claude/
 uploads/
 *.log
+.github/
 
 # Large data files (fetched at runtime)
 data_matches.json
 team_stats.json
+
+# Sensitive user data (never commit)
+users.json
+results_db.json
+calibration.json
+learned_weights.json
+blocked_ips.json
+push_subscriptions.json
+vapid_keys.json
+.fernet_key
+backups/
+scheduler_log.json
 .github/

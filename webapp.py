@@ -12,6 +12,7 @@ Acceder:  http://<IP>:5000
 import json
 import os
 import re
+import secrets
 import sys
 import time
 import base64
@@ -38,9 +39,16 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app = Flask(__name__,
             template_folder=os.path.join(BASE_DIR, "templates"),
             static_folder=os.path.join(BASE_DIR, "static"))
-app.secret_key = "predictor-apuestas-2026"
+app.secret_key = os.environ.get("FLASK_SECRET", secrets.token_hex(32))
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16MB max
+
+# Initialize security layer
+try:
+    from security import init_security
+    init_security(app)
+except Exception as e:
+    print(f"[SECURITY] Init failed: {e}")
 
 
 def load_env():
@@ -874,16 +882,33 @@ def app_home():
 @app.route("/login", methods=["GET", "POST"])
 def login_page():
     if request.method == "POST":
-        token = request.form.get("token", "").strip()
+        from security import check_honeypot, is_ip_blocked, record_failed_login, record_successful_login, sanitize
+
+        ip = request.headers.get("X-Forwarded-For", request.remote_addr or "")
+        if "," in ip:
+            ip = ip.split(",")[0].strip()
+
+        # Honeypot check
+        if check_honeypot(request.form):
+            return redirect(url_for("landing"))
+
+        # IP block check
+        if is_ip_blocked(ip):
+            flash("Acceso bloqueado temporalmente. Intenta mas tarde.")
+            return render_template("login.html")
+
+        token = sanitize(request.form.get("token", ""), max_length=64)
         from stripe_handler import verify_token
         user = verify_token(token)
         if user:
+            record_successful_login(ip, user.get("email", ""))
             session["token"] = token
             session.permanent = True
             app.permanent_session_lifetime = timedelta(days=30)
             flash(f"Bienvenido! Plan: {user['plan'].upper()}")
             return redirect(url_for("app_home"))
         else:
+            record_failed_login(ip)
             flash("Token invalido o suscripcion vencida")
     return render_template("login.html")
 
@@ -955,7 +980,11 @@ def stripe_webhook():
 
 @app.route("/health")
 def health():
-    return "ok", 200
+    try:
+        from security import get_health_status
+        return jsonify(get_health_status())
+    except Exception:
+        return jsonify({"status": "ok"})
 
 
 @app.route("/predict", methods=["POST"])
