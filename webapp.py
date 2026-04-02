@@ -1777,6 +1777,22 @@ def api_recent_wins():
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+#  API: PARTIDOS HOY
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/api/partidos-hoy")
+def api_partidos_hoy():
+    """Retorna partidos proximos para la landing page (AJAX)."""
+    try:
+        from featured_matches import fetch_partidos
+        data = fetch_partidos()
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"partidos": [], "total": 0, "error": str(e),
+                        "actualizado": datetime.now().isoformat()})
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 #  API JSON ENDPOINT
 # ═══════════════════════════════════════════════════════════════════════════
 

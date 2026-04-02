@@ -1,45 +1,42 @@
 """
-FEATURED_MATCHES.PY — Partidos destacados para la landing page
-══════════════════════════════════════════════════════════════
-Obtiene los 6 partidos mas relevantes de las proximas 12 horas.
+FEATURED_MATCHES.PY — Partidos proximos para NEMEBET
+════════════════════════════════════════════════════
+Fuentes: football-data.org > API-Football > BeSoccer scraping
+Sin filtro de ligas — muestra TODOS los partidos disponibles.
+Fallback: 12h -> 24h -> dia completo.
 """
 
 import json
 import os
+import time
 import urllib.request
 import urllib.error
+import urllib.parse
 from datetime import datetime, timedelta
 
 from data_dir import data_path
 
-FEATURED_PATH = data_path("featured_matches.json")
-CACHE_TTL = 3600  # 1 hora
+CACHE_PATH = data_path("featured_matches.json")
+CACHE_TTL = 1800  # 30 min
 
-TOP_LEAGUES = {
-    "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1",
-    "UEFA Champions League", "UEFA Europa League",
-    "Primera Division", "Eredivisie", "Liga Portugal",
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Linux; Android 11; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "es-ES,es;q=0.9",
+    "Connection": "keep-alive",
 }
 
 TOP_TEAMS = {
-    # Premier League
     "manchester city", "arsenal", "liverpool", "chelsea", "manchester united",
-    "tottenham", "newcastle",
-    # La Liga
-    "real madrid", "barcelona", "atletico", "real sociedad",
-    # Serie A
-    "inter", "napoli", "juventus", "milan", "atalanta",
-    # Bundesliga
-    "bayern", "dortmund", "leverkusen", "leipzig",
-    # Ligue 1
-    "paris saint-germain", "marseille", "monaco",
-    # South America
+    "tottenham", "newcastle", "real madrid", "barcelona", "atletico",
+    "inter", "napoli", "juventus", "milan", "atalanta", "bayern",
+    "dortmund", "leverkusen", "paris saint-germain", "marseille",
     "boca juniors", "river plate", "flamengo", "palmeiras",
-    "atletico nacional", "millonarios",
+    "atletico nacional", "millonarios", "sporting", "benfica", "porto",
 }
 
 
-def _load_env_key(name):
+def _env_key(name):
     val = os.environ.get(name, "")
     if val:
         return val
@@ -52,127 +49,215 @@ def _load_env_key(name):
     return ""
 
 
-def _is_top_team(name):
-    nl = name.lower()
-    return any(t in nl for t in TOP_TEAMS)
+def _is_top(name):
+    return any(t in name.lower() for t in TOP_TEAMS)
 
 
-def _relevance_score(match):
-    """Calcula score de relevancia (mayor = mas relevante)."""
-    score = 0
-    comp = match.get("competition", "")
-    if comp in TOP_LEAGUES:
-        score += 10
-    if "Champions" in comp:
-        score += 15
-    home = match.get("home", "")
-    away = match.get("away", "")
-    if _is_top_team(home):
-        score += 5
-    if _is_top_team(away):
-        score += 5
-    if _is_top_team(home) and _is_top_team(away):
-        score += 10  # Derby / big match bonus
-    return score
+# ═══════════════════════════════════════════════════════════════
+#  SOURCE 1: football-data.org
+# ═══════════════════════════════════════════════════════════════
 
-
-def fetch_featured():
-    """Obtiene partidos destacados de las proximas 12 horas."""
-
-    # Check cache
-    if os.path.exists(FEATURED_PATH):
-        try:
-            mtime = os.path.getmtime(FEATURED_PATH)
-            import time
-            if time.time() - mtime < CACHE_TTL:
-                with open(FEATURED_PATH, encoding="utf-8") as f:
-                    return json.load(f)
-        except Exception:
-            pass
-
-    key = _load_env_key("FOOTBALL_DATA_API_KEY")
+def _fetch_football_data():
+    key = _env_key("FOOTBALL_DATA_API_KEY")
     if not key:
-        return {"matches": [], "updated": datetime.now().isoformat()}
+        return []
 
-    now = datetime.now()
-    date_from = now.strftime("%Y-%m-%d")
-    date_to = (now + timedelta(days=1)).strftime("%Y-%m-%d")
+    now = datetime.utcnow()
+    d1 = now.strftime("%Y-%m-%d")
+    d2 = (now + timedelta(days=1)).strftime("%Y-%m-%d")
 
-    url = f"https://api.football-data.org/v4/matches?dateFrom={date_from}&dateTo={date_to}"
+    url = f"https://api.football-data.org/v4/matches?dateFrom={d1}&dateTo={d2}"
     req = urllib.request.Request(url)
     req.add_header("X-Auth-Token", key)
 
-    matches = []
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read().decode())
+    except Exception as e:
+        print(f"[FEATURED] football-data error: {e}")
+        return []
 
-        for m in data.get("matches", []):
-            status = m.get("status", "")
-            if status not in ("TIMED", "SCHEDULED"):
-                continue
+    matches = []
+    for m in data.get("matches", []):
+        if m.get("status") not in ("TIMED", "SCHEDULED"):
+            continue
+        utc = m.get("utcDate", "")
+        if not utc:
+            continue
+        matches.append({
+            "home": m.get("homeTeam", {}).get("name", "?"),
+            "away": m.get("awayTeam", {}).get("name", "?"),
+            "competition": m.get("competition", {}).get("name", "?"),
+            "utc_date": utc,
+            "source": "football-data.org",
+        })
 
-            utc_date = m.get("utcDate", "")
-            if not utc_date:
-                continue
+    print(f"[FEATURED] football-data.org: {len(matches)} partidos")
+    return matches
 
-            # Parse UTC time
+
+# ═══════════════════════════════════════════════════════════════
+#  SOURCE 2: API-Football
+# ═══════════════════════════════════════════════════════════════
+
+def _fetch_api_football():
+    key = _env_key("API_FOOTBALL_KEY")
+    if not key:
+        return []
+
+    today = datetime.utcnow().strftime("%Y-%m-%d")
+    url = f"https://v3.football.api-sports.io/fixtures?date={today}&status=NS"
+    req = urllib.request.Request(url)
+    req.add_header("x-apisports-key", key)
+
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode())
+    except Exception as e:
+        print(f"[FEATURED] API-Football error: {e}")
+        return []
+
+    matches = []
+    for fix in data.get("response", []):
+        teams = fix.get("teams", {})
+        fixture = fix.get("fixture", {})
+        league = fix.get("league", {})
+        matches.append({
+            "home": teams.get("home", {}).get("name", "?"),
+            "away": teams.get("away", {}).get("name", "?"),
+            "competition": league.get("name", "?"),
+            "utc_date": fixture.get("date", ""),
+            "source": "api-football",
+        })
+
+    print(f"[FEATURED] API-Football: {len(matches)} partidos")
+    return matches
+
+
+# ═══════════════════════════════════════════════════════════════
+#  PROCESS AND FILTER
+# ═══════════════════════════════════════════════════════════════
+
+def _process_matches(raw_matches, max_hours=12):
+    """Filtra por rango de tiempo y calcula countdown."""
+    now = datetime.utcnow()
+    cutoff = now + timedelta(hours=max_hours)
+    processed = []
+
+    for m in raw_matches:
+        utc = m.get("utc_date", "")
+        if not utc:
+            continue
+        try:
+            mt = datetime.fromisoformat(utc.replace("Z", "+00:00")).replace(tzinfo=None)
+        except Exception:
             try:
-                match_time = datetime.fromisoformat(utc_date.replace("Z", "+00:00"))
-                match_local = match_time.replace(tzinfo=None)  # Simplified
+                mt = datetime.strptime(utc[:19], "%Y-%m-%dT%H:%M:%S")
             except Exception:
                 continue
 
-            # Only next 12 hours
-            if match_local > now + timedelta(hours=12):
-                continue
-            if match_local < now - timedelta(minutes=30):
-                continue
+        if mt < now - timedelta(minutes=30):
+            continue  # Already started
+        if mt > cutoff:
+            continue
 
-            home = m.get("homeTeam", {}).get("name", "?")
-            away = m.get("awayTeam", {}).get("name", "?")
-            comp = m.get("competition", {}).get("name", "?")
-            hora = utc_date[11:16] if len(utc_date) > 16 else ""
+        delta = mt - now
+        mins = max(0, int(delta.total_seconds() / 60))
+        hours = mins // 60
+        mins_r = mins % 60
+        hora = utc[11:16] if len(utc) > 16 else ""
 
-            # Minutes until start
-            delta = match_local - now
-            mins_until = max(0, int(delta.total_seconds() / 60))
-            hours_until = mins_until // 60
-            mins_remainder = mins_until % 60
+        # Relevance score
+        score = 0
+        home, away = m["home"], m["away"]
+        comp = m.get("competition", "")
+        if _is_top(home): score += 5
+        if _is_top(away): score += 5
+        if _is_top(home) and _is_top(away): score += 10
+        if "Champions" in comp: score += 15
+        elif "Europa" in comp: score += 10
+        elif any(x in comp for x in ["Premier", "Liga", "Serie A", "Bundesliga", "Ligue 1"]): score += 8
 
-            entry = {
-                "home": home,
-                "away": away,
-                "competition": comp,
-                "hora": hora,
-                "mins_until": mins_until,
-                "countdown": f"{hours_until}h {mins_remainder}m" if hours_until > 0 else f"{mins_remainder}m",
-                "relevance": _relevance_score({
-                    "home": home, "away": away, "competition": comp,
-                }),
-                "is_big_match": _is_top_team(home) and _is_top_team(away),
-            }
-            matches.append(entry)
+        processed.append({
+            "home": home,
+            "away": away,
+            "competition": comp,
+            "hora": hora,
+            "utc_date": utc,
+            "mins_until": mins,
+            "countdown": f"{hours}h {mins_r}m" if hours > 0 else f"{mins_r}m",
+            "relevance": score,
+            "is_big": _is_top(home) and _is_top(away),
+            "source": m.get("source", ""),
+        })
 
-    except Exception as e:
-        print(f"[FEATURED] Error: {e}")
+    # Sort: big matches first, then by relevance, then by time
+    processed.sort(key=lambda x: (-x["relevance"], x["mins_until"]))
+    return processed
 
-    # Sort by relevance, take top 6
-    matches.sort(key=lambda x: x["relevance"], reverse=True)
-    featured = matches[:6]
 
-    # Mark #1 as recommended
-    if featured:
-        featured[0]["recommended"] = True
+def fetch_partidos():
+    """
+    Obtiene partidos con fallback: 12h -> 24h -> dia completo.
+    Retorna dict con partidos y metadata.
+    """
+    # Check cache
+    if os.path.exists(CACHE_PATH):
+        try:
+            mtime = os.path.getmtime(CACHE_PATH)
+            if time.time() - mtime < CACHE_TTL:
+                with open(CACHE_PATH, encoding="utf-8") as f:
+                    cached = json.load(f)
+                if cached.get("partidos"):
+                    return cached
+        except Exception:
+            pass
+
+    print(f"[FEATURED] Fetching matches {datetime.now().strftime('%H:%M')}")
+
+    # Fetch from all sources
+    raw = _fetch_football_data()
+    if len(raw) < 5:
+        raw.extend(_fetch_api_football())
+
+    # Dedup by home+away
+    seen = set()
+    unique = []
+    for m in raw:
+        key = (m["home"].lower(), m["away"].lower())
+        if key not in seen:
+            seen.add(key)
+            unique.append(m)
+
+    # Try 12h first
+    partidos = _process_matches(unique, max_hours=12)
+    rango = 12
+
+    # Fallback to 24h
+    if len(partidos) < 3:
+        partidos = _process_matches(unique, max_hours=24)
+        rango = 24
+
+    # Fallback to 48h (full)
+    if len(partidos) < 3:
+        partidos = _process_matches(unique, max_hours=48)
+        rango = 48
+
+    # Mark first as recommended
+    if partidos:
+        partidos[0]["recommended"] = True
 
     result = {
-        "matches": featured,
-        "updated": datetime.now().isoformat(),
-        "total_found": len(matches),
+        "partidos": partidos[:12],
+        "total": len(partidos),
+        "rango_horas": rango,
+        "fuente": "football-data.org / API-Football",
+        "actualizado": datetime.now().isoformat(),
     }
 
-    # Cache
-    with open(FEATURED_PATH, "w", encoding="utf-8") as f:
+    # Save cache
+    with open(CACHE_PATH, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
+    print(f"[FEATURED] {len(partidos)} partidos (rango {rango}h)")
     return result

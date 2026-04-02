@@ -1,5 +1,153 @@
 {
-  "matches": [],
-  "updated": "2026-04-01T20:39:18.356781",
-  "total_found": 0
+  "partidos": [
+    {
+      "home": "Monterrey W",
+      "away": "Pumas UNAM W",
+      "competition": "Liga MX Femenil",
+      "hora": "03:00",
+      "utc_date": "2026-04-02T03:00:00+00:00",
+      "mins_until": 9,
+      "countdown": "9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football",
+      "recommended": true
+    },
+    {
+      "home": "Śląsk Wrocław II",
+      "away": "Chojniczanka Chojnice",
+      "competition": "II Liga - East",
+      "hora": "10:00",
+      "utc_date": "2026-04-02T10:00:00+00:00",
+      "mins_until": 429,
+      "countdown": "7h 9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    },
+    {
+      "home": "Sparta Katowice",
+      "away": "Górnik Zabrze II",
+      "competition": "III Liga - Group 3",
+      "hora": "10:00",
+      "utc_date": "2026-04-02T10:00:00+00:00",
+      "mins_until": 429,
+      "countdown": "7h 9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    },
+    {
+      "home": "Mathare United",
+      "away": "Police",
+      "competition": "FKF Premier League",
+      "hora": "11:00",
+      "utc_date": "2026-04-02T11:00:00+00:00",
+      "mins_until": 489,
+      "countdown": "8h 9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    },
+    {
+      "home": "Chemnitzer FC U19",
+      "away": "Dynamo Dresden U19",
+      "competition": "U19 Bundesliga",
+      "hora": "11:30",
+      "utc_date": "2026-04-02T11:30:00+00:00",
+      "mins_until": 519,
+      "countdown": "8h 39m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    },
+    {
+      "home": "Korona Kielce II",
+      "away": "Star Starachowice",
+      "competition": "III Liga - Group 4",
+      "hora": "12:00",
+      "utc_date": "2026-04-02T12:00:00+00:00",
+      "mins_until": 549,
+      "countdown": "9h 9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    },
+    {
+      "home": "Gardabani",
+      "away": "Merani Tbilisi",
+      "competition": "Liga 3",
+      "hora": "12:00",
+      "utc_date": "2026-04-02T12:00:00+00:00",
+      "mins_until": 549,
+      "countdown": "9h 9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    },
+    {
+      "home": "Guria",
+      "away": "Betlemi",
+      "competition": "Liga 3",
+      "hora": "12:00",
+      "utc_date": "2026-04-02T12:00:00+00:00",
+      "mins_until": 549,
+      "countdown": "9h 9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    },
+    {
+      "home": "Saburtalo II",
+      "away": "Gonio",
+      "competition": "Liga 3",
+      "hora": "12:00",
+      "utc_date": "2026-04-02T12:00:00+00:00",
+      "mins_until": 549,
+      "countdown": "9h 9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    },
+    {
+      "home": "Iberia 2010",
+      "away": "WIT Georgia",
+      "competition": "Liga 3",
+      "hora": "12:00",
+      "utc_date": "2026-04-02T12:00:00+00:00",
+      "mins_until": 549,
+      "countdown": "9h 9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    },
+    {
+      "home": "Kolkheti Khobi",
+      "away": "Irao",
+      "competition": "Liga 3",
+      "hora": "12:00",
+      "utc_date": "2026-04-02T12:00:00+00:00",
+      "mins_until": 549,
+      "countdown": "9h 9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    },
+    {
+      "home": "Lokomotivi Tbilisi",
+      "away": "Dinamo Tbilisi II",
+      "competition": "Liga 3",
+      "hora": "12:00",
+      "utc_date": "2026-04-02T12:00:00+00:00",
+      "mins_until": 549,
+      "countdown": "9h 9m",
+      "relevance": 8,
+      "is_big": false,
+      "source": "api-football"
+    }
+  ],
+  "total": 194,
+  "rango_horas": 12,
+  "fuente": "football-data.org / API-Football",
+  "actualizado": "2026-04-01T20:50:20.800303"
 }

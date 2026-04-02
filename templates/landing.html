@@ -160,35 +160,20 @@
         {% endif %}
     </div>
 
-    <!-- FEATURED MATCHES -->
-    {% if featured %}
+    <!-- PARTIDOS PROXIMOS (AJAX) -->
     <div style="margin:24px 0">
-        <h2 style="font-size:16px;text-align:center;margin-bottom:4px;color:#1AE89B">Partidos mas esperados</h2>
-        <div style="text-align:center;font-size:11px;color:#555;margin-bottom:12px">Proximas 12 horas</div>
-
-        {% for m in featured %}
-        <div style="background:#111;border:1px solid {% if m.recommended %}#F5A623{% else %}#2A2A2A{% endif %};border-radius:12px;padding:14px;margin-bottom:8px;{% if m.recommended %}border-width:2px{% endif %}">
-            {% if m.recommended %}
-            <div style="text-align:center;margin-bottom:6px">
-                <span style="background:rgba(245,166,35,0.15);color:#F5A623;font-size:10px;font-weight:700;padding:3px 10px;border-radius:5px;animation:pulse 2s infinite;display:inline-block">&#11088; RECOMENDADO POR NEME BET</span>
-                <div style="font-size:10px;color:#888;margin-top:2px">Mayor probabilidad de acierto del dia</div>
-            </div>
-            {% endif %}
-            <div style="display:flex;justify-content:space-between;align-items:center">
-                <div>
-                    <div style="font-size:15px;font-weight:700">{{ m.home }} <span style="color:#888">vs</span> {{ m.away }}</div>
-                    <div style="font-size:11px;color:#888;margin-top:2px">{{ m.competition }} | {{ m.hora }}</div>
-                </div>
-                <div style="text-align:right">
-                    <div style="font-size:12px;color:#1AE89B;font-weight:600">{{ m.countdown }}</div>
-                    <div style="font-size:10px;color:#555">para inicio</div>
-                </div>
-            </div>
-            <button onclick="openModal(event)" style="width:100%;margin-top:10px;padding:12px;background:{% if m.recommended %}linear-gradient(135deg,#B8860B,#F5A623){% else %}linear-gradient(135deg,#0F6E56,#0D8B6A){% endif %};color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">VER ANALISIS</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <h2 style="font-size:16px;color:#1AE89B;margin:0">Partidos proximos</h2>
+            <span id="partidosTimestamp" style="font-size:10px;color:#555"></span>
         </div>
-        {% endfor %}
+        <div id="listaPartidos">
+            <!-- Skeleton loaders -->
+            <div style="background:linear-gradient(90deg,#1a1a1a 25%,#2a2a2a 50%,#1a1a1a 75%);background-size:200% 100%;animation:skel 1.5s infinite;height:90px;border-radius:12px;margin-bottom:8px"></div>
+            <div style="background:linear-gradient(90deg,#1a1a1a 25%,#2a2a2a 50%,#1a1a1a 75%);background-size:200% 100%;animation:skel 1.5s infinite;height:90px;border-radius:12px;margin-bottom:8px"></div>
+            <div style="background:linear-gradient(90deg,#1a1a1a 25%,#2a2a2a 50%,#1a1a1a 75%);background-size:200% 100%;animation:skel 1.5s infinite;height:90px;border-radius:12px;margin-bottom:8px"></div>
+        </div>
     </div>
-    {% endif %}
+    <style>@keyframes skel{0%{background-position:200% 0}100%{background-position:-200% 0}}</style>
 
     <!-- STATS -->
     <div class="live-stats">
@@ -299,9 +284,66 @@ function updateCountdown(){
 }
 setInterval(updateCountdown,1000);updateCountdown();
 
-// Fake viewer count (ranges 8-23)
+// Fake viewer count
 const vc=document.getElementById('viewerCount');
 setInterval(()=>{vc.textContent=Math.floor(Math.random()*16)+8;},30000);
+
+// Load matches via AJAX
+function loadPartidos(){
+    fetch('/api/partidos-hoy').then(r=>r.json()).then(data=>{
+        const c=document.getElementById('listaPartidos');
+        const ts=document.getElementById('partidosTimestamp');
+        if(ts && data.actualizado) ts.textContent='Actualizado '+data.actualizado.substring(11,16);
+
+        if(!data.partidos || data.partidos.length===0){
+            c.innerHTML='<div style="background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:20px;text-align:center">'+
+                '<div style="font-size:24px;margin-bottom:8px">&#9917;</div>'+
+                '<div style="font-size:14px;color:#888">No hay partidos en las proximas '+data.rango_horas+'h</div>'+
+                '<div style="font-size:12px;color:#555;margin-top:4px">Actualizamos cada 30 minutos</div></div>';
+            return;
+        }
+
+        let html='';
+        data.partidos.forEach((m,i)=>{
+            const isRec=m.recommended;
+            const border=isRec?'border:2px solid #F5A623':'border:1px solid #2A2A2A';
+            let rec='';
+            if(isRec) rec='<div style="text-align:center;margin-bottom:6px"><span style="background:rgba(245,166,35,0.15);color:#F5A623;font-size:10px;font-weight:700;padding:3px 10px;border-radius:5px">&#11088; RECOMENDADO</span></div>';
+            const bg=isRec?'linear-gradient(135deg,#B8860B,#F5A623)':'linear-gradient(135deg,#0F6E56,#0D8B6A)';
+
+            html+=`<div style="background:#111;${border};border-radius:12px;padding:14px;margin-bottom:8px">
+                ${rec}
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                    <div>
+                        <div style="font-size:15px;font-weight:700">${m.home} <span style="color:#888">vs</span> ${m.away}</div>
+                        <div style="font-size:11px;color:#888;margin-top:2px">${m.competition} | ${m.hora}</div>
+                    </div>
+                    <div style="text-align:right">
+                        <div class="cnt" data-mins="${m.mins_until}" style="font-size:12px;color:#1AE89B;font-weight:600">${m.countdown}</div>
+                    </div>
+                </div>
+                <button onclick="openModal(event)" style="width:100%;margin-top:10px;padding:12px;background:${bg};color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">VER ANALISIS</button>
+            </div>`;
+        });
+        c.innerHTML=html;
+    }).catch(()=>{
+        document.getElementById('listaPartidos').innerHTML=
+            '<div style="text-align:center;color:#555;font-size:13px;padding:20px">Cargando partidos...</div>';
+    });
+}
+loadPartidos();
+setInterval(loadPartidos, 30*60*1000);
+
+// Update countdowns every minute
+setInterval(()=>{
+    document.querySelectorAll('.cnt').forEach(el=>{
+        let mins=parseInt(el.dataset.mins)||0;
+        mins=Math.max(0,mins-1);
+        el.dataset.mins=mins;
+        if(mins<=0){el.textContent='EN VIVO';el.style.color='#ff4444';}
+        else{const h=Math.floor(mins/60),m=mins%60;el.textContent=h>0?h+'h '+m+'m':m+'m';}
+    });
+},60000);
 </script>
 </body>
 </html>
