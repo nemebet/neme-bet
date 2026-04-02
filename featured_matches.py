@@ -1,9 +1,8 @@
 """
-FEATURED_MATCHES.PY — Partidos proximos para NEMEBET
-════════════════════════════════════════════════════
-Fuentes: football-data.org > API-Football > BeSoccer scraping
-Sin filtro de ligas — muestra TODOS los partidos disponibles.
-Fallback: 12h -> 24h -> dia completo.
+FEATURED_MATCHES.PY — Partidos globales para NEMEBET
+═══════════════════════════════════════════════════
+Todas las ligas del mundo: Europa, LATAM, Asia, Africa.
+Fuentes: API-Football (global) > football-data.org > Sofascore
 """
 
 import json
@@ -19,11 +18,42 @@ from data_dir import data_path
 CACHE_PATH = data_path("featured_matches.json")
 CACHE_TTL = 300  # 5 min
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Linux; Android 11; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "es-ES,es;q=0.9",
-    "Connection": "keep-alive",
+# ═══════════════════════════════════════════════════════════
+#  ALL LEAGUES BY REGION
+# ═══════════════════════════════════════════════════════════
+
+TOP_LEAGUE_IDS = {
+    # Europe top
+    2, 3, 848, 39, 140, 135, 78, 61, 94, 88, 144, 203, 179,
+    # LATAM top
+    239, 128, 71, 262, 253, 13, 14, 265, 268, 281, 278,
+    # Asia top
+    98, 307, 17, 188,
+    # Africa
+    20, 21,
+}
+
+LATAM_IDS = {239, 128, 253, 262, 71, 13, 14, 130, 131, 265, 268, 281, 278, 282, 330, 267, 233, 73}
+
+REGION_MAP = {
+    # Europe
+    39: "EU", 40: "EU", 140: "EU", 141: "EU", 135: "EU", 136: "EU",
+    78: "EU", 79: "EU", 61: "EU", 62: "EU", 94: "EU", 88: "EU",
+    144: "EU", 203: "EU", 179: "EU", 207: "EU", 218: "EU", 119: "EU",
+    113: "EU", 103: "EU", 106: "EU", 2: "EU", 3: "EU", 848: "EU",
+    197: "EU", 235: "EU", 333: "EU", 345: "EU", 283: "EU", 286: "EU",
+    210: "EU", 172: "EU", 271: "EU", 332: "EU", 384: "EU",
+    # LATAM
+    239: "LATAM", 128: "LATAM", 71: "LATAM", 262: "LATAM", 253: "LATAM",
+    13: "LATAM", 14: "LATAM", 265: "LATAM", 268: "LATAM", 281: "LATAM",
+    278: "LATAM", 282: "LATAM", 330: "LATAM", 267: "LATAM", 130: "LATAM",
+    131: "LATAM", 73: "LATAM", 263: "LATAM", 240: "LATAM", 254: "LATAM",
+    # Asia
+    98: "ASIA", 99: "ASIA", 169: "ASIA", 292: "ASIA", 307: "ASIA",
+    435: "ASIA", 290: "ASIA", 323: "ASIA", 188: "ASIA", 17: "ASIA",
+    196: "ASIA", 296: "ASIA",
+    # Africa
+    233: "AFRICA", 200: "AFRICA", 288: "AFRICA", 20: "AFRICA", 21: "AFRICA",
 }
 
 TOP_TEAMS = {
@@ -32,7 +62,10 @@ TOP_TEAMS = {
     "inter", "napoli", "juventus", "milan", "atalanta", "bayern",
     "dortmund", "leverkusen", "paris saint-germain", "marseille",
     "boca juniors", "river plate", "flamengo", "palmeiras",
-    "atletico nacional", "millonarios", "sporting", "benfica", "porto",
+    "atletico nacional", "millonarios", "america de cali", "deportivo cali",
+    "monterrey", "america", "cruz azul", "guadalajara",
+    "sporting", "benfica", "porto", "ajax", "feyenoord",
+    "al hilal", "al ahly", "al nassr",
 }
 
 
@@ -53,11 +86,70 @@ def _is_top(name):
     return any(t in name.lower() for t in TOP_TEAMS)
 
 
-# ═══════════════════════════════════════════════════════════════
-#  SOURCE 1: football-data.org
-# ═══════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════
+#  FETCH ALL MATCHES (single API call)
+# ═══════════════════════════════════════════════════════════
+
+def _fetch_api_football_global():
+    """Single call: all matches for today (most efficient)."""
+    key = _env_key("API_FOOTBALL_KEY")
+    if not key:
+        return []
+
+    today = datetime.utcnow().strftime("%Y-%m-%d")
+    url = f"https://v3.football.api-sports.io/fixtures?date={today}"
+    req = urllib.request.Request(url)
+    req.add_header("x-apisports-key", key)
+
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode())
+    except Exception as e:
+        print(f"[FETCH] API-Football error: {e}")
+        return []
+
+    matches = []
+    finished = {"FT", "AET", "PEN", "AWD", "WO", "CANC", "ABD", "PST"}
+
+    for fix in data.get("response", []):
+        try:
+            f = fix["fixture"]
+            teams = fix["teams"]
+            league = fix["league"]
+            status = f.get("status", {}).get("short", "")
+
+            if status in finished:
+                continue
+
+            lid = league.get("id", 0)
+            region = REGION_MAP.get(lid, "OTHER")
+            is_latam = lid in LATAM_IDS
+            is_top = lid in TOP_LEAGUE_IDS
+            is_live = status in ("1H", "2H", "HT", "ET", "P", "BT")
+
+            matches.append({
+                "home": teams.get("home", {}).get("name", "?"),
+                "away": teams.get("away", {}).get("name", "?"),
+                "competition": league.get("name", "?"),
+                "country": league.get("country", "?"),
+                "utc_date": f.get("date", ""),
+                "source": "api-football",
+                "league_id": lid,
+                "region": region,
+                "is_latam": is_latam,
+                "is_top": is_top,
+                "is_live": is_live,
+                "status": status,
+            })
+        except Exception:
+            continue
+
+    print(f"[FETCH] API-Football global: {len(matches)} matches")
+    return matches
+
 
 def _fetch_football_data():
+    """Backup: football-data.org free tier."""
     key = _env_key("FOOTBALL_DATA_API_KEY")
     if not key:
         return []
@@ -74,135 +166,42 @@ def _fetch_football_data():
         with urllib.request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read().decode())
     except Exception as e:
-        print(f"[FEATURED] football-data error: {e}")
+        print(f"[FETCH] football-data error: {e}")
         return []
 
     matches = []
     for m in data.get("matches", []):
         if m.get("status") not in ("TIMED", "SCHEDULED"):
             continue
-        utc = m.get("utcDate", "")
-        if not utc:
-            continue
         matches.append({
             "home": m.get("homeTeam", {}).get("name", "?"),
             "away": m.get("awayTeam", {}).get("name", "?"),
             "competition": m.get("competition", {}).get("name", "?"),
-            "utc_date": utc,
+            "country": "",
+            "utc_date": m.get("utcDate", ""),
             "source": "football-data.org",
+            "league_id": 0,
+            "region": "EU",
+            "is_latam": False,
+            "is_top": True,
+            "is_live": False,
+            "status": "NS",
         })
 
-    print(f"[FEATURED] football-data.org: {len(matches)} partidos")
+    print(f"[FETCH] football-data.org: {len(matches)} matches")
     return matches
 
 
-# ═══════════════════════════════════════════════════════════════
-#  SOURCE 2: API-Football
-# ═══════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════
+#  PROCESS, SCORE, FILTER
+# ═══════════════════════════════════════════════════════════
 
-# LATAM leagues for night picks (6PM-11PM Colombia)
-LATAM_LEAGUE_IDS = [239, 128, 253, 262, 71, 13, 14]  # BetPlay, Argentina, MLS, Liga MX, Brasileirao, Libertadores, Sudamericana
-LATAM_LEAGUE_NAMES = {
-    239: "Liga BetPlay", 128: "Liga Argentina", 253: "MLS",
-    262: "Liga MX", 71: "Brasileirao", 13: "Copa Libertadores",
-    14: "Copa Sudamericana",
-}
-
-
-def _fetch_api_football():
-    key = _env_key("API_FOOTBALL_KEY")
-    if not key:
-        return []
-
-    today = datetime.utcnow().strftime("%Y-%m-%d")
-    all_matches = []
-
-    # General fixtures
-    url = f"https://v3.football.api-sports.io/fixtures?date={today}&status=NS"
-    req = urllib.request.Request(url)
-    req.add_header("x-apisports-key", key)
-
-    try:
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            data = json.loads(resp.read().decode())
-        for fix in data.get("response", []):
-            teams = fix.get("teams", {})
-            fixture = fix.get("fixture", {})
-            league = fix.get("league", {})
-            lid = league.get("id", 0)
-            all_matches.append({
-                "home": teams.get("home", {}).get("name", "?"),
-                "away": teams.get("away", {}).get("name", "?"),
-                "competition": league.get("name", "?"),
-                "utc_date": fixture.get("date", ""),
-                "source": "api-football",
-                "league_id": lid,
-                "is_latam": lid in LATAM_LEAGUE_IDS,
-            })
-    except Exception as e:
-        print(f"[FEATURED] API-Football general error: {e}")
-
-    # Specific LATAM leagues search (ensures we never miss them)
-    latam_count = sum(1 for m in all_matches if m.get("is_latam"))
-    if latam_count < 3:
-        for lid in LATAM_LEAGUE_IDS:
-            try:
-                url2 = f"https://v3.football.api-sports.io/fixtures?date={today}&league={lid}&status=NS"
-                req2 = urllib.request.Request(url2)
-                req2.add_header("x-apisports-key", key)
-                with urllib.request.urlopen(req2, timeout=8) as resp2:
-                    data2 = json.loads(resp2.read().decode())
-                for fix in data2.get("response", []):
-                    teams = fix.get("teams", {})
-                    fixture = fix.get("fixture", {})
-                    league = fix.get("league", {})
-                    all_matches.append({
-                        "home": teams.get("home", {}).get("name", "?"),
-                        "away": teams.get("away", {}).get("name", "?"),
-                        "competition": LATAM_LEAGUE_NAMES.get(lid, league.get("name", "?")),
-                        "utc_date": fixture.get("date", ""),
-                        "source": "api-football-latam",
-                        "league_id": lid,
-                        "is_latam": True,
-                    })
-            except Exception:
-                continue
-
-    matches = all_matches
-    print(f"[FEATURED] API-Football: {len(matches)} ({sum(1 for m in matches if m.get('is_latam'))} LATAM)")
-    return matches
-
-
-def _OLD_fetch_api_football_backup():
-    """Backup — never called."""
-    matches = []
-    for fix in []:
-        teams = fix.get("teams", {})
-        fixture = fix.get("fixture", {})
-        league = fix.get("league", {})
-        matches.append({
-            "home": teams.get("home", {}).get("name", "?"),
-            "away": teams.get("away", {}).get("name", "?"),
-            "competition": league.get("name", "?"),
-            "utc_date": fixture.get("date", ""),
-            "source": "api-football",
-        })
-
-    print(f"[FEATURED] API-Football: {len(matches)} partidos")
-    return matches
-
-
-# ═══════════════════════════════════════════════════════════════
-#  PROCESS AND FILTER
-# ═══════════════════════════════════════════════════════════════
-
-def _process_matches(raw_matches, max_hours=12):
-    """Filtra por rango de tiempo y calcula countdown."""
+def _process(raw, max_hours=24):
     now = datetime.utcnow()
     cutoff = now + timedelta(hours=max_hours)
     processed = []
 
-    for m in raw_matches:
+    for m in raw:
         utc = m.get("utc_date", "")
         if not utc:
             continue
@@ -214,10 +213,12 @@ def _process_matches(raw_matches, max_hours=12):
             except Exception:
                 continue
 
-        if mt < now - timedelta(minutes=30):
-            continue  # Already started
-        if mt > cutoff:
-            continue
+        # Live matches always included
+        if not m.get("is_live"):
+            if mt < now - timedelta(minutes=30):
+                continue
+            if mt > cutoff:
+                continue
 
         delta = mt - now
         mins = max(0, int(delta.total_seconds() / 60))
@@ -225,45 +226,52 @@ def _process_matches(raw_matches, max_hours=12):
         mins_r = mins % 60
         hora = utc[11:16] if len(utc) > 16 else ""
 
-        # Relevance score
+        # Relevance
         score = 0
-        home, away = m["home"], m["away"]
-        comp = m.get("competition", "")
-        is_latam = m.get("is_latam", False)
+        home, away, comp = m["home"], m["away"], m.get("competition", "")
+        if m.get("is_live"): score += 50
+        if m.get("is_top"): score += 12
+        if m.get("is_latam"): score += 12
         if _is_top(home): score += 5
         if _is_top(away): score += 5
         if _is_top(home) and _is_top(away): score += 10
-        if "Champions" in comp: score += 15
-        elif "Europa" in comp: score += 10
-        elif any(x in comp for x in ["Premier", "Liga", "Serie A", "Bundesliga", "Ligue 1"]): score += 8
-        # LATAM boost
-        if is_latam: score += 12
-        if any(x in comp.lower() for x in ["betplay", "libertadores", "sudamericana"]): score += 14
-        elif any(x in comp.lower() for x in ["liga mx", "brasileir", "mls", "argentin"]): score += 11
+        if "Champions" in comp or "Libertadores" in comp: score += 15
+        elif "Europa" in comp or "Sudamericana" in comp: score += 10
+        elif any(x in comp for x in ["Premier", "Serie A", "Bundesliga", "Ligue 1"]): score += 8
+        elif any(x in comp.lower() for x in ["betplay", "liga mx", "mls", "brasileir"]): score += 11
 
         processed.append({
-            "home": home,
-            "away": away,
+            "home": home, "away": away,
             "competition": comp,
-            "hora": hora,
-            "utc_date": utc,
+            "country": m.get("country", ""),
+            "hora": hora, "utc_date": utc,
             "mins_until": mins,
-            "countdown": f"{hours}h {mins_r}m" if hours > 0 else f"{mins_r}m",
+            "countdown": "EN VIVO" if m.get("is_live") else (f"{hours}h {mins_r}m" if hours > 0 else f"{mins_r}m"),
             "relevance": score,
+            "region": m.get("region", "OTHER"),
+            "is_top": m.get("is_top", False),
+            "is_latam": m.get("is_latam", False),
+            "is_live": m.get("is_live", False),
             "is_big": _is_top(home) and _is_top(away),
+            "recommended": False,
             "source": m.get("source", ""),
         })
 
-    # Sort: big matches first, then by relevance, then by time
-    processed.sort(key=lambda x: (-x["relevance"], x["mins_until"]))
+    # Sort: live first, then relevance, then time
+    processed.sort(key=lambda x: (-50 if x["is_live"] else 0, -x["relevance"], x["mins_until"]))
+
+    if processed:
+        processed[0]["recommended"] = True
+
     return processed
 
 
+# ═══════════════════════════════════════════════════════════
+#  MAIN
+# ═══════════════════════════════════════════════════════════
+
 def fetch_partidos():
-    """
-    Obtiene partidos con fallback: 12h -> 24h -> dia completo.
-    Retorna dict con partidos y metadata.
-    """
+    """Main function: fetch all global matches with cache."""
     # Check cache
     if os.path.exists(CACHE_PATH):
         try:
@@ -276,14 +284,14 @@ def fetch_partidos():
         except Exception:
             pass
 
-    print(f"[FEATURED] Fetching matches {datetime.now().strftime('%H:%M')}")
+    print(f"[FEATURED] Fetching global {datetime.now().strftime('%H:%M')}")
 
     # Fetch from all sources
-    raw = _fetch_football_data()
-    if len(raw) < 5:
-        raw.extend(_fetch_api_football())
+    raw = _fetch_api_football_global()
+    if len(raw) < 10:
+        raw.extend(_fetch_football_data())
 
-    # Dedup by home+away
+    # Dedup
     seen = set()
     unique = []
     for m in raw:
@@ -292,35 +300,32 @@ def fetch_partidos():
             seen.add(key)
             unique.append(m)
 
-    # Try 12h first
-    partidos = _process_matches(unique, max_hours=12)
-    rango = 12
-
-    # Fallback to 24h
+    # Process with 24h window (fallback to 48h)
+    partidos = _process(unique, 24)
+    rango = 24
     if len(partidos) < 3:
-        partidos = _process_matches(unique, max_hours=24)
-        rango = 24
-
-    # Fallback to 48h (full)
-    if len(partidos) < 3:
-        partidos = _process_matches(unique, max_hours=48)
+        partidos = _process(unique, 48)
         rango = 48
 
-    # Mark first as recommended
-    if partidos:
-        partidos[0]["recommended"] = True
+    # Region counts
+    regions = {}
+    for p in partidos:
+        r = p.get("region", "OTHER")
+        regions[r] = regions.get(r, 0) + 1
 
     result = {
-        "partidos": partidos[:12],
+        "partidos": partidos[:100],  # Max 100 for performance
         "total": len(partidos),
         "rango_horas": rango,
-        "fuente": "football-data.org / API-Football",
+        "fuente": "API-Football global",
         "actualizado": datetime.now().isoformat(),
+        "regions": regions,
+        "live_count": sum(1 for p in partidos if p.get("is_live")),
     }
 
-    # Save cache
     with open(CACHE_PATH, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
-    print(f"[FEATURED] {len(partidos)} partidos (rango {rango}h)")
+    live = result["live_count"]
+    print(f"[FEATURED] {len(partidos)} partidos ({live} live) | Regions: {regions}")
     return result

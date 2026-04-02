@@ -82,14 +82,13 @@
 <!-- TAB: PARTIDOS -->
 <div class="tab-c" id="t-partidos">
     <div style="display:flex;gap:5px;overflow-x:auto;padding:4px 0;margin-bottom:10px;-webkit-overflow-scrolling:touch">
-        <button class="fl active" onclick="filtLiga('todas',this)">TODAS</button>
-        <button class="fl" onclick="filtLiga('champions',this)">UCL</button>
-        <button class="fl" onclick="filtLiga('premier',this)">PL</button>
-        <button class="fl" onclick="filtLiga('liga',this)">LaLiga</button>
-        <button class="fl" onclick="filtLiga('serie a',this)">Serie A</button>
-        <button class="fl" onclick="filtLiga('bundesliga',this)">Bundes</button>
-        <button class="fl" onclick="filtLiga('colombia',this)">COL</button>
-        <button class="fl" onclick="filtLiga('argentin',this)">ARG</button>
+        <button class="fl active" onclick="filtLiga('todas',this)">TODOS</button>
+        <button class="fl" onclick="filtLiga('live',this)" style="color:#FF1744;border-color:#FF1744">&#128308; EN VIVO</button>
+        <button class="fl" onclick="filtLiga('EU',this)">&#127757; EUROPA</button>
+        <button class="fl" onclick="filtLiga('LATAM',this)">&#127758; LATAM</button>
+        <button class="fl" onclick="filtLiga('ASIA',this)">&#127759; ASIA</button>
+        <button class="fl" onclick="filtLiga('AFRICA',this)">&#127757; AFRICA</button>
+        <button class="fl" onclick="filtLiga('top',this)">&#11088; TOP</button>
     </div>
     <div id="matchesContainer"><div class="skel"></div><div class="skel"></div></div>
 </div>
@@ -213,13 +212,23 @@ function loadMatches(){
 function filtLiga(f,btn){
     filtro=f;document.querySelectorAll('.fl').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMatches();
 }
+function getFiltered(){
+    if(filtro==='todas')return allMatches;
+    if(filtro==='live')return allMatches.filter(m=>m.is_live);
+    if(filtro==='top')return allMatches.filter(m=>m.is_top);
+    if(filtro==='EU'||filtro==='LATAM'||filtro==='ASIA'||filtro==='AFRICA')
+        return allMatches.filter(m=>m.region===filtro);
+    return allMatches.filter(m=>(m.competition||'').toLowerCase().includes(filtro));
+}
 function renderMatches(){
     const c=document.getElementById('matchesContainer');
-    let list=filtro==='todas'?allMatches:allMatches.filter(m=>(m.competition||'').toLowerCase().includes(filtro));
+    let list=getFiltered();
     if(!list.length){c.innerHTML='<div style="text-align:center;padding:20px;color:#666">Sin partidos para este filtro</div>';return;}
     let h='';
     list.slice(0,20).forEach(m=>{
-        h+=`<div class="match-card"><div style="display:flex;justify-content:space-between;font-size:10px;color:#666;margin-bottom:4px"><span>${m.competition||''}</span><span style="color:var(--gold)">${m.hora||''}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-weight:700;font-size:13px;flex:1">${m.home}</span><span style="color:#444;font-size:11px;padding:0 6px">VS</span><span style="font-weight:700;font-size:13px;flex:1;text-align:right">${m.away}</span></div><div style="font-size:10px;color:#666;margin-bottom:6px">&#128344; ${m.countdown||''}</div><button onclick="analizarMatch('${m.home.replace(/'/g,"\\'")}','${m.away.replace(/'/g,"\\'")}')" style="width:100%;padding:8px;background:var(--green);color:#fff;border:none;border-radius:6px;font-weight:700;font-size:11px;cursor:pointer">&#9889; VER ANALISIS</button></div>`;
+        const liveTag=m.is_live?'<span style="color:#FF1744;font-weight:700;animation:pulse-red 1s infinite">&#128308; EN VIVO</span>':'<span style="color:var(--gold)">'+m.hora+'</span>';
+        const regionEmoji={EU:'&#127757;',LATAM:'&#127758;',ASIA:'&#127759;',AFRICA:'&#127757;',OTHER:'&#9917;'}[m.region||'OTHER']||'&#9917;';
+        h+=`<div class="match-card" style="${m.is_live?'border-left:4px solid #FF1744':''}"><div style="display:flex;justify-content:space-between;font-size:10px;color:#666;margin-bottom:4px"><span>${regionEmoji} ${m.competition||''}</span>${liveTag}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-weight:700;font-size:13px;flex:1">${m.home}</span><span style="color:#444;font-size:11px;padding:0 6px">VS</span><span style="font-weight:700;font-size:13px;flex:1;text-align:right">${m.away}</span></div><div style="font-size:10px;color:#666;margin-bottom:6px">&#128344; ${m.countdown||''}</div><button onclick="analizarMatch('${m.home.replace(/'/g,"\\'")}','${m.away.replace(/'/g,"\\'")}')" style="width:100%;padding:8px;background:${m.is_live?'#FF1744':'var(--green)'};color:#fff;border:none;border-radius:6px;font-weight:700;font-size:11px;cursor:pointer">${m.is_live?'&#128308; VER EN VIVO':'&#9889; VER ANALISIS'}</button></div>`;
     });
     if(list.length>20) h+=`<div style="text-align:center;color:#666;font-size:12px;padding:10px">${list.length-20} partidos mas disponibles</div>`;
     c.innerHTML=h;
