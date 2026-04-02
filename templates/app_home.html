@@ -5,113 +5,323 @@
 {% block content %}
 
 <style>
-.plan-badge{display:inline-block;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:6px}
+:root{--vip-gold:#FFD700;--vip-green:#0F6E56;--ganado:#00C853;--perdido:#FF1744;--pendiente:#FFD700}
+
+/* Header */
+.vip-hdr{background:linear-gradient(135deg,#0a1a0a,#0F6E56);padding:14px 16px;border-radius:14px;margin-bottom:12px;border-bottom:2px solid var(--vip-gold)}
+.vip-hdr h1{font-size:16px;font-weight:800;margin:0}
+.vip-hdr .sub{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px}
+.vip-mini{display:flex;gap:12px;margin-top:8px;font-size:12px;color:rgba(255,255,255,0.8)}
+
+/* Plan badges */
+.plan-badge{display:inline-block;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
 .plan-badge.basico{background:#185FA5;color:#fff}
 .plan-badge.pro{background:#0F6E56;color:#fff}
 .plan-badge.vip{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000}
 .plan-badge.admin{background:#6B21A8;color:#fff}
-.upgrade-strip{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin:12px 0;display:flex;justify-content:space-between;align-items:center;font-size:13px}
-.upgrade-strip a{color:var(--green);font-weight:700;text-decoration:none}
-.tarjeta-a{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;border-left:4px solid}
-.tarjeta-a.basico{border-left-color:#185FA5}
-.tarjeta-a.pro{border-left-color:#0F6E56}
-.tarjeta-a.vip{border-left-color:#FFD700}
-.tarjeta-a .th{padding:10px 14px;display:flex;justify-content:space-between;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)}
-.tarjeta-a .equipos{padding:12px 14px;font-size:16px;font-weight:700;text-align:center}
-.tarjeta-a .equipos .vs{color:var(--text2);font-weight:400;margin:0 6px;font-size:13px}
-.conf-bar{background:#1a1a1a;border-radius:10px;height:6px;margin:6px 14px;overflow:hidden}
-.conf-fill{height:100%;background:linear-gradient(90deg,#0F6E56,#FFD700);border-radius:10px;transition:width 1s}
-.tarjeta-a .pick-main{padding:8px 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
-.tarjeta-a .pick-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
-.tarjeta-a .pick-val{font-weight:700;color:var(--green)}
-.tarjeta-a .btn-ver{display:block;margin:0 14px 12px;padding:10px;background:var(--green2);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;text-align:center;text-transform:uppercase;text-decoration:none}
+
+/* Tabs */
+.tabs-vip{display:flex;overflow-x:auto;gap:4px;padding:4px 0;margin-bottom:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tabs-vip::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:20px;border:1px solid #333;background:transparent;color:#666;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.tab.activo{background:var(--vip-green);color:#fff;border-color:var(--vip-green)}
+
+/* Stat boxes */
+.resumen{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.sbox{background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:10px 6px;text-align:center}
+.sbox .n{font-size:22px;font-weight:800;color:var(--vip-gold)}
+.sbox .l{font-size:9px;color:#666;margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+.sbox.hl{border-color:var(--vip-gold)}
+
+/* Pick estrella */
+.pick-star{background:linear-gradient(135deg,#0D1F0D,#1a3a1a);border:2px solid var(--vip-gold);border-radius:16px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden}
+.pick-star::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,215,0,0.05) 0%,transparent 70%);pointer-events:none}
+.pick-star .hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.pick-star .hdr .lbl{color:var(--vip-gold);font-size:12px;font-weight:700}
+.pick-star .hdr .conf{font-size:28px;font-weight:900;color:var(--vip-gold)}
+.pick-star .equipos{text-align:center;font-size:18px;font-weight:800;margin:8px 0}
+.pick-star .equipos .vs{color:#666;font-weight:400;font-size:13px;margin:0 8px}
+.pick-star .mercado{text-align:center;margin:8px 0}
+.pick-star .mercado .nombre{background:rgba(15,110,86,0.3);color:#1AE89B;padding:6px 16px;border-radius:8px;font-weight:700;font-size:14px;display:inline-block}
+
+/* Barra confianza animada */
+.conf-bar-anim{height:8px;background:#1a1a1a;border-radius:4px;overflow:hidden;margin:10px 0}
+.conf-bar-anim .fill{height:100%;background:linear-gradient(90deg,#0F6E56,#FFD700,#0F6E56);background-size:200% 100%;animation:shimmer 2s infinite;border-radius:4px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Actions */
+.pick-actions{display:flex;gap:8px;margin-top:10px}
+.pick-actions button{flex:1;padding:10px;border:1px solid #333;border-radius:8px;background:transparent;color:#ccc;font-size:12px;font-weight:600;cursor:pointer}
+.pick-actions button:active{background:#1a1a1a}
+
+/* Pick list */
+.pick-item{background:#0D0D0D;border:1px solid #1a2a1a;border-radius:12px;padding:12px;margin-bottom:8px;border-left:4px solid var(--vip-green)}
+.pick-item .row{display:flex;justify-content:space-between;align-items:center}
+.pick-item .liga{font-size:10px;color:#666}
+.pick-item .teams{font-size:14px;font-weight:700;margin:6px 0}
+.pick-item .teams .vs{color:#666;font-weight:400;font-size:11px}
+.pick-item .mkt{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:13px}
+.pick-item .mkt .bet{color:#1AE89B;font-weight:700}
+.pick-item .mkt .odds{color:#888}
+.pick-item .conf-mini{height:4px;background:#1a1a1a;border-radius:2px;margin-top:6px;overflow:hidden}
+.pick-item .conf-mini .f{height:100%;background:linear-gradient(90deg,#0F6E56,#FFD700);border-radius:2px}
+
+/* Combinadas */
+.comb{border-radius:12px;padding:14px;margin-bottom:10px}
+.comb.cons{border-left:4px solid #0F6E56;background:#0D1A0D}
+.comb.val{border-left:4px solid #FFD700;background:#1A1500}
+.comb.risk{border-left:4px solid #FF4444;background:#1A0D0D}
+.comb .ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.comb .ct{font-size:24px;font-weight:800;color:var(--vip-gold)}
+.comb .picks{font-size:12px;color:#ccc}
+.comb .sim{font-size:12px;color:#888;margin-top:6px}
+
+/* Referidos */
+.ref-section{background:linear-gradient(135deg,#0D1F0D,#1a3a1a);border:1px solid #FFD700;border-radius:16px;padding:16px;margin:14px 0}
+.ref-link{display:flex;gap:6px;margin-top:10px}
+.ref-link input{flex:1;padding:8px;background:#111;border:1px solid #333;border-radius:8px;color:#1AE89B;font-size:11px;font-family:monospace}
+.ref-link button{padding:8px 12px;background:#0F6E56;border:none;border-radius:8px;color:#fff;font-size:11px;font-weight:700;cursor:pointer}
+
+/* Tab content */
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* Upgrade strip */
+.upgrade-strip{background:#111;border:1px solid #333;border-radius:10px;padding:10px 14px;margin:12px 0;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.upgrade-strip a{color:var(--vip-green);font-weight:700;text-decoration:none}
+
+/* Toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0F6E56;color:#fff;padding:12px 24px;border-radius:25px;font-weight:700;font-size:13px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.5);animation:slideUp 0.3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+@media(max-width:480px){.resumen{grid-template-columns:repeat(2,1fr)}.pick-star .equipos{font-size:16px}}
 </style>
 
-<!-- Dashboard header by plan -->
+{% set greeting = 'BUENAS NOCHES' if now_hour >= 18 else ('BUENAS TARDES' if now_hour >= 12 else 'BUENOS DIAS') %}
+{% set nombre = user.nombre or user.email.split('@')[0] %}
+
+<!-- VIP HEADER -->
 {% if user_rol == 'admin' %}
-<div style="text-align:center;margin-bottom:14px">
-    <span class="plan-badge admin">ADMINISTRADOR</span>
-    <h2 style="font-size:16px;font-weight:800;margin:6px 0">Bienvenido {{ user.nombre or 'Oscar' }}</h2>
-    <p style="font-size:12px;color:var(--text2)">Panel de administracion — acceso total</p>
-    <a href="/admin?key={{ admin_key }}" style="font-size:12px;color:var(--green)">IR AL PANEL ADMIN</a>
+<div class="vip-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:24px">&#128295;</span>
+        <div>
+            <h1>{{ greeting }}, {{ nombre }}</h1>
+            <div class="sub">Administrador &middot; Acceso total &middot; Sesion segura</div>
+        </div>
+    </div>
+    <div class="vip-mini">
+        <span>&#127919; Hoy: {{ picks|length }} picks</span>
+        <a href="/admin?key={{ admin_key }}" style="color:var(--vip-gold);font-size:11px;text-decoration:none">ADMIN PANEL</a>
+    </div>
 </div>
 {% elif plan == 'vip' %}
-<div style="text-align:center;margin-bottom:14px">
-    <span class="plan-badge vip">VIP</span>
-    <h2 style="font-size:16px;font-weight:800;margin:6px 0">Bienvenido {{ user.nombre or user.email.split('@')[0] }}</h2>
-    <p style="font-size:12px;color:var(--text2)">Tus analisis VIP exclusivos estan listos</p>
+<div class="vip-hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:24px">&#128081;</span>
+        <div>
+            <h1>{{ greeting }}, {{ nombre }}</h1>
+            <div class="sub">Plan VIP &middot; Acceso completo &middot; Sesion segura</div>
+        </div>
+    </div>
+    <div class="vip-mini">
+        <span>&#127919; Hoy: {{ picks|length }} picks</span>
+    </div>
 </div>
 {% elif plan == 'pro' %}
-<div style="text-align:center;margin-bottom:14px">
+<div style="text-align:center;margin-bottom:12px">
     <span class="plan-badge pro">PLAN PRO</span>
-    <h2 style="font-size:16px;font-weight:800;margin:6px 0">Bienvenido {{ user.nombre or user.email.split('@')[0] }}</h2>
-    <p style="font-size:12px;color:var(--text2)">{{ picks|length }} analisis Pro disponibles hoy</p>
+    <h2 style="font-size:16px;font-weight:800;margin:4px 0">{{ greeting }}, {{ nombre }}</h2>
+    <p style="font-size:12px;color:#888">{{ picks|length }} analisis Pro disponibles</p>
 </div>
 <div class="upgrade-strip"><span>Actualiza a VIP para los mas precisos</span><a href="/#pricing">VER VIP</a></div>
 {% elif plan == 'basico' %}
-<div style="text-align:center;margin-bottom:14px">
+<div style="text-align:center;margin-bottom:12px">
     <span class="plan-badge basico">PLAN BASICO</span>
-    <h2 style="font-size:16px;font-weight:800;margin:6px 0">Bienvenido {{ user.nombre or user.email.split('@')[0] }}</h2>
-    <p style="font-size:12px;color:var(--text2)">{{ picks|length }} analisis disponibles hoy (max 3)</p>
+    <h2 style="font-size:16px;font-weight:800;margin:4px 0">{{ greeting }}, {{ nombre }}</h2>
+    <p style="font-size:12px;color:#888">{{ picks|length }} analisis disponibles (max 3)</p>
 </div>
 <div class="upgrade-strip"><span>Actualiza a Pro para mayor confianza</span><a href="/#pricing">VER PRO</a></div>
-{% elif plan == 'free_trial' %}
-<div style="text-align:center;margin-bottom:14px">
+{% else %}
+<div style="text-align:center;margin-bottom:12px">
     <span class="plan-badge pro">ANALISIS PRO GRATUITO</span>
-    <h2 style="font-size:16px;font-weight:800;margin:6px 0">Bienvenido {{ user.nombre or user.email.split('@')[0] }}</h2>
-    <p style="font-size:12px;color:var(--text2)">Tienes 1 analisis Pro gratuito</p>
+    <h2 style="font-size:16px;font-weight:800;margin:4px 0">{{ greeting }}, {{ nombre }}</h2>
+    <p style="font-size:12px;color:#888">Tienes 1 analisis Pro gratuito</p>
 </div>
 {% endif %}
 
-<!-- Picks -->
+<!-- TABS (VIP/Admin only) -->
+{% if plan in ('vip', 'admin') or user_rol == 'admin' %}
+<div class="tabs-vip">
+    <button class="tab activo" onclick="showTab('picks',this)">&#9889; PICKS</button>
+    <button class="tab" onclick="showTab('partidos',this)">&#9917; PARTIDOS</button>
+    <button class="tab" onclick="showTab('stats',this)">&#128200; STATS</button>
+    <button class="tab" onclick="showTab('referidos',this)">&#127873; REFERIR</button>
+</div>
+{% endif %}
+
+<!-- TAB: PICKS -->
+<div class="tab-content active" id="tab-picks">
+
+<!-- Resumen -->
 {% if picks %}
+<div class="resumen">
+    <div class="sbox"><div class="n">{{ picks|length }}</div><div class="l">PICKS HOY</div></div>
+    <div class="sbox hl"><div class="n">{{ picks[0].prob if picks else 0 }}%</div><div class="l">MEJOR PICK</div></div>
+    <div class="sbox"><div class="n">0</div><div class="l">EN CURSO</div></div>
+    <div class="sbox"><div class="n">{{ picks|length }}</div><div class="l">PENDIENTES</div></div>
+</div>
+
+<!-- Pick estrella -->
+<div class="pick-star">
+    <div class="hdr">
+        <span class="lbl">&#11088; PICK ESTRELLA DEL DIA</span>
+        <span class="conf">{{ picks[0].prob }}%</span>
+    </div>
+    <div class="equipos">{{ picks[0].match }}</div>
+    <div class="mercado"><span class="nombre">{{ picks[0].bet }}</span></div>
+    <div style="display:flex;justify-content:center;gap:16px;font-size:12px;color:#888;margin:6px 0">
+        <span>Cuota: {{ picks[0].odds }}</span>
+        <span>{{ picks[0].agree }}/3 modelos</span>
+    </div>
+    <div class="conf-bar-anim"><div class="fill" style="width:{{ picks[0].prob }}%"></div></div>
+    <div class="pick-actions">
+        <button onclick="compartirPick('{{ picks[0].match }}','{{ picks[0].bet }}','{{ picks[0].prob }}')">&#128228; COMPARTIR</button>
+        <button onclick="mostrarToast('Pick guardado')">&#128278; GUARDAR</button>
+    </div>
+</div>
+
+<!-- Combinadas -->
+{% if picks|length >= 2 %}
+<div style="margin:14px 0">
+    <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--vip-gold)">&#128161; COMBINADAS SUGERIDAS</h3>
+    {% if picks|length >= 2 %}
+    <div class="comb cons">
+        <div class="ch"><span style="font-size:12px;font-weight:700;color:#0F6E56">&#128737; CONSERVADORA</span><span class="ct">{{ "%.2f"|format(picks[0].odds * picks[1].odds) }}x</span></div>
+        <div class="picks">{{ picks[0].bet }} ({{ picks[0].match }}) + {{ picks[1].bet }} ({{ picks[1].match }})</div>
+        <div class="sim">Si apuestas $10 ganas: ${{ "%.2f"|format(10 * picks[0].odds * picks[1].odds) }}</div>
+    </div>
+    {% endif %}
+    {% if picks|length >= 3 %}
+    <div class="comb val">
+        <div class="ch"><span style="font-size:12px;font-weight:700;color:#FFD700">&#127919; VALOR</span><span class="ct">{{ "%.2f"|format(picks[0].odds * picks[1].odds * picks[2].odds) }}x</span></div>
+        <div class="picks">{{ picks[0].bet }} + {{ picks[1].bet }} + {{ picks[2].bet }}</div>
+        <div class="sim">Si apuestas $10 ganas: ${{ "%.2f"|format(10 * picks[0].odds * picks[1].odds * picks[2].odds) }}</div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<!-- All picks -->
+<div style="font-size:13px;font-weight:700;margin:10px 0 8px;color:#888">TODOS LOS PICKS ({{ picks|length }})</div>
 {% for p in picks %}
-<div class="tarjeta-a {{ plan }}">
-    <div class="th">
-        <span>{{ p.match }}</span>
-        <span>{{ p.prob }}%</span>
+<div class="pick-item">
+    <div class="row"><span class="liga">{{ p.match }}</span><span style="font-size:12px;color:var(--pendiente)">&#9203; PENDIENTE</span></div>
+    <div class="mkt">
+        <span class="bet">{{ p.bet }}</span>
+        <span class="odds">Cuota {{ p.odds }} &middot; {{ p.prob }}%</span>
     </div>
-    <div class="equipos">{{ p.match }}</div>
-    <div class="conf-bar"><div class="conf-fill" style="width:{{ p.prob }}%"></div></div>
-    <div class="pick-main">
-        <div><div class="pick-label">ANALISIS SUGERIDO</div><div class="pick-val">{{ p.bet }}</div></div>
-        <div style="font-size:13px;color:var(--text2)">Cuota: {{ p.odds }}</div>
-    </div>
-    <a href="/predict" class="btn-ver">VER ANALISIS COMPLETO</a>
+    <div class="conf-mini"><div class="f" style="width:{{ p.prob }}%"></div></div>
 </div>
 {% endfor %}
+
 {% else %}
 <!-- No picks -->
-<div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center">
-    <div style="font-size:36px;margin-bottom:8px">&#9917;</div>
-    <h3 style="font-size:16px;font-weight:700;margin-bottom:6px">ANALISIS CARGANDO</h3>
-    <p style="font-size:13px;color:var(--text2)">Estamos preparando los analisis del dia</p>
-    <p style="font-size:12px;color:var(--text2);margin-top:6px">Proxima actualizacion a las 9:00 AM</p>
-    <button onclick="location.reload()" class="btn" style="margin-top:12px;font-size:14px;padding:10px">ACTUALIZAR AHORA</button>
+<div style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:14px;padding:24px;text-align:center">
+    <div style="font-size:36px;margin-bottom:8px">{% if plan == 'vip' or user_rol == 'admin' %}&#128081;{% else %}&#9917;{% endif %}</div>
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:6px">PREPARANDO TUS ANALISIS</h3>
+    <p style="font-size:13px;color:#888">El scanner automatico esta procesando los partidos del dia</p>
+    <p style="font-size:12px;color:#666;margin-top:6px">Proxima actualizacion a las 9:00 AM</p>
+    <form method="POST" action="/picks/scan">
+        <button type="submit" style="margin-top:12px;padding:10px 20px;background:var(--vip-green);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer">&#9889; ESCANEAR AHORA</button>
+    </form>
 </div>
 {% endif %}
+</div>
 
-<!-- Nav to other sections -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px">
-    <a href="/picks" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:var(--text)">
-        <div style="font-size:18px">&#128200;</div>
-        <div style="font-size:12px;font-weight:600;margin-top:4px">ANALISIS DEL DIA</div>
+<!-- TAB: PARTIDOS -->
+<div class="tab-content" id="tab-partidos">
+    <div id="dashPartidos" style="font-size:13px;color:#888;text-align:center;padding:20px">Cargando partidos...</div>
+</div>
+
+<!-- TAB: STATS -->
+<div class="tab-content" id="tab-stats">
+    <div style="text-align:center;margin:20px 0">
+        <div style="font-size:48px;font-weight:900;color:var(--ganado)">--</div>
+        <div style="font-size:14px;color:#888">ACIERTO TOTAL</div>
+        <div style="font-size:11px;color:#666">Ultimos 30 dias</div>
+    </div>
+    <div style="font-size:13px;color:#888;text-align:center">Las estadisticas se actualizan con cada resultado verificado.<br>Registra resultados en Historial para ver tu rendimiento.</div>
+</div>
+
+<!-- TAB: REFERIDOS -->
+<div class="tab-content" id="tab-referidos">
+    <div class="ref-section">
+        <h3 style="font-size:14px;font-weight:700;color:var(--vip-gold);margin-bottom:8px">&#127873; RECOMIENDA NEMEBET Y GANA</h3>
+        <div style="font-size:12px;color:#ccc;margin-bottom:4px">&#128176; Gana 1 mes GRATIS por cada amigo que se suscriba</div>
+        <div style="font-size:12px;color:#ccc;margin-bottom:10px">&#128101; Tu amigo recibe 7 dias VIP gratis</div>
+        <div class="ref-link">
+            <input type="text" value="https://web-production-940b9.up.railway.app/r/{{ ref_code }}" readonly id="refLink">
+            <button onclick="navigator.clipboard.writeText(document.getElementById('refLink').value);mostrarToast('Link copiado')">COPIAR</button>
+            <button onclick="compartirRef()" style="background:var(--vip-gold);color:#000">WA</button>
+        </div>
+    </div>
+</div>
+
+<!-- NAV GRID -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+    <a href="/picks" style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:#ccc">
+        <div style="font-size:18px">&#128200;</div><div style="font-size:11px;font-weight:600;margin-top:4px">ANALISIS</div>
     </a>
-    <a href="/scanner" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:var(--text)">
-        <div style="font-size:18px">&#128269;</div>
-        <div style="font-size:12px;font-weight:600;margin-top:4px">SCANNER CUOTAS</div>
+    <a href="/scanner" style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:#ccc">
+        <div style="font-size:18px">&#128269;</div><div style="font-size:11px;font-weight:600;margin-top:4px">CUOTAS</div>
     </a>
-    <a href="/dashboard" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:var(--text)">
-        <div style="font-size:18px">&#129504;</div>
-        <div style="font-size:12px;font-weight:600;margin-top:4px">RENDIMIENTO IA</div>
+    <a href="/dashboard" style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:#ccc">
+        <div style="font-size:18px">&#129504;</div><div style="font-size:11px;font-weight:600;margin-top:4px">MODELO</div>
     </a>
-    <a href="/history" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:var(--text)">
-        <div style="font-size:18px">&#128203;</div>
-        <div style="font-size:12px;font-weight:600;margin-top:4px">HISTORIAL</div>
+    <a href="/history" style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:#ccc">
+        <div style="font-size:18px">&#128203;</div><div style="font-size:11px;font-weight:600;margin-top:4px">HISTORIAL</div>
     </a>
 </div>
 
-<div style="text-align:center;margin-top:16px">
-    <a href="/logout" style="font-size:12px;color:var(--text2)">Cerrar sesion</a>
-</div>
+<div style="text-align:center;margin-top:14px"><a href="/logout" style="font-size:12px;color:#666">Cerrar sesion</a></div>
+
+<script>
+function showTab(id,btn){
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('activo'));
+    document.getElementById('tab-'+id).classList.add('active');
+    btn.classList.add('activo');
+    if(id==='partidos')loadDashPartidos();
+}
+
+function loadDashPartidos(){
+    fetch('/api/partidos-hoy?horas=24').then(r=>r.json()).then(data=>{
+        const c=document.getElementById('dashPartidos');
+        if(!data.partidos||!data.partidos.length){c.innerHTML='<p>Sin partidos proximos</p>';return;}
+        let h='';
+        data.partidos.slice(0,15).forEach(m=>{
+            h+=`<div style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">
+                <div><div style="font-size:13px;font-weight:700">${m.home} <span style="color:#666">vs</span> ${m.away}</div><div style="font-size:10px;color:#666">${m.competition} | ${m.hora}</div></div>
+                <div style="font-size:11px;color:#1AE89B;font-weight:600">${m.countdown}</div>
+            </div>`;
+        });
+        c.innerHTML=h;
+    }).catch(()=>{document.getElementById('dashPartidos').innerHTML='Error cargando';});
+}
+
+function compartirPick(match,bet,prob){
+    const t=encodeURIComponent(`PICK NEMEBET\n\n${match}\n${bet}\nConfianza: ${prob}%\n\nhttps://web-production-940b9.up.railway.app`);
+    window.open('https://wa.me/?text='+t,'_blank');
+}
+function compartirRef(){
+    const l=document.getElementById('refLink').value;
+    const t=encodeURIComponent(`Prueba NEMEBET - analisis de futbol con +75% de precision. Tu primer analisis es GRATIS:\n${l}`);
+    window.open('https://wa.me/?text='+t,'_blank');
+}
+function mostrarToast(msg){
+    const t=document.createElement('div');t.className='toast';t.textContent=msg;
+    document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
+}
+</script>
 {% endblock %}

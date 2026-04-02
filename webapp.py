@@ -1092,9 +1092,15 @@ def app_home():
 
     admin_key = os.environ.get("ADMIN_KEY", "")
 
+    # Referral code
+    import hashlib
+    ref_code = hashlib.md5(user.get("email", "").encode()).hexdigest()[:8].upper()
+
     return render_template("app_home.html",
                            user=user, plan=plan, picks=picks,
-                           user_rol=rol, admin_key=admin_key)
+                           user_rol=rol, admin_key=admin_key,
+                           now_hour=datetime.now().hour,
+                           ref_code=ref_code)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -1821,6 +1827,16 @@ def api_partidos_hoy():
     except Exception as e:
         return jsonify({"partidos": [], "total": 0, "error": str(e),
                         "actualizado": datetime.now().isoformat()})
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  REFERIDOS
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/r/<codigo>")
+def referido(codigo):
+    session["referido_por"] = codigo
+    return redirect(url_for("landing"))
 
 
 # ═══════════════════════════════════════════════════════════════════════════
