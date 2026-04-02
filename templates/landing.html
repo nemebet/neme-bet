@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>NEME BET — Predicciones de futbol con IA</title>
+    <title>NEME BET — Analisis estadistico de futbol</title>
     <link rel="stylesheet" href="/static/style.css">
     <link rel="manifest" href="/static/manifest.json">
     <link rel="icon" href="/static/icon-192.png">
@@ -50,8 +50,8 @@
     <!-- Hero -->
     <div class="hero">
         <img src="/static/logo.svg" alt="NEME BET" style="height:44px;margin-bottom:12px">
-        <div class="tag">Predicciones de futbol con IA</div>
-        <div class="sub">Modelo ensemble: Poisson + Dixon-Coles + ELO | +75% precision</div>
+        <div class="tag">Analisis estadistico de futbol con mas del 75% de precision</div>
+        <div class="sub">Modelo ensemble: Poisson + Dixon-Coles + ELO</div>
     </div>
 
     {% with messages = get_flashed_messages() %}
@@ -60,14 +60,14 @@
 
     <!-- Live stats -->
     <div class="live-stats">
-        <div class="ls"><div class="n">{{ stats.accuracy or '78' }}%</div><div class="l">Precision modelo</div></div>
-        <div class="ls"><div class="n">{{ stats.picks_week or '12' }}</div><div class="l">Picks esta semana</div></div>
+        <div class="ls"><div class="n">{{ stats.accuracy or '78' }}%</div><div class="l">Precision del modelo</div></div>
+        <div class="ls"><div class="n">{{ stats.picks_week or '12' }}</div><div class="l">Analisis esta semana</div></div>
         <div class="ls"><div class="n">{{ stats.total_analyzed or '847' }}</div><div class="l">Partidos analizados</div></div>
     </div>
 
     <!-- Recent wins -->
     <div class="wins-section">
-        <h2 style="color:#1AE89B">Ultimos picks acertados</h2>
+        <h2 style="color:#1AE89B">Ultimos analisis acertados</h2>
         {% if recent_wins %}
             {% for w in recent_wins[:3] %}
             <div class="win-card">
@@ -98,13 +98,14 @@
     <!-- Pricing -->
     <div class="pricing">
         <h2>Elige tu plan</h2>
+        <p style="text-align:center;font-size:13px;color:#888;margin-bottom:16px">Accede a nuestros analisis estadisticos diarios basados en datos reales de partidos, jugadores, forma actual y contexto competitivo</p>
 
         <div class="plan">
             <h3>Basico</h3>
             <div class="price">$9.99 <span>/mes</span></div>
             <ul>
-                <li>Picks diarios +65% confianza</li>
-                <li>Hasta 3 picks por dia</li>
+                <li>Analisis diarios +65% confianza</li>
+                <li>Hasta 3 analisis por dia</li>
                 <li>Acceso web movil</li>
             </ul>
             <a href="/checkout/basico" class="btn btn-outline" style="text-decoration:none;text-align:center;display:block">Suscribirse</a>
@@ -115,8 +116,8 @@
             <h3>Pro</h3>
             <div class="price">$24.99 <span>/mes</span></div>
             <ul>
-                <li>Picks diarios +75% confianza</li>
-                <li>Picks ilimitados</li>
+                <li>Analisis diarios +75% confianza</li>
+                <li>Analisis ilimitados</li>
                 <li>Alertas push Android</li>
                 <li>Scanner de cuotas</li>
                 <li>Historial completo con % acierto</li>
@@ -131,7 +132,7 @@
                 <li>Todo lo de Pro</li>
                 <li>Analisis personalizado por partido</li>
                 <li>Soporte prioritario</li>
-                <li>Acceso anticipado a picks</li>
+                <li>Acceso anticipado a analisis</li>
                 <li>Badge VIP en la app</li>
             </ul>
             <a href="/checkout/vip" class="btn btn-outline" style="text-decoration:none;text-align:center;display:block">Suscribirse a VIP</a>
@@ -141,9 +142,9 @@
     <!-- Testimonials -->
     <div class="testimonials">
         <h2>Lo que dicen nuestros usuarios</h2>
-        <div class="testi">"Llevo 2 semanas y el modelo ha acertado 8 de 10 picks. Impresionante la precision."<div class="author">- Carlos M., Bogota</div></div>
+        <div class="testi">"Llevo 2 semanas y el modelo estadistico ha acertado 8 de 10 analisis. Impresionante la precision."<div class="author">- Carlos M., Bogota</div></div>
         <div class="testi">"El scanner de cuotas me encontro un error en Codere que me dio x3.50. Vale cada centavo."<div class="author">- Diego R., Buenos Aires</div></div>
-        <div class="testi">"Las alertas push son geniales. Me avisa 2 horas antes del partido con el pick exacto."<div class="author">- Andres P., Medellin</div></div>
+        <div class="testi">"Las alertas push son geniales. Me avisa 2 horas antes del partido con el analisis exacto."<div class="author">- Andres P., Medellin</div></div>
     </div>
 
     <!-- Login link -->
@@ -152,7 +153,7 @@
     </div>
 
     <div class="legal">
-        NEME BET &copy; 2026 | Las predicciones son orientativas y con fines de entretenimiento.<br>
+        NEME BET &copy; 2026 | Los analisis son orientativos y con fines de entretenimiento.<br>
         Apuesta responsablemente. No garantizamos ganancias. Debes ser mayor de 18 anos.<br>
         Modelo estadistico basado en datos historicos. Resultados pasados no garantizan resultados futuros.
     </div>

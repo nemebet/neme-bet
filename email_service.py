@@ -54,7 +54,7 @@ def send_renewal_reminder(email, days_left):
     _send(email, f"NEME BET - Tu suscripcion vence en {days_left} dias", f"""
     <div style="font-family:sans-serif;max-width:500px;margin:0 auto;background:#0A0A0A;color:#F0F0F0;padding:30px;border-radius:12px">
         <h2 style="color:#F5A623">Tu suscripcion vence en {days_left} dias</h2>
-        <p>Renueva para seguir recibiendo picks diarios con +75% de precision.</p>
+        <p>Renueva para seguir recibiendo analisis diarios con +75% de precision.</p>
         <p><a href="{APP_URL}" style="background:#0F6E56;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold">Renovar ahora</a></p>
     </div>""")
 

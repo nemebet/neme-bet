@@ -1,7 +1,7 @@
 {
-  "name": "NEME BET - Predictor Autonomo",
+  "name": "NEME BET - Analisis Deportivo",
   "short_name": "NEME BET",
-  "description": "Predictor de apuestas con IA y autoaprendizaje",
+  "description": "Analisis estadistico avanzado de futbol",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0A0A0A",

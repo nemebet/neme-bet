@@ -1334,7 +1334,7 @@ if __name__ == "__main__":
         local_ip = "0.0.0.0"
 
     print(f"\n{'=' * 60}")
-    print(f"  NEME BET v5.0 — Predictor con IA y Autoaprendizaje")
+    print(f"  NEME BET v5.0 — Analisis Estadistico Avanzado")
     print(f"{'=' * 60}")
     print(f"\n  PC:       http://localhost:{port}")
     print(f"  Telefono: http://{local_ip}:{port}")
