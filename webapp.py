@@ -26,7 +26,7 @@ from collections import defaultdict
 from werkzeug.utils import secure_filename
 
 from flask import (Flask, render_template, request, redirect,
-                   url_for, jsonify, flash)
+                   url_for, jsonify, flash, session)
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  CONFIG

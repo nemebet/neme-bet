@@ -1,0 +1,1060 @@
+{
+  "date": "2026-04-01",
+  "scraped_at": "2026-04-01T19:11:11.284222",
+  "total": 100,
+  "relevant": 5,
+  "matches_all": [
+    {
+      "home": "Internacional",
+      "away": "Internacional",
+      "liga": "Most viewed matches",
+      "liga_raw": "Most viewed matches",
+      "hora": "02 Apr. 2026",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Cruzeiro",
+      "away": "Cruzeiro",
+      "liga": "Most viewed matches",
+      "liga_raw": "Most viewed matches",
+      "hora": "01:00",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Botafogo",
+      "away": "Botafogo",
+      "liga": "Most viewed matches",
+      "liga_raw": "Most viewed matches",
+      "hora": "02 Apr. 2026",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Bahía",
+      "away": "Bahía",
+      "liga": "Most viewed matches",
+      "liga_raw": "Most viewed matches",
+      "hora": "01:00",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Lanús",
+      "away": "Lanús",
+      "liga": "Most viewed matches",
+      "liga_raw": "Most viewed matches",
+      "hora": "01:00",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Paramount+ (USA)Chattanooga1-0Tennessee TempoFT",
+      "away": "Chattanooga1-0Tennessee TempoFT",
+      "liga": "Most viewed matches",
+      "liga_raw": "Most viewed matches",
+      "hora": "« Live score match today17See other dates",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Chattanooga1-0Tennessee TempoFT",
+      "away": "Chattanooga",
+      "liga": "Paramount+ (USA)",
+      "liga_raw": "Paramount+ (USA)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Richmond Kickers1-0Loudoun UnitedFT",
+      "away": "Richmond Kickers",
+      "liga": "Paramount+ (USA)",
+      "liga_raw": "Paramount+ (USA)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Lexington0-2Louisville CityFT",
+      "away": "Lexington",
+      "liga": "Paramount+ (USA)",
+      "liga_raw": "Paramount+ (USA)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Rhode Island FC2-0Hartford AthleticFT",
+      "away": "Rhode Island FC",
+      "liga": "Paramount+ (USA)",
+      "liga_raw": "Paramount+ (USA)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Vermont Green0-0Westchester SCExtra",
+      "away": "Vermont Green",
+      "liga": "Paramount+ (USA)",
+      "liga_raw": "Paramount+ (USA)",
+      "hora": "Extra",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Flint City Bucks0-1Detroit City68'",
+      "away": "Flint City Bucks",
+      "liga": "Paramount+ (USA)",
+      "liga_raw": "Paramount+ (USA)",
+      "hora": "68'",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Colorado Springs Switchback1-0Spokane Velocity49'",
+      "away": "Colorado Springs Switchback",
+      "liga": "Paramount+ (USA)",
+      "liga_raw": "Paramount+ (USA)",
+      "hora": "49'",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "San Antonio0-0FC Tulsa34'",
+      "away": "San Antonio",
+      "liga": "Paramount+ (USA)",
+      "liga_raw": "Paramount+ (USA)",
+      "hora": "34'",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "New Mexico United19:30El Paso Locomotive",
+      "away": "New Mexico United",
+      "liga": "Paramount+ (USA)",
+      "liga_raw": "Paramount+ (USA)",
+      "hora": "19:30",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Orange County SC20:00Phoenix Rising",
+      "away": "Orange County SC",
+      "liga": "Paramount+ (USA)",
+      "liga_raw": "Paramount+ (USA)",
+      "hora": "20:00",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "FC Andorra3-3MálagaFT",
+      "away": "FC Andorra3-3MálagaFT",
+      "liga": "LaLiga2Go to the competitionGo to news",
+      "liga_raw": "LaLiga2Go to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "FC Andorra3-3MálagaFT",
+      "away": "FC Andorra",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Huesca1-1Cultural LeonesaFT",
+      "away": "Huesca",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Burgos1-1AD Ceuta FCFT",
+      "away": "Burgos",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Racing3-1Real SportingFT",
+      "away": "Racing",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "CBS Sports Network (Usa)Bayern München W2-1Manchester United WFT",
+      "away": "Bayern München W2-1Manchester United WFT",
+      "liga": "Women UCLGo to the competitionGo to news",
+      "liga_raw": "Women UCLGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Bayern München W2-1Manchester United WFT",
+      "away": "Bayern München W",
+      "liga": "CBS Sports Network (Usa)",
+      "liga_raw": "CBS Sports Network (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Chelsea W1-0Arsenal WFT",
+      "away": "Chelsea W",
+      "liga": "CBS Sports Network (Usa)",
+      "liga_raw": "CBS Sports Network (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Fanatiz (Usa)Lanús0-0PlatenseFT",
+      "away": "Lanús0-0PlatenseFT",
+      "liga": "Liga Argentina",
+      "liga_raw": "Apertura ArgentinaGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": true
+    },
+    {
+      "home": "Lanús0-0PlatenseFT",
+      "away": "Lanús",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Fanatiz (Usa)Botafogo3-2Mirassol FCFT",
+      "away": "Botafogo3-2Mirassol FCFT",
+      "liga": "Serie A",
+      "liga_raw": "Serie A BetanoGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": true
+    },
+    {
+      "home": "Botafogo3-2Mirassol FCFT",
+      "away": "Botafogo",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Internacional1-1São PauloFT",
+      "away": "Internacional",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Cruzeiro3-0VitóriaFT",
+      "away": "Cruzeiro",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Bahía3-0Athletico ParanaenseFT",
+      "away": "Bahía",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Coritiba0-1Vasco da Gama78'",
+      "away": "Coritiba",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "78'",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Fluminense1-0Corinthians40'",
+      "away": "Fluminense",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "40'",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Hødd1-1Aalesunds FKFT",
+      "away": "Hødd1-1Aalesunds FKFT",
+      "liga": "FriendlyGo to the competition",
+      "liga_raw": "FriendlyGo to the competition",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Hødd1-1Aalesunds FKFT",
+      "away": "Hødd",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Rana FK11:00JunkerenPOS",
+      "away": "Rana FK",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "11:00",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Fanatiz (Usa)Alianza FC0-0Deportivo PastoFT",
+      "away": "Alianza FC0-0Deportivo PastoFT",
+      "liga": "Liga BetPlay Colombia",
+      "liga_raw": "Apertura ColombiaSet favouritesGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": true
+    },
+    {
+      "home": "Alianza FC0-0Deportivo PastoFT",
+      "away": "Alianza FC",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Santa Fe0-1Llaneros80'",
+      "away": "Santa Fe",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "80'",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "At. Nacional19:30Cúcuta Deportivo",
+      "away": "At. Nacional",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "19:30",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Fanatiz (Usa)Defensa y Justicia2-1Chaco For EverFT",
+      "away": "Defensa y Justicia2-1Chaco For EverFT",
+      "liga": "Liga Argentina",
+      "liga_raw": "Copa ArgentinaGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": true
+    },
+    {
+      "home": "Defensa y Justicia2-1Chaco For EverFT",
+      "away": "Defensa y Justicia",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Instituto1-0AtlantaHT",
+      "away": "Instituto",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "HT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Torrent CF1-0CD Castellón BFT",
+      "away": "Torrent CF1-0CD Castellón BFT",
+      "liga": "Segunda División RFEFGo to the competitionGo to news",
+      "liga_raw": "Segunda División RFEFGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Torrent CF1-0CD Castellón BFT",
+      "away": "Torrent CF",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "UD Melilla B1-1UD San PedroFT",
+      "away": "UD Melilla B1-1UD San PedroFT",
+      "liga": "Tercera División RFEFGo to the competitionGo to news",
+      "liga_raw": "Tercera División RFEFGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "UD Melilla B1-1UD San PedroFT",
+      "away": "UD Melilla B",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "SAD Villaverde1-1Atlético CFT",
+      "away": "SAD Villaverde",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Bollullos CF2-1Córdoba CF BFT",
+      "away": "Bollullos CF",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "La Virgen del Camino1-0CD VillaralboFT",
+      "away": "La Virgen del Camino",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Olímpico de Totana0-2FC Cartagena BFT",
+      "away": "Olímpico de Totana",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "UD Torre Del Mar0-0FC MarbellíFT",
+      "away": "UD Torre Del Mar",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "CD Derio2-2Eibar CFT",
+      "away": "CD Derio",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "UD Tomares0-1UtreraFT",
+      "away": "UD Tomares",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Atletico Porcuna0-0Mancha RealFT",
+      "away": "Atletico Porcuna",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Deportivo Alavés C1-1CD Aurrera VitoriaFT",
+      "away": "Deportivo Alavés C",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Atlético Albericia0-1TropezónFT",
+      "away": "Atlético Albericia",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Constància3-0SantanyiFT",
+      "away": "Constància",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "CD Torreperogil1-0Arenas de ArmillaFT",
+      "away": "CD Torreperogil",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "CD Touring2-1LeioaFT",
+      "away": "CD Touring",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Portugalete1-0SCD DurangoFT",
+      "away": "Portugalete",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Las Rozas1-0CF PozueloFT",
+      "away": "Las Rozas",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Atl. Santa Cruz2-1Aguilas FC BFT",
+      "away": "Atl. Santa Cruz",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Agoncillo4-1Peña Balsamaiso CFFT",
+      "away": "Agoncillo",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Haro Deportivo3-0AutolFT",
+      "away": "Haro Deportivo",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Villegas0-1CD VareaFT",
+      "away": "Villegas",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Yagüe2-2OyonesaFT",
+      "away": "Yagüe",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Aoiz1-1Beti KozkorFT",
+      "away": "Aoiz",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "FC Bidezarra0-2CirboneroFT",
+      "away": "FC Bidezarra",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Peña Sport2-0CF ArdoiFT",
+      "away": "Peña Sport",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Izarra3-0ArtajonésFT",
+      "away": "Izarra",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Zuera0-4Atlético MonzónFT",
+      "away": "Zuera",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "CD Valle de Egüés1-0Avance EzcabarteFT",
+      "away": "CD Valle de Egüés",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "CD Lagun Onak5-0SD ZamudioFT",
+      "away": "CD Lagun Onak",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Revilla1-1CD Montañas Del PasFT",
+      "away": "Revilla",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "UE Alcudia1-2Rotlet MolinarFT",
+      "away": "UE Alcudia",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "CD Laredo3-2BarquereñoFT",
+      "away": "CD Laredo",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Union Sur Yaiza1-4San Bartolomé CFFT",
+      "away": "Union Sur Yaiza",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Tamaraceite3-2Panadería PulidoFT",
+      "away": "Tamaraceite",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Villa Santa Brígida0-2UD San FernandoFT",
+      "away": "Villa Santa Brígida",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Machida Zelvia0-3FC TokyoFT",
+      "away": "Machida Zelvia0-3FC TokyoFT",
+      "liga": "J1 LeagueGo to the competitionGo to news",
+      "liga_raw": "J1 LeagueGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Machida Zelvia0-3FC TokyoFT",
+      "away": "Machida Zelvia",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Vissel Kobe2-0Shimizu S-PulseFT",
+      "away": "Vissel Kobe",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "América Mineiro1-2Botafogo SPFT",
+      "away": "América Mineiro1-2Botafogo SPFT",
+      "liga": "Série B BrazilGo to the competitionGo to news",
+      "liga_raw": "Série B BrazilGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "América Mineiro1-2Botafogo SPFT",
+      "away": "América Mineiro",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Atlético GO1-2NáuticoFT",
+      "away": "Atlético GO",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Londrina2-2Goiás ECFT",
+      "away": "Londrina",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Sport Recife1-1Vila NovaFT",
+      "away": "Sport Recife",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Ponte Preta0-0Ceará51'",
+      "away": "Ponte Preta",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "51'",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "CRB0-0Avaí41'",
+      "away": "CRB",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "41'",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Criciúma0-1Athletic Club40'",
+      "away": "Criciúma",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "40'",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Colo-Colo1-0HuachipatoFT",
+      "away": "Colo-Colo1-0HuachipatoFT",
+      "liga": "La Liga",
+      "liga_raw": "Copa de la Liga ChileGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": true
+    },
+    {
+      "home": "Colo-Colo1-0HuachipatoFT",
+      "away": "Colo-Colo",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Fanatiz (Usa)Bogotá2-2Real CundinamarcaFT",
+      "away": "Bogotá2-2Real CundinamarcaFT",
+      "liga": "Primera B AperturaGo to the competitionGo to news",
+      "liga_raw": "Primera B AperturaGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Bogotá2-2Real CundinamarcaFT",
+      "away": "Bogotá",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Patriotas Boyacá1-0LeonesFT",
+      "away": "Patriotas Boyacá",
+      "liga": "Fanatiz (Usa)",
+      "liga_raw": "Fanatiz (Usa)",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Latina1-0Potenza CalcioFT",
+      "away": "Latina1-0Potenza CalcioFT",
+      "liga": "Coppa Lega ProGo to the competitionGo to news",
+      "liga_raw": "Coppa Lega ProGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Latina1-0Potenza CalcioFT",
+      "away": "Latina",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Neftekhimik0-2FakelFT",
+      "away": "Neftekhimik0-2FakelFT",
+      "liga": "FNLGo to the competitionGo to news",
+      "liga_raw": "FNLGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    },
+    {
+      "home": "Neftekhimik0-2FakelFT",
+      "away": "Neftekhimik",
+      "liga": "",
+      "liga_raw": "",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": false
+    }
+  ],
+  "matches_relevant": [
+    {
+      "home": "Fanatiz (Usa)Lanús0-0PlatenseFT",
+      "away": "Lanús0-0PlatenseFT",
+      "liga": "Liga Argentina",
+      "liga_raw": "Apertura ArgentinaGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": true
+    },
+    {
+      "home": "Fanatiz (Usa)Botafogo3-2Mirassol FCFT",
+      "away": "Botafogo3-2Mirassol FCFT",
+      "liga": "Serie A",
+      "liga_raw": "Serie A BetanoGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": true
+    },
+    {
+      "home": "Fanatiz (Usa)Alianza FC0-0Deportivo PastoFT",
+      "away": "Alianza FC0-0Deportivo PastoFT",
+      "liga": "Liga BetPlay Colombia",
+      "liga_raw": "Apertura ColombiaSet favouritesGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": true
+    },
+    {
+      "home": "Fanatiz (Usa)Defensa y Justicia2-1Chaco For EverFT",
+      "away": "Defensa y Justicia2-1Chaco For EverFT",
+      "liga": "Liga Argentina",
+      "liga_raw": "Copa ArgentinaGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": true
+    },
+    {
+      "home": "Colo-Colo1-0HuachipatoFT",
+      "away": "Colo-Colo1-0HuachipatoFT",
+      "liga": "La Liga",
+      "liga_raw": "Copa de la Liga ChileGo to the competitionGo to news",
+      "hora": "FT",
+      "fecha": "2026-04-01",
+      "source": "besoccer",
+      "relevant": true
+    }
+  ]
+}
