@@ -896,42 +896,151 @@ def app_home():
 @app.route("/login", methods=["GET", "POST"])
 def login_page():
     if request.method == "POST":
-        from security import check_honeypot, is_ip_blocked, record_failed_login, record_successful_login, sanitize
+        from security import check_honeypot, is_ip_blocked, record_failed_login, record_successful_login
+        from stripe_handler import login_with_password, activate_with_token, find_user_by_email
 
         ip = request.headers.get("X-Forwarded-For", request.remote_addr or "")
         if "," in ip:
             ip = ip.split(",")[0].strip()
 
-        # Honeypot check
         if check_honeypot(request.form):
             return redirect(url_for("landing"))
 
-        # IP block check
         if is_ip_blocked(ip):
-            flash("Acceso bloqueado temporalmente. Intenta mas tarde.")
+            flash("Acceso bloqueado temporalmente. Intenta en 30 minutos.")
             return render_template("login.html")
 
-        token = request.form.get("token", "").strip()
-        from stripe_handler import verify_token
-        user = verify_token(token)
+        mode = request.form.get("mode", "password")
+        email = request.form.get("email", "").strip().lower()
 
-        if user:
-            record_successful_login(ip, user.get("email", ""))
-            session["token"] = token
-            session.permanent = True
-            app.permanent_session_lifetime = timedelta(days=30)
-            flash(f"Bienvenido! Plan: {user['plan'].upper()}")
-            return redirect(url_for("app_home"))
+        if mode == "activate":
+            # First time: token + create password
+            token = request.form.get("token", "").strip()
+            password = request.form.get("password", "")
+            password2 = request.form.get("password2", "")
+
+            if not token or not password or not email:
+                flash("Completa todos los campos")
+                return render_template("login.html")
+            if len(password) < 6:
+                flash("La contrasena debe tener al menos 6 caracteres")
+                return render_template("login.html")
+            if password != password2:
+                flash("Las contrasenas no coinciden")
+                return render_template("login.html")
+
+            user = activate_with_token(token, password)
+            if user:
+                record_successful_login(ip, email)
+                session["user_email"] = email
+                session.permanent = True
+                app.permanent_session_lifetime = timedelta(days=30)
+                flash(f"Cuenta activada! Tu contrasena ha sido guardada.")
+                return redirect(url_for("app_home"))
+            else:
+                record_failed_login(ip)
+                flash("Token invalido o suscripcion vencida")
+
         else:
-            record_failed_login(ip)
-            flash("Token invalido o suscripcion vencida")
+            # Normal login: email + password
+            password = request.form.get("password", "")
+            if not email or not password:
+                flash("Ingresa email y contrasena")
+                return render_template("login.html")
+
+            user = login_with_password(email, password)
+            if user:
+                record_successful_login(ip, email)
+                session["user_email"] = email
+                remember = request.form.get("remember")
+                if remember:
+                    session.permanent = True
+                    app.permanent_session_lifetime = timedelta(days=30)
+                else:
+                    session.permanent = False
+                flash(f"Bienvenido! Plan: {user['plan'].upper()}")
+                return redirect(url_for("app_home"))
+            else:
+                record_failed_login(ip)
+                # Check if user exists but has no password
+                _, existing = find_user_by_email(email)
+                if existing and not existing.get("password_hash"):
+                    flash("Debes activar tu cuenta primero. Usa tu token de acceso para crear una contrasena.")
+                else:
+                    flash("Email o contrasena incorrectos")
+
     return render_template("login.html")
+
+
+@app.route("/forgot-password", methods=["POST"])
+def forgot_password():
+    email = request.form.get("email", "").strip().lower()
+    if not email:
+        flash("Ingresa tu email")
+        return redirect(url_for("login_page"))
+
+    from stripe_handler import create_reset_token
+    reset_token = create_reset_token(email)
+
+    if reset_token:
+        base = request.url_root.rstrip("/")
+        try:
+            from email_service import _send, _wrap, _btn
+            html = _wrap(f'''
+            <h2 style="color:#1AE89B;text-align:center;margin:0 0 16px">Recuperar contrasena</h2>
+            <p style="color:#ccc;text-align:center">Alguien solicito cambiar tu contrasena. Si fuiste tu, haz clic en el boton:</p>
+            {_btn("Crear nueva contrasena", f"{base}/reset-password/{reset_token}")}
+            <p style="font-size:11px;color:#555;text-align:center">Este link expira en 1 hora. Si no solicitaste esto, ignora este email.</p>
+            ''')
+            _send(email, "NEME BET - Recuperar contrasena", html)
+        except Exception:
+            pass
+
+    # Always show success (don't reveal if email exists)
+    flash("Si el email esta registrado, recibiras un link de recuperacion.")
+    return redirect(url_for("login_page"))
+
+
+@app.route("/reset-password/<reset_token>", methods=["GET", "POST"])
+def reset_password_page(reset_token):
+    if request.method == "POST":
+        password = request.form.get("password", "")
+        password2 = request.form.get("password2", "")
+
+        if len(password) < 6:
+            flash("La contrasena debe tener al menos 6 caracteres")
+            return render_template("reset_password.html", reset_token=reset_token)
+        if password != password2:
+            flash("Las contrasenas no coinciden")
+            return render_template("reset_password.html", reset_token=reset_token)
+
+        from stripe_handler import reset_password
+        if reset_password(reset_token, password):
+            flash("Contrasena actualizada. Inicia sesion.")
+            return redirect(url_for("login_page"))
+        else:
+            flash("Link expirado o invalido. Solicita uno nuevo.")
+            return redirect(url_for("login_page"))
+
+    return render_template("reset_password.html", reset_token=reset_token)
 
 
 @app.route("/logout")
 def logout():
+    session.pop("user_email", None)
     session.pop("token", None)
     flash("Sesion cerrada")
+    return redirect(url_for("landing"))
+
+
+@app.route("/logout-all", methods=["POST"])
+def logout_all():
+    email = session.get("user_email", "")
+    if email:
+        from stripe_handler import invalidate_all_sessions
+        invalidate_all_sessions(email)
+    session.clear()
+    flash("Sesion cerrada en todos los dispositivos")
     return redirect(url_for("landing"))
 
 

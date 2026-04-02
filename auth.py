@@ -1,47 +1,54 @@
 """
-AUTH.PY — Sistema de autenticacion por token para NEME BET
+AUTH.PY — Sistema de autenticacion para NEME BET
 """
 
 import functools
-from flask import session, redirect, url_for, request, flash
-from stripe_handler import verify_token, get_user_plan, PLANS
+from flask import session, redirect, url_for, flash
+from stripe_handler import find_user_by_email, verify_token, PLANS
 
 
 def login_required(f):
-    """Decorator: requiere login con token activo."""
     @functools.wraps(f)
     def wrapper(*args, **kwargs):
-        token = session.get("token")
-        if not token:
+        user = get_current_user()
+        if not user:
             flash("Inicia sesion para acceder")
             return redirect(url_for("login_page"))
-        user = verify_token(token)
-        if not user:
-            session.pop("token", None)
-            flash("Tu suscripcion vencio. Renueva para continuar.")
-            return redirect(url_for("landing"))
         return f(*args, **kwargs)
     return wrapper
 
 
 def get_current_user():
     """Retorna el usuario actual o None."""
-    token = session.get("token")
-    if not token:
+    # New system: email-based
+    email = session.get("user_email")
+    if email:
+        _, user = find_user_by_email(email)
+        if user and user.get("active"):
+            return user
+        # User expired/inactive
+        session.pop("user_email", None)
         return None
-    return verify_token(token)
+
+    # Legacy: token-based (backwards compat)
+    token = session.get("token")
+    if token:
+        user = verify_token(token)
+        if user:
+            return user
+        session.pop("token", None)
+
+    return None
 
 
 def get_current_plan():
-    """Retorna el plan actual del usuario."""
-    token = session.get("token")
-    if not token:
+    user = get_current_user()
+    if not user:
         return None
-    return get_user_plan(token)
+    return user.get("plan", "basico")
 
 
 def plan_allows(feature):
-    """Verifica si el plan actual permite una feature."""
     plan = get_current_plan()
     if not plan:
         return False

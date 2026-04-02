@@ -13,3 +13,4 @@ stripe
 flask-limiter
 flask-talisman
 resend
+bcrypt

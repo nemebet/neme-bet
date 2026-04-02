@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Login - NEME BET</title>
+    <title>Iniciar sesion - NEME BET</title>
     <link rel="stylesheet" href="/static/style.css">
     <meta name="theme-color" content="#0F6E56">
 </head>
@@ -11,23 +11,78 @@
 <div class="container">
     <div class="header">
         <img src="/static/logo.svg" alt="NEME BET" class="logo">
-        <div class="sub">Ingresa con tu token de acceso</div>
     </div>
 
     {% with messages = get_flashed_messages() %}
     {% if messages %}{% for msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}{% endif %}
     {% endwith %}
 
-    <form method="POST" action="/login">
-        <div style="position:absolute;left:-9999px"><input type="text" name="website_url" tabindex="-1" autocomplete="off"></div>
-        <div class="card">
-            <h2>Token de acceso</h2>
-            <label>Pega el token que recibiste por email al suscribirte</label>
-            <input type="text" name="token" placeholder="Tu token de acceso..." required
-                   style="font-size:14px;font-family:monospace" autocomplete="off">
+    <!-- LOGIN NORMAL -->
+    <div id="loginForm">
+        <form method="POST" action="/login">
+            <input type="hidden" name="mode" value="password">
+            <div style="position:absolute;left:-9999px"><input type="text" name="website_url" tabindex="-1" autocomplete="off"></div>
+            <div class="card">
+                <h2>Iniciar sesion</h2>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tu@email.com" required autocomplete="email" style="margin-bottom:10px">
+                <label>Contrasena</label>
+                <input type="password" name="password" placeholder="Tu contrasena" required autocomplete="current-password">
+                <div style="margin-top:10px;display:flex;align-items:center;gap:6px">
+                    <input type="checkbox" name="remember" id="remember" checked style="width:auto">
+                    <label for="remember" style="margin:0;font-size:13px;color:var(--text2)">Recordarme en este dispositivo</label>
+                </div>
+            </div>
+            <button type="submit" class="btn">Ingresar</button>
+        </form>
+
+        <div style="text-align:center;margin-top:14px;font-size:13px">
+            <a href="#" onclick="showPanel('activateForm')" style="color:var(--green)">Primera vez? Usa tu token de acceso</a>
         </div>
-        <button type="submit" class="btn">Ingresar</button>
-    </form>
+        <div style="text-align:center;margin-top:8px;font-size:13px">
+            <a href="#" onclick="showPanel('resetForm')" style="color:var(--text2)">Olvidaste tu contrasena?</a>
+        </div>
+    </div>
+
+    <!-- ACTIVAR CON TOKEN (primera vez) -->
+    <div id="activateForm" style="display:none">
+        <form method="POST" action="/login">
+            <input type="hidden" name="mode" value="activate">
+            <div style="position:absolute;left:-9999px"><input type="text" name="website_url" tabindex="-1" autocomplete="off"></div>
+            <div class="card">
+                <h2>Activar cuenta</h2>
+                <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Pega el token que recibiste por email y crea tu contrasena</p>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tu@email.com" required style="margin-bottom:10px">
+                <label>Token de acceso</label>
+                <input type="text" name="token" placeholder="Pega tu token aqui" required autocomplete="off" style="margin-bottom:10px;font-family:monospace;font-size:13px">
+                <label>Nueva contrasena</label>
+                <input type="password" name="password" placeholder="Minimo 6 caracteres" required minlength="6" style="margin-bottom:10px">
+                <label>Confirmar contrasena</label>
+                <input type="password" name="password2" placeholder="Repite la contrasena" required minlength="6">
+            </div>
+            <button type="submit" class="btn">Activar cuenta</button>
+        </form>
+        <div style="text-align:center;margin-top:14px;font-size:13px">
+            <a href="#" onclick="showPanel('loginForm')" style="color:var(--text2)">Ya tienes contrasena? Inicia sesion</a>
+        </div>
+    </div>
+
+    <!-- RECUPERAR CONTRASENA -->
+    <div id="resetForm" style="display:none">
+        <form method="POST" action="/forgot-password">
+            <div class="card">
+                <h2>Recuperar contrasena</h2>
+                <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Te enviaremos un link para crear una nueva contrasena</p>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="tu@email.com" required>
+            </div>
+            <button type="submit" class="btn">Enviar link de recuperacion</button>
+        </form>
+        <div style="text-align:center;margin-top:14px;font-size:13px">
+            <a href="#" onclick="showPanel('loginForm')" style="color:var(--text2)">Volver a iniciar sesion</a>
+        </div>
+    </div>
 
     <div style="text-align:center;margin-top:20px">
         <a href="/" style="color:var(--green);font-size:14px">No tienes cuenta? Suscribete</a>
@@ -35,5 +90,14 @@
 
     <div class="footer">NEME BET v5.0</div>
 </div>
+
+<script>
+function showPanel(id) {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('activateForm').style.display = 'none';
+    document.getElementById('resetForm').style.display = 'none';
+    document.getElementById(id).style.display = 'block';
+}
+</script>
 </body>
 </html>
