@@ -8,7 +8,7 @@ import urllib.request
 import urllib.error
 
 RESEND_KEY = os.environ.get("RESEND_API_KEY", "")
-SENDER = os.environ.get("EMAIL_FROM", "NEME BET <noreply@nemebet.app>")
+SENDER = os.environ.get("EMAIL_FROM", "NEME BET <noreply@swatlatam.com>")
 APP_URL = os.environ.get("APP_URL", "https://web-production-940b9.up.railway.app")
 
 LOGO = f'{APP_URL}/static/logo.svg'
