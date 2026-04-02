@@ -1,68 +1,120 @@
 """
-EMAIL_SERVICE.PY — Emails automaticos para NEME BET
+EMAIL_SERVICE.PY — Emails con Resend para NEME BET
 """
 
+import json
 import os
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import urllib.request
+import urllib.error
 
-SENDER = os.environ.get("EMAIL_SENDER", "swatfest2026@gmail.com")
-PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
-SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.gmail.com")
-SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
-APP_URL = os.environ.get("APP_URL", "https://neme-bet-production.up.railway.app")
+RESEND_KEY = os.environ.get("RESEND_API_KEY", "")
+SENDER = os.environ.get("EMAIL_FROM", "NEME BET <noreply@nemebet.app>")
+APP_URL = os.environ.get("APP_URL", "https://web-production-940b9.up.railway.app")
+
+LOGO = f'{APP_URL}/static/logo.svg'
+ICON = f'{APP_URL}/static/icon-192.png'
+
+# ─── Base HTML template ───
+def _wrap(content):
+    return f'''<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#050505;font-family:-apple-system,sans-serif">
+<div style="max-width:480px;margin:0 auto;padding:24px">
+<div style="text-align:center;padding:20px 0"><img src="{ICON}" alt="NEME BET" width="48" height="48" style="border-radius:12px"></div>
+<div style="background:#0A0A0A;border:1px solid #1A1A1A;border-radius:16px;padding:28px;color:#F0F0F0">
+{content}
+</div>
+<div style="text-align:center;padding:16px 0;font-size:11px;color:#444">
+NEME BET &copy; 2026 | Analisis estadistico de futbol<br>
+Los analisis son orientativos. Apuesta responsablemente.
+</div>
+</div></body></html>'''
 
 
-def _send(to, subject, html_body):
-    """Envia email via SMTP."""
-    if not PASSWORD:
-        print(f"[EMAIL] No password configured, skipping email to {to}")
+def _btn(text, url):
+    return f'<div style="text-align:center;margin:20px 0"><a href="{url}" style="display:inline-block;background:#0F6E56;color:white;padding:14px 32px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px">{text}</a></div>'
+
+
+# ─── Send via Resend API ───
+def _send(to, subject, html):
+    if not RESEND_KEY:
+        print(f"[EMAIL] No RESEND_API_KEY, skipping -> {to}: {subject}")
         return False
 
-    msg = MIMEMultipart("alternative")
-    msg["From"] = f"NEME BET <{SENDER}>"
-    msg["To"] = to
-    msg["Subject"] = subject
-    msg.attach(MIMEText(html_body, "html"))
+    payload = json.dumps({
+        "from": SENDER,
+        "to": [to],
+        "subject": subject,
+        "html": html,
+    }).encode("utf-8")
+
+    req = urllib.request.Request("https://api.resend.com/emails",
+                                 data=payload, method="POST")
+    req.add_header("Authorization", f"Bearer {RESEND_KEY}")
+    req.add_header("Content-Type", "application/json")
 
     try:
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-            server.starttls()
-            server.login(SENDER, PASSWORD)
-            server.sendmail(SENDER, to, msg.as_string())
-        return True
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            result = json.loads(resp.read().decode())
+            print(f"[EMAIL] Sent to {to}: {result.get('id', 'ok')}")
+            return True
+    except urllib.error.HTTPError as e:
+        body = e.read().decode() if hasattr(e, 'read') else ''
+        print(f"[EMAIL ERROR] {e.code}: {body[:200]}")
+        return False
     except Exception as e:
         print(f"[EMAIL ERROR] {e}")
         return False
 
 
+# ─── Email templates ───
+
 def send_welcome(email, token, plan):
     plan_names = {"basico": "Basico", "pro": "Pro", "vip": "VIP"}
-    _send(email, "Bienvenido a NEME BET", f"""
-    <div style="font-family:sans-serif;max-width:500px;margin:0 auto;background:#0A0A0A;color:#F0F0F0;padding:30px;border-radius:12px">
-        <h1 style="color:#1AE89B;text-align:center">NEME BET</h1>
-        <p>Tu suscripcion <strong>{plan_names.get(plan, plan)}</strong> esta activa.</p>
-        <p>Tu token de acceso:</p>
-        <div style="background:#1A1A1A;padding:15px;border-radius:8px;font-family:monospace;word-break:break-all;color:#1AE89B">{token}</div>
-        <p style="margin-top:20px"><a href="{APP_URL}/login" style="background:#0F6E56;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold">Ingresar a NEME BET</a></p>
-        <p style="color:#888;font-size:12px;margin-top:20px">Guarda este email. El token es tu clave de acceso.</p>
-    </div>""")
+    html = _wrap(f'''
+    <h1 style="color:#1AE89B;text-align:center;margin:0 0 16px;font-size:22px">Bienvenido a NEME BET</h1>
+    <p style="text-align:center;color:#888;margin:0 0 20px">Tu suscripcion <strong style="color:#1AE89B">{plan_names.get(plan, plan)}</strong> esta activa</p>
+    <div style="background:#111;border:1px solid #222;border-radius:10px;padding:16px;margin:16px 0">
+        <div style="font-size:12px;color:#888;margin-bottom:6px">Tu token de acceso:</div>
+        <div style="font-family:monospace;font-size:13px;word-break:break-all;color:#1AE89B;line-height:1.4">{token}</div>
+    </div>
+    <p style="font-size:13px;color:#888">Copia este token y usalo para ingresar en la app. Tambien lo puedes encontrar siempre en este email.</p>
+    {_btn("Ingresar a NEME BET", f"{APP_URL}/login")}
+    <p style="font-size:11px;color:#555;text-align:center">Guarda este email. El token es tu unica clave de acceso.</p>
+    ''')
+    _send(email, "Bienvenido a NEME BET - Tu token de acceso", html)
 
 
 def send_renewal_reminder(email, days_left):
-    _send(email, f"NEME BET - Tu suscripcion vence en {days_left} dias", f"""
-    <div style="font-family:sans-serif;max-width:500px;margin:0 auto;background:#0A0A0A;color:#F0F0F0;padding:30px;border-radius:12px">
-        <h2 style="color:#F5A623">Tu suscripcion vence en {days_left} dias</h2>
-        <p>Renueva para seguir recibiendo analisis diarios con +75% de precision.</p>
-        <p><a href="{APP_URL}" style="background:#0F6E56;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold">Renovar ahora</a></p>
-    </div>""")
+    html = _wrap(f'''
+    <h2 style="color:#F5A623;text-align:center;margin:0 0 16px">Tu suscripcion vence en {days_left} dias</h2>
+    <p style="color:#ccc;text-align:center">Renueva para seguir recibiendo analisis diarios con +75% de precision.</p>
+    {_btn("Renovar ahora", APP_URL)}
+    ''')
+    _send(email, f"NEME BET - Tu suscripcion vence en {days_left} dias", html)
 
 
 def send_expired(email):
-    _send(email, "NEME BET - Tu suscripcion vencio", f"""
-    <div style="font-family:sans-serif;max-width:500px;margin:0 auto;background:#0A0A0A;color:#F0F0F0;padding:30px;border-radius:12px">
-        <h2 style="color:#FF4757">Tu suscripcion ha vencido</h2>
-        <p>Renueva para recuperar acceso a tus picks diarios.</p>
-        <p><a href="{APP_URL}" style="background:#0F6E56;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold">Renovar suscripcion</a></p>
-    </div>""")
+    html = _wrap(f'''
+    <h2 style="color:#FF4757;text-align:center;margin:0 0 16px">Tu suscripcion ha vencido</h2>
+    <p style="color:#ccc;text-align:center">Renueva para recuperar acceso a tus analisis diarios.</p>
+    {_btn("Renovar suscripcion", APP_URL)}
+    ''')
+    _send(email, "NEME BET - Tu suscripcion vencio", html)
+
+
+def send_daily_picks(email, picks):
+    picks_html = ""
+    for p in picks[:5]:
+        picks_html += f'''
+        <div style="background:#111;border-left:3px solid #1AE89B;border-radius:8px;padding:12px;margin:8px 0">
+            <div style="font-weight:700;font-size:14px">{p.get("bet", "")}</div>
+            <div style="font-size:13px;color:#888">{p.get("match", "")}</div>
+            <div style="color:#1AE89B;font-weight:700;font-size:16px;margin-top:4px">{p.get("prob", "")}%</div>
+        </div>'''
+
+    html = _wrap(f'''
+    <h2 style="color:#1AE89B;text-align:center;margin:0 0 16px">Picks del dia</h2>
+    <p style="color:#888;text-align:center;font-size:13px">{len(picks)} analisis con alta confianza</p>
+    {picks_html}
+    {_btn("Ver analisis completo", f"{APP_URL}/picks")}
+    ''')
+    _send(email, f"NEME BET - {len(picks)} picks del dia", html)

@@ -1291,6 +1291,73 @@ def push_subscribe():
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+#  ADMIN ROUTES
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/admin/create-user", methods=["GET", "POST"])
+def admin_create_user():
+    admin_key = os.environ.get("ADMIN_KEY", "")
+    provided = request.args.get("key", "") or request.form.get("key", "")
+
+    if not admin_key or provided != admin_key:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    if request.method == "POST":
+        import secrets as sec
+        from datetime import timedelta as td
+
+        email = request.form.get("email", "admin@nemebet.app")
+        plan = request.form.get("plan", "pro")
+        days = int(request.form.get("days", "30"))
+
+        token = sec.token_urlsafe(32)
+        users_path = os.path.join(BASE_DIR, "users.json")
+        users = {}
+        if os.path.exists(users_path):
+            with open(users_path, encoding="utf-8") as f:
+                try: users = json.load(f)
+                except: users = {}
+
+        users[token] = {
+            "email": email,
+            "plan": plan,
+            "token": token,
+            "stripe_customer": "admin_created",
+            "stripe_session": "admin_created",
+            "created": datetime.now().isoformat(),
+            "expires": (datetime.now() + td(days=days)).isoformat(),
+            "active": True,
+        }
+
+        with open(users_path, "w", encoding="utf-8") as f:
+            json.dump(users, f, indent=2)
+
+        # Send welcome email
+        try:
+            from email_service import send_welcome
+            send_welcome(email, token, plan)
+        except Exception:
+            pass
+
+        return jsonify({"ok": True, "email": email, "plan": plan,
+                        "token": token, "expires": users[token]["expires"]})
+
+    # GET: show form
+    return '''<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Admin - NEME BET</title><link rel="stylesheet" href="/static/style.css"></head>
+    <body><div class="container"><div class="header"><h1>Admin</h1></div>
+    <form method="POST" action="/admin/create-user?key=''' + provided + '''">
+    <div class="card"><h2>Crear usuario</h2>
+    <label>Email</label><input type="text" name="email" value="swatfest2026@gmail.com">
+    <label style="margin-top:10px">Plan</label>
+    <select name="plan" style="width:100%;padding:12px;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:16px">
+    <option value="basico">Basico</option><option value="pro" selected>Pro</option><option value="vip">VIP</option></select>
+    <label style="margin-top:10px">Dias</label><input type="number" name="days" value="30">
+    </div><button type="submit" class="btn">Crear usuario</button></form>
+    </div></body></html>'''
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 #  API JSON ENDPOINT
 # ═══════════════════════════════════════════════════════════════════════════
 
@@ -1342,7 +1409,14 @@ def start_scheduler():
     except Exception as e:
         print(f"[SCHEDULER] No iniciado: {e}")
 
-# Start scheduler when app is imported by gunicorn
+
+# Init DB + scheduler when app is imported by gunicorn
+try:
+    from init_db import init
+    init()
+except Exception as e:
+    print(f"[INIT_DB] {e}")
+
 start_scheduler()
 
 

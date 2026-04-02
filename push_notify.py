@@ -13,7 +13,14 @@ SUBS_PATH = os.path.join(BASE_DIR, "push_subscriptions.json")
 
 
 def generate_vapid_keys():
-    """Genera par de claves VAPID si no existen."""
+    """Retorna claves VAPID desde env vars, archivo, o genera nuevas."""
+    # 1. Environment variables (Railway)
+    pub = os.environ.get("VAPID_PUBLIC_KEY", "")
+    priv = os.environ.get("VAPID_PRIVATE_KEY", "")
+    if pub and priv:
+        return {"public_key": pub, "private_key": priv}
+
+    # 2. Local file
     if os.path.exists(VAPID_PATH):
         with open(VAPID_PATH) as f:
             return json.load(f)

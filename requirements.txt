@@ -12,3 +12,4 @@ cryptography
 stripe
 flask-limiter
 flask-talisman
+resend
