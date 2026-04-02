@@ -3,105 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>NEME BET — Analisis estadistico de futbol</title>
+    <title>NEME BET — Tu primer analisis GRATIS</title>
     <link rel="stylesheet" href="/static/style.css">
     <link rel="manifest" href="/static/manifest.json">
     <link rel="icon" href="/static/icon-192.png">
     <meta name="theme-color" content="#0F6E56">
     <script defer data-domain="web-production-940b9.up.railway.app" src="https://plausible.io/js/script.js"></script>
     <style>
-        .hero{text-align:center;padding:40px 0 30px}
-        .hero h1{font-size:28px;font-weight:900;margin-bottom:8px}
-        .hero .tag{color:#1AE89B;font-size:16px;font-weight:600}
-        .hero .sub{color:#888;font-size:13px;margin-top:6px}
-        .live-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0}
-        .ls{background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:16px 8px;text-align:center}
-        .ls .n{font-size:28px;font-weight:800;color:#1AE89B}
-        .ls .l{font-size:11px;color:#888;margin-top:2px}
-        .wins-section{margin:24px 0}
-        .wins-section h2{font-size:16px;text-align:center;margin-bottom:12px}
-        .win-card{background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid #1AE89B}
-        .win-match{font-weight:700;font-size:15px}
-        .win-detail{display:flex;justify-content:space-between;margin-top:6px;font-size:13px;color:#888}
-        .win-result{color:#1AE89B;font-weight:700}
-        .pricing{margin:30px 0}
-        .pricing h2{text-align:center;font-size:18px;margin-bottom:16px}
-        .plan{background:#111;border:1px solid #2A2A2A;border-radius:14px;padding:20px;margin-bottom:14px;position:relative}
-        .plan.recommended{border-color:#0F6E56;background:linear-gradient(135deg,rgba(15,110,86,0.15),#111 60%)}
-        .plan .badge-rec{position:absolute;top:-10px;right:16px;background:#0F6E56;color:white;font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px}
-        .plan h3{font-size:18px;margin-bottom:4px}
-        .plan .price{font-size:30px;font-weight:900;color:#1AE89B}
-        .plan .price span{font-size:14px;color:#888;font-weight:400}
-        .plan ul{list-style:none;padding:0;margin:12px 0}
-        .plan li{padding:4px 0;font-size:13px;color:#ccc}
-        .plan li::before{content:"+ ";color:#1AE89B;font-weight:700}
-        .plan .btn{margin-top:10px}
-        .plan .btn-outline{background:transparent;border:2px solid #0F6E56;color:#1AE89B}
-        .testimonials{margin:24px 0}
-        .testimonials h2{text-align:center;font-size:16px;margin-bottom:12px}
-        .testi{background:#111;border-radius:12px;padding:14px;margin-bottom:10px;font-size:13px;color:#ccc;font-style:italic;border:1px solid #2A2A2A}
-        .testi .author{color:#1AE89B;font-style:normal;font-weight:600;margin-top:6px}
-        .legal{text-align:center;font-size:11px;color:#555;padding:20px 0;border-top:1px solid #2A2A2A;margin-top:30px}
-        .login-link{text-align:center;margin:16px 0}
-        .login-link a{color:#1AE89B;font-size:14px}
+    .hero{text-align:center;padding:36px 0 24px}
+    .hero h1{font-size:26px;font-weight:900;margin-bottom:6px;line-height:1.2}
+    .hero .tag{color:#1AE89B;font-size:15px;font-weight:600}
+    .hero .sub{color:#888;font-size:13px;margin-top:6px}
+    .hero-form{display:flex;gap:6px;margin-top:16px}
+    .hero-form input{flex:1;padding:14px;background:#111;border:1px solid #2A2A2A;border-radius:10px;color:#F0F0F0;font-size:16px}
+    .hero-form input:focus{outline:none;border-color:#0F6E56}
+    .hero-form button{padding:14px 20px;background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap}
+    .hero-count{font-size:12px;color:#555;margin-top:8px;text-align:center}
+    .live-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0}
+    .ls{background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:14px 8px;text-align:center}
+    .ls .n{font-size:26px;font-weight:800;color:#1AE89B}
+    .ls .l{font-size:11px;color:#888;margin-top:2px}
+    .picks-preview{margin:24px 0}
+    .picks-preview h2{font-size:16px;text-align:center;margin-bottom:12px;color:#1AE89B}
+    .pick-visible{background:#111;border:1px solid #2A2A2A;border-radius:14px;padding:16px;margin-bottom:12px;border-left:4px solid #1AE89B}
+    .pick-blurred{position:relative;margin-bottom:12px}
+    .pick-blurred .blur-content{filter:blur(6px);user-select:none;pointer-events:none;background:#111;border:1px solid #2A2A2A;border-radius:14px;padding:16px}
+    .lock-overlay{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);border-radius:14px;cursor:pointer;z-index:2}
+    .lock-overlay .lock-icon{font-size:32px;margin-bottom:6px}
+    .lock-overlay .lock-text{font-size:14px;color:#ccc;margin-bottom:8px}
+    .lock-overlay .lock-btn{background:#0F6E56;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;border:none;cursor:pointer}
+    .pricing{margin:30px 0}
+    .pricing h2{text-align:center;font-size:18px;margin-bottom:6px}
+    .pricing .psub{text-align:center;font-size:12px;color:#888;margin-bottom:14px}
+    .plan{background:#111;border:1px solid #2A2A2A;border-radius:14px;padding:18px;margin-bottom:12px}
+    .plan.rec{border-color:#0F6E56;background:linear-gradient(135deg,rgba(15,110,86,0.12),#111 60%)}
+    .plan .badge-rec{display:inline-block;background:#0F6E56;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;margin-bottom:6px}
+    .plan h3{font-size:17px;margin-bottom:3px}
+    .plan .price{font-size:28px;font-weight:900;color:#1AE89B}
+    .plan .price span{font-size:13px;color:#888;font-weight:400}
+    .plan ul{list-style:none;padding:0;margin:10px 0}
+    .plan li{padding:3px 0;font-size:13px;color:#ccc}
+    .plan li::before{content:"+ ";color:#1AE89B;font-weight:700}
+    .plan .btn{margin-top:8px;text-decoration:none;text-align:center;display:block;padding:14px;font-size:15px}
+    .plan .btn-outline{background:transparent;border:2px solid #0F6E56;color:#1AE89B}
+    .urgency{background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:14px;text-align:center;margin:16px 0}
+    .urgency .timer{font-size:22px;font-weight:800;color:#1AE89B;margin:4px 0}
+    .urgency .viewers{font-size:12px;color:#888}
+    .legal{text-align:center;font-size:11px;color:#444;padding:20px 0;border-top:1px solid #1A1A1A;margin-top:24px}
+    /* Modal */
+    .modal-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center}
+    .modal-bg.show{display:flex}
+    .modal{background:#0A0A0A;border:1px solid #2A2A2A;border-radius:16px;padding:24px;width:90%;max-width:400px}
+    .modal h2{color:#1AE89B;font-size:18px;margin-bottom:12px;text-align:center}
+    .modal input{width:100%;padding:12px;background:#111;border:1px solid #2A2A2A;border-radius:8px;color:#F0F0F0;font-size:15px;margin-bottom:10px;box-sizing:border-box}
+    .modal input:focus{outline:none;border-color:#0F6E56}
+    .modal .cb{display:flex;align-items:start;gap:8px;margin:10px 0;font-size:12px;color:#888}
+    .modal .cb input{width:auto;margin:0}
     </style>
 </head>
-<body>
-<div class="container">
-    <!-- Hero -->
-    <div class="hero">
-        <img src="/static/logo.svg" alt="NEME BET" style="height:44px;margin-bottom:12px">
-        <div class="tag">Analisis estadistico de futbol con mas del 75% de precision</div>
-        <div class="sub">Modelo ensemble: Poisson + Dixon-Coles + ELO</div>
-    </div>
+<body style="background:#0A0A0A;color:#F0F0F0;font-family:-apple-system,sans-serif">
+<div style="max-width:640px;margin:0 auto;padding:16px">
 
     {% with messages = get_flashed_messages() %}
-    {% if messages %}{% for msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}{% endif %}
+    {% if messages %}{% for msg in messages %}<div class="flash" style="padding:12px;background:rgba(15,110,86,0.2);border:1px solid #0F6E56;border-radius:10px;color:#1AE89B;font-size:14px;margin-bottom:12px">{{ msg }}</div>{% endfor %}{% endif %}
     {% endwith %}
 
-    <!-- Live stats -->
-    <div class="live-stats">
-        <div class="ls"><div class="n">{{ stats.accuracy or '78' }}%</div><div class="l">Precision del modelo</div></div>
-        <div class="ls"><div class="n">{{ stats.picks_week or '12' }}</div><div class="l">Analisis esta semana</div></div>
-        <div class="ls"><div class="n">{{ stats.total_analyzed or '847' }}</div><div class="l">Partidos analizados</div></div>
+    <!-- HERO -->
+    <div class="hero">
+        <img src="/static/logo.svg" alt="NEME BET" style="height:40px;margin-bottom:14px">
+        <h1>Recibe tu primer analisis <span style="color:#1AE89B">GRATIS</span></h1>
+        <div class="sub">Sin tarjeta de credito. Solo tu email.</div>
+        <form class="hero-form" id="heroForm" onsubmit="openModal(event)">
+            <input type="email" id="heroEmail" placeholder="tu@email.com" required>
+            <button type="submit">QUIERO MI ANALISIS</button>
+        </form>
+        <div class="hero-count">Mas de <strong style="color:#1AE89B">{{ stats.total_users or 127 }}</strong> usuarios reciben nuestros analisis</div>
     </div>
 
-    <!-- Recent wins (max 48h, auto-refresh) -->
-    <div class="wins-section" id="winsSection">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-            <h2 style="color:#1AE89B;margin:0">Ultimos analisis acertados</h2>
-            <span id="winsUpdated" style="font-size:10px;color:#555">{{ last_updated }}</span>
+    <!-- URGENCY COUNTER -->
+    <div class="urgency">
+        <div style="font-size:12px;color:#888">Proxima actualizacion de analisis en</div>
+        <div class="timer" id="countdown">--:--:--</div>
+        <div class="viewers"><span id="viewerCount">{{ viewer_count }}</span> personas viendo analisis ahora</div>
+    </div>
+
+    <!-- ANALYSIS PREVIEW: 1 visible + 2 blurred -->
+    <div class="picks-preview">
+        <h2>Analisis del dia</h2>
+
+        {% if today_picks and today_picks|length > 0 %}
+        <!-- Pick 1: VISIBLE -->
+        <div class="pick-visible">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="font-size:16px;font-weight:700">{{ today_picks[0].bet }}</div>
+                <div style="font-size:22px;font-weight:800;color:#1AE89B">{{ today_picks[0].prob }}%</div>
+            </div>
+            <div style="font-size:14px;color:#888;margin-top:4px">{{ today_picks[0].match }}</div>
+            <div style="font-size:12px;color:#555;margin-top:4px">Cuota justa: {{ today_picks[0].odds }} | {{ today_picks[0].agree }}/3 modelos</div>
         </div>
 
-        <div id="winsContainer">
-        {% if recent_wins %}
-            {% for w in recent_wins[:3] %}
-            <div class="win-card">
-                <div class="win-match">{{ w.match }}</div>
-                <div class="win-detail">
-                    <span>{{ w.market }}</span>
-                    <span>Modelo: {{ w.prob }}%</span>
-                    <span class="win-result">{{ w.result }}</span>
+        <!-- Picks 2+: BLURRED -->
+        {% for pick in today_picks[1:3] %}
+        <div class="pick-blurred" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
+            <div class="blur-content">
+                <div style="display:flex;justify-content:space-between">
+                    <div style="font-size:16px;font-weight:700">{{ pick.bet }}</div>
+                    <div style="font-size:22px;font-weight:800;color:#1AE89B">{{ pick.prob }}%</div>
                 </div>
-                <div style="font-size:10px;color:#444;margin-top:4px">{{ w.date }}</div>
+                <div style="font-size:14px;color:#888;margin-top:4px">{{ pick.match }}</div>
             </div>
-            {% endfor %}
-        {% else %}
-            <div style="background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:18px;text-align:center">
-                <div style="font-size:14px;color:#888">Los analisis del dia estaran disponibles a las 9:00 AM</div>
-                {% if hours_until_next %}
-                <div style="font-size:22px;font-weight:800;color:#1AE89B;margin:8px 0">{{ hours_until_next }}h</div>
-                <div style="font-size:12px;color:#555">para el proximo analisis</div>
-                {% endif %}
+            <div class="lock-overlay">
+                <div class="lock-icon">&#128274;</div>
+                <div class="lock-text">Analisis bloqueado</div>
+                <div class="lock-btn">Desbloquear con Plan Pro</div>
             </div>
-        {% endif %}
         </div>
+        {% endfor %}
+
+        {% else %}
+        <!-- No picks yet -->
+        <div class="pick-visible" style="text-align:center">
+            <div style="font-size:14px;color:#888">Los analisis del dia se publican a las 9:00 AM</div>
+            {% if hours_until_next %}<div style="font-size:20px;font-weight:800;color:#1AE89B;margin:6px 0">En {{ hours_until_next }}h</div>{% endif %}
+            <div style="font-size:12px;color:#555">Registrate para recibirlos en tu email</div>
+        </div>
+        {% endif %}
     </div>
 
-    <!-- Pricing -->
-    <div class="pricing">
-        <h2>Elige tu plan</h2>
-        <p style="text-align:center;font-size:13px;color:#888;margin-bottom:16px">Accede a nuestros analisis estadisticos diarios basados en datos reales de partidos, jugadores, forma actual y contexto competitivo</p>
+    <!-- STATS -->
+    <div class="live-stats">
+        <div class="ls"><div class="n">{{ stats.accuracy or 78 }}%</div><div class="l">Precision</div></div>
+        <div class="ls"><div class="n">{{ stats.picks_week or 12 }}</div><div class="l">Analisis/semana</div></div>
+        <div class="ls"><div class="n">{{ stats.total_analyzed or 847 }}</div><div class="l">Partidos</div></div>
+    </div>
+
+    <!-- PRICING -->
+    <div class="pricing" id="pricing">
+        <h2>Desbloquea todos los analisis</h2>
+        <div class="psub">Analisis estadisticos diarios basados en datos reales</div>
 
         <div class="plan">
             <h3>Basico</h3>
@@ -111,10 +150,10 @@
                 <li>Hasta 3 analisis por dia</li>
                 <li>Acceso web movil</li>
             </ul>
-            <a href="/checkout/basico" class="btn btn-outline" style="text-decoration:none;text-align:center;display:block">Suscribirse</a>
+            <a href="/checkout/basico" class="btn btn-outline">Suscribirse</a>
         </div>
 
-        <div class="plan recommended">
+        <div class="plan rec">
             <div class="badge-rec">RECOMENDADO</div>
             <h3>Pro</h3>
             <div class="price">$24.99 <span>/mes</span></div>
@@ -123,9 +162,9 @@
                 <li>Analisis ilimitados</li>
                 <li>Alertas push Android</li>
                 <li>Scanner de cuotas</li>
-                <li>Historial completo con % acierto</li>
+                <li>Historial completo</li>
             </ul>
-            <a href="/checkout/pro" class="btn" style="text-decoration:none;text-align:center;display:block">Suscribirse a Pro</a>
+            <a href="/checkout/pro" class="btn" style="background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff">Suscribirse a Pro</a>
         </div>
 
         <div class="plan">
@@ -133,73 +172,68 @@
             <div class="price">$49.99 <span>/mes</span></div>
             <ul>
                 <li>Todo lo de Pro</li>
-                <li>Analisis personalizado por partido</li>
+                <li>Analisis personalizado</li>
                 <li>Soporte prioritario</li>
-                <li>Acceso anticipado a analisis</li>
-                <li>Badge VIP en la app</li>
+                <li>Acceso anticipado</li>
             </ul>
-            <a href="/checkout/vip" class="btn btn-outline" style="text-decoration:none;text-align:center;display:block">Suscribirse a VIP</a>
+            <a href="/checkout/vip" class="btn btn-outline">Suscribirse a VIP</a>
         </div>
     </div>
 
-    <!-- Testimonials -->
-    <div class="testimonials">
-        <h2>Lo que dicen nuestros usuarios</h2>
-        <div class="testi">"Llevo 2 semanas y el modelo estadistico ha acertado 8 de 10 analisis. Impresionante la precision."<div class="author">- Carlos M., Bogota</div></div>
-        <div class="testi">"El scanner de cuotas me encontro un error en Codere que me dio x3.50. Vale cada centavo."<div class="author">- Diego R., Buenos Aires</div></div>
-        <div class="testi">"Las alertas push son geniales. Me avisa 2 horas antes del partido con el analisis exacto."<div class="author">- Andres P., Medellin</div></div>
-    </div>
-
-    <!-- Login link -->
-    <div class="login-link">
-        <a href="/login">Ya tienes cuenta? Inicia sesion</a>
+    <!-- LOGIN -->
+    <div style="text-align:center;margin:16px 0">
+        <a href="/login" style="color:#1AE89B;font-size:14px">Ya tienes cuenta? Inicia sesion</a>
     </div>
 
     <div class="legal">
         NEME BET &copy; 2026 | Los analisis son orientativos y con fines de entretenimiento.<br>
-        Apuesta responsablemente. No garantizamos ganancias. Debes ser mayor de 18 anos.<br>
-        Modelo estadistico basado en datos historicos. Resultados pasados no garantizan resultados futuros.
+        Apuesta responsablemente. No garantizamos ganancias. Debes ser mayor de 18 anos.
     </div>
 </div>
-<script>
-// Auto-refresh recent wins every 30 minutes
-function refreshWins() {
-    fetch('/api/recent-wins')
-        .then(r => r.json())
-        .then(data => {
-            const container = document.getElementById('winsContainer');
-            const updated = document.getElementById('winsUpdated');
-            if (!container) return;
 
-            if (data.wins && data.wins.length > 0) {
-                let html = '';
-                data.wins.forEach(w => {
-                    html += `<div class="win-card">
-                        <div class="win-match">${w.match}</div>
-                        <div class="win-detail">
-                            <span>${w.market}</span>
-                            <span>Modelo: ${w.prob}%</span>
-                            <span class="win-result">${w.result}</span>
-                        </div>
-                        <div style="font-size:10px;color:#444;margin-top:4px">${w.date}</div>
-                    </div>`;
-                });
-                if (data.has_today) {
-                    html = '<div style="text-align:center;margin-bottom:8px"><span style="display:inline-block;width:8px;height:8px;background:#1AE89B;border-radius:50%;animation:pulse 2s infinite"></span> <span style="font-size:11px;color:#1AE89B">Analisis de hoy</span></div>' + html;
-                }
-                container.innerHTML = html;
-            } else {
-                container.innerHTML = `<div style="background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:18px;text-align:center">
-                    <div style="font-size:14px;color:#888">Los analisis del dia estaran disponibles a las 9:00 AM</div>
-                    <div style="font-size:22px;font-weight:800;color:#1AE89B;margin:8px 0">${data.hours_until_next}h</div>
-                    <div style="font-size:12px;color:#555">para el proximo analisis</div>
-                </div>`;
-            }
-            if (updated) updated.textContent = data.updated_at;
-        })
-        .catch(() => {});
+<!-- REGISTER MODAL -->
+<div class="modal-bg" id="registerModal">
+    <div class="modal">
+        <h2>Crea tu cuenta gratis</h2>
+        <form method="POST" action="/register">
+            <input type="text" name="nombre" placeholder="Tu nombre" required>
+            <input type="email" name="email" id="modalEmail" placeholder="tu@email.com" required>
+            <div class="cb">
+                <input type="checkbox" name="terms" required>
+                <span>Acepto los <a href="#" style="color:#1AE89B">terminos y condiciones</a> y la politica de privacidad</span>
+            </div>
+            <button type="submit" class="btn" style="width:100%;padding:14px;background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px">Crear mi cuenta gratis</button>
+        </form>
+        <div style="text-align:center;margin-top:10px">
+            <a href="#" onclick="document.getElementById('registerModal').classList.remove('show')" style="color:#888;font-size:13px">Cerrar</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function openModal(e){
+    e.preventDefault();
+    document.getElementById('modalEmail').value=document.getElementById('heroEmail').value;
+    document.getElementById('registerModal').classList.add('show');
 }
-setInterval(refreshWins, 30 * 60 * 1000); // 30 min
+
+// Countdown to next 9 AM
+function updateCountdown(){
+    const now=new Date();
+    let next=new Date(now);next.setHours(9,0,0,0);
+    if(now.getHours()>=9)next.setDate(next.getDate()+1);
+    const diff=next-now;
+    const h=Math.floor(diff/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    document.getElementById('countdown').textContent=
+        String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+setInterval(updateCountdown,1000);updateCountdown();
+
+// Fake viewer count (ranges 8-23)
+const vc=document.getElementById('viewerCount');
+setInterval(()=>{vc.textContent=Math.floor(Math.random()*16)+8;},30000);
 </script>
 </body>
 </html>

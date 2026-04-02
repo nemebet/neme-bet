@@ -862,54 +862,186 @@ def landing():
         except Exception:
             pass
 
-    # Recent wins (max 48h old)
-    recent_wins = _get_recent_wins()
+    # Today's picks for preview
+    today_picks = []
+    picks_path = _dp("picks_del_dia.json")
+    if os.path.exists(picks_path):
+        try:
+            with open(picks_path, encoding="utf-8") as f:
+                pd = json.load(f)
+            today_picks = pd.get("high_confidence_picks", []) + pd.get("medium_confidence_picks", [])
+        except Exception:
+            pass
 
-    # Next analysis info
+    # Next analysis countdown
     now = datetime.now()
     next_9am = now.replace(hour=9, minute=0, second=0)
     if now.hour >= 9:
         next_9am += timedelta(days=1)
     hours_until = max(0, int((next_9am - now).total_seconds() / 3600))
 
-    return render_template("landing.html", stats=stats, recent_wins=recent_wins,
+    import random
+    viewer_count = random.randint(8, 23)
+
+    return render_template("landing.html", stats=stats, today_picks=today_picks,
                            hours_until_next=hours_until,
-                           last_updated=now.strftime("%H:%M"))
+                           viewer_count=viewer_count)
 
 
-def _get_recent_wins():
-    """Retorna analisis acertados de las ultimas 48 horas."""
-    cutoff = (datetime.now() - timedelta(hours=48)).isoformat()
-    wins = []
+# ═══════════════════════════════════════════════════════════════════════════
+#  FREE REGISTRATION
+# ═══════════════════════════════════════════════════════════════════════════
 
-    db_path = _dp("results_db.json")
-    if os.path.exists(db_path):
+@app.route("/register", methods=["POST"])
+def register():
+    """Registro gratuito con email."""
+    email = request.form.get("email", "").strip().lower()
+    nombre = request.form.get("nombre", "").strip()
+
+    if not email or not nombre:
+        flash("Completa todos los campos")
+        return redirect(url_for("landing"))
+
+    from stripe_handler import find_user_by_email, _load_users, _save_users
+    _, existing = find_user_by_email(email)
+    if existing:
+        flash("Ya tienes cuenta. Inicia sesion.")
+        return redirect(url_for("login_page"))
+
+    # Create free trial user
+    token = secrets.token_urlsafe(32)
+    users = _load_users()
+    users[token] = {
+        "email": email,
+        "nombre": nombre,
+        "plan": "free_trial",
+        "token": token,
+        "stripe_customer": "free",
+        "created": datetime.now().isoformat(),
+        "expires": (datetime.now() + timedelta(days=365)).isoformat(),
+        "active": True,
+        "free_analysis_used": False,
+    }
+    _save_users(users)
+
+    # Send verification email
+    try:
+        from email_service import _send, _wrap, _btn
+        APP_URL = os.environ.get("APP_URL", request.url_root.rstrip("/"))
+        html = _wrap(f'''
+        <h2 style="color:#1AE89B;text-align:center">Bienvenido a NEME BET, {nombre}!</h2>
+        <p style="color:#ccc;text-align:center">Tu cuenta gratuita esta lista.</p>
+        <p style="color:#888;text-align:center;font-size:13px">Tu token de acceso:</p>
+        <div style="background:#111;border:1px solid #222;border-radius:8px;padding:12px;font-family:monospace;font-size:12px;color:#1AE89B;word-break:break-all">{token}</div>
+        {_btn("Ver partidos de hoy", f"{APP_URL}/partidos-hoy")}
+        ''')
+        _send(email, "NEME BET — Tu cuenta gratuita esta lista", html)
+    except Exception:
+        pass
+
+    # Auto-login
+    session["user_email"] = email
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(days=30)
+
+    flash(f"Cuenta creada! Tienes 1 analisis gratuito.")
+    return redirect(url_for("partidos_hoy"))
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  PARTIDOS HOY
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/partidos-hoy")
+def partidos_hoy():
+    from auth import get_current_user
+
+    user = get_current_user()
+    if not user:
+        flash("Registrate para ver los partidos del dia")
+        return redirect(url_for("landing"))
+
+    # Check if free analysis available
+    plan = user.get("plan", "free_trial")
+    free_available = plan == "free_trial" and not user.get("free_analysis_used", False)
+    is_paid = plan in ("basico", "pro", "vip")
+
+    if is_paid:
+        return redirect(url_for("picks_route"))
+
+    # Load today's matches
+    matches = []
+    partidos_path = _dp("partidos_hoy.json")
+    if os.path.exists(partidos_path):
         try:
-            with open(db_path, encoding="utf-8") as f:
-                db = json.load(f)
-            for e in reversed(db):
-                # Skip if older than 48h
-                predicted_at = e.get("predicted_at", e.get("created", ""))
-                if predicted_at and predicted_at < cutoff:
-                    continue
-
-                if e.get("verified") and e.get("accuracy", {}).get("1x2_ok"):
-                    pred_1x2 = e["accuracy"]["1x2_pred"]
-                    prob = e["p1"] if pred_1x2 == "1" else (e["px"] if pred_1x2 == "X" else e["p2"])
-                    label = {"1": "Gana Local", "X": "Empate", "2": "Gana Visitante"}.get(pred_1x2, pred_1x2)
-                    wins.append({
-                        "match": f"{e['home']} vs {e['away']}",
-                        "market": label,
-                        "prob": prob,
-                        "result": f"{e['home_goals']}-{e['away_goals']}",
-                        "date": predicted_at[:10] if predicted_at else "",
-                    })
-                if len(wins) >= 3:
-                    break
+            with open(partidos_path, encoding="utf-8") as f:
+                data = json.load(f)
+            matches = data.get("matches_relevant", data.get("matches_all", []))[:20]
         except Exception:
             pass
 
-    return wins
+    # Find recommended (highest confidence from picks)
+    recommended = None
+    picks_path = _dp("picks_del_dia.json")
+    if os.path.exists(picks_path):
+        try:
+            with open(picks_path, encoding="utf-8") as f:
+                pd = json.load(f)
+            all_picks = pd.get("high_confidence_picks", [])
+            if all_picks:
+                best = all_picks[0]
+                # Extract team names from "Team1 vs Team2"
+                parts = best.get("match", "").split(" vs ")
+                if len(parts) == 2:
+                    recommended = {
+                        "home": parts[0].strip(), "away": parts[1].strip(),
+                        "confidence": best.get("prob", 0),
+                        "liga": "", "hora": "",
+                    }
+        except Exception:
+            pass
+
+    return render_template("partidos_hoy.html",
+                           matches=matches, recommended=recommended,
+                           free_available=free_available)
+
+
+@app.route("/analizar-partido", methods=["POST"])
+def analizar_partido():
+    """Analiza un partido (gratis o de pago)."""
+    from auth import get_current_user
+    user = get_current_user()
+    if not user:
+        return redirect(url_for("landing"))
+
+    plan = user.get("plan", "free_trial")
+    home = request.form.get("home", "")
+    away = request.form.get("away", "")
+
+    if not home or not away:
+        flash("Partido no valido")
+        return redirect(url_for("partidos_hoy"))
+
+    # Mark free analysis as used
+    if plan == "free_trial" and not user.get("free_analysis_used"):
+        from stripe_handler import find_user_by_email, _load_users, _save_users
+        token_key, _ = find_user_by_email(user["email"])
+        if token_key:
+            users = _load_users()
+            users[token_key]["free_analysis_used"] = True
+            _save_users(users)
+
+    # Run prediction
+    predictions, picks, log = process_matches([(home, away)])
+
+    # For free users, limit visible data
+    is_free = plan == "free_trial"
+
+    return render_template("results.html",
+                           predictions=predictions, picks=picks,
+                           log=log, ocr_info=None,
+                           HIGH=75.0, MED=65.0,
+                           is_free=is_free)
 
 
 @app.route("/app")

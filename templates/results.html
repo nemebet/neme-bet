@@ -57,6 +57,23 @@
             <div class="scores">{% for sc, pct in pred.scores %}<div class="score-chip">{{ sc }}<span class="pct">{{ pct }}%</span></div>{% endfor %}</div>
         </div>
 
+        {% if is_free %}
+        <!-- BLOCKED CONTENT for free users -->
+        <div style="position:relative;margin-top:12px">
+            <div style="filter:blur(6px);user-select:none;pointer-events:none">
+                <div class="stat-row"><span class="label">Scanner cuotas</span><span class="val" style="color:var(--green)">+12.5%</span></div>
+                <div class="stat-row"><span class="label">Corners esperados</span><span class="val">10.2</span></div>
+                <div class="stat-row"><span class="label">Alineaciones</span><span class="val">Confirmadas</span></div>
+            </div>
+            <div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);border-radius:10px;cursor:pointer" onclick="document.getElementById('freeUpgrade').scrollIntoView({behavior:'smooth'})">
+                <div style="font-size:28px">&#128274;</div>
+                <div style="font-size:13px;color:#ccc;margin:4px 0">Analisis completo bloqueado</div>
+                <div style="background:#0F6E56;color:#fff;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700">Desbloquear con Plan Pro</div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if not is_free %}
         <div class="coll">Sub-modelos</div>
         <div class="coll-body">
             <table class="sub-table">
@@ -67,6 +84,8 @@
                 <tr><td class="mn">ENSEMBLE</td><td>{{ pred.p1 }}%</td><td>{{ pred.px }}%</td><td>{{ pred.p2 }}%</td><td>{{ pred.btts_y }}%</td><td>{{ pred.o25 }}%</td></tr>
             </table>
         </div>
+
+        {% endif %}{# end not is_free #}
 
         {% if pred.h_news or pred.a_news %}
         <div class="news-section">
@@ -95,6 +114,15 @@
     </div>
 </div>
 {% endfor %}
+
+{% if is_free %}
+<div id="freeUpgrade" style="margin:20px 0;background:linear-gradient(135deg,rgba(15,110,86,0.15),var(--bg2));border:1px solid var(--green2);border-radius:14px;padding:20px;text-align:center">
+    <div style="font-size:17px;font-weight:700;margin-bottom:6px">Desbloquea el analisis completo</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:14px">Scanner de cuotas, alineaciones, corners y mas</div>
+    <a href="/checkout/pro" style="display:block;padding:14px;background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff;border-radius:10px;font-weight:700;text-decoration:none;font-size:15px;margin-bottom:8px">Plan Pro — $24.99/mes</a>
+    <a href="/#pricing" style="font-size:12px;color:var(--text2)">Ver todos los planes</a>
+</div>
+{% endif %}
 
 {% if log %}
 <div class="coll">Log de procesamiento</div>

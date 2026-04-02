@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% set active = 'picks' %}
+{% block title %}Partidos de hoy - NEME BET{% endblock %}
+{% block subtitle %}Elige un partido para analizar{% endblock %}
+{% block content %}
+
+{% if free_available %}
+<div style="background:linear-gradient(135deg,rgba(15,110,86,0.2),rgba(15,110,86,0.05));border:1px solid #0F6E56;border-radius:12px;padding:14px;text-align:center;margin-bottom:16px">
+    <div style="font-size:14px;font-weight:700;color:#1AE89B">Tienes 1 analisis gratuito disponible</div>
+    <div style="font-size:12px;color:#888;margin-top:3px">Elige el partido que quieres analizar</div>
+</div>
+{% else %}
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;margin-bottom:16px">
+    <div style="font-size:14px;color:var(--text2)">Ya usaste tu analisis gratuito</div>
+    <a href="/#pricing" style="color:var(--green);font-size:13px;font-weight:700">Suscribete para analisis ilimitados</a>
+</div>
+{% endif %}
+
+<!-- Recommended match -->
+{% if recommended %}
+<div style="margin-bottom:16px">
+    <div style="text-align:center;font-size:12px;font-weight:700;color:var(--green);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Recomendado por NEME BET</div>
+    <div class="pred-card" style="border:2px solid var(--green2)">
+        <div class="pred-head">
+            <div class="teams">{{ recommended.home }}<span class="vs"> vs </span>{{ recommended.away }}</div>
+            <div style="display:flex;align-items:center;gap:4px">
+                <span style="width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;display:inline-block"></span>
+                <span style="font-size:11px;color:var(--green);font-weight:700">{{ recommended.confidence }}%</span>
+            </div>
+        </div>
+        <div class="pred-body" style="padding:12px 16px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2)">
+                <span>{{ recommended.liga }}</span>
+                <span>{{ recommended.hora }}</span>
+            </div>
+            {% if free_available %}
+            <form method="POST" action="/analizar-partido">
+                <input type="hidden" name="home" value="{{ recommended.home }}">
+                <input type="hidden" name="away" value="{{ recommended.away }}">
+                <button type="submit" class="btn" style="margin-top:10px">Analizar este partido GRATIS</button>
+            </form>
+            {% else %}
+            <div style="margin-top:10px;text-align:center;font-size:13px;color:var(--text2)">
+                <a href="/#pricing" style="color:var(--green)">Suscribete para analizar</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- All matches by time -->
+{% if matches %}
+<div style="font-size:14px;font-weight:700;margin-bottom:10px">Partidos de hoy</div>
+{% for m in matches %}
+<div class="pred-card" style="margin-bottom:8px">
+    <div class="pred-head" style="padding:12px 14px">
+        <div>
+            <div class="teams" style="font-size:14px">{{ m.home }}<span class="vs"> vs </span>{{ m.away }}</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px">{{ m.liga }} | {{ m.hora }}</div>
+        </div>
+        {% if free_available %}
+        <form method="POST" action="/analizar-partido" style="margin:0">
+            <input type="hidden" name="home" value="{{ m.home }}">
+            <input type="hidden" name="away" value="{{ m.away }}">
+            <button type="submit" class="btn-sm">Analizar</button>
+        </form>
+        {% else %}
+        <div onclick="document.getElementById('upgradeModal').classList.add('show')" style="cursor:pointer;font-size:18px;color:var(--text2)">&#128274;</div>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="no-picks">Sin partidos disponibles hoy<br><span style="font-size:11px">Los partidos se cargan a las 8:00 AM</span></div>
+{% endif %}
+
+<!-- Upgrade modal for locked matches -->
+<div class="modal-bg" id="upgradeModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center">
+    <div style="background:#0A0A0A;border:1px solid #2A2A2A;border-radius:16px;padding:24px;width:90%;max-width:400px;text-align:center">
+        <div style="font-size:36px;margin-bottom:10px">&#128274;</div>
+        <h3 style="color:#1AE89B;margin-bottom:8px">Te gusto tu analisis gratuito?</h3>
+        <p style="font-size:14px;color:#888;margin-bottom:16px">Suscribete para acceso ilimitado a todos los analisis</p>
+        <a href="/checkout/pro" style="display:block;padding:14px;background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff;border-radius:10px;font-weight:700;text-decoration:none;font-size:15px;margin-bottom:8px">Plan Pro — $24.99/mes</a>
+        <a href="/#pricing" style="font-size:13px;color:#888">Ver todos los planes</a>
+        <div style="margin-top:12px"><a href="#" onclick="document.getElementById('upgradeModal').style.display='none'" style="font-size:12px;color:#555">Cerrar</a></div>
+    </div>
+</div>
+<script>
+document.getElementById('upgradeModal').addEventListener('click',function(e){
+    if(e.target===this)this.style.display='none';
+});
+</script>
+{% endblock %}
