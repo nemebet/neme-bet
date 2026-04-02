@@ -1,14 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+<svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#0F6E56"/>
-      <stop offset="100%" style="stop-color:#1AE89B"/>
-    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
-  <rect width="200" height="60" rx="12" fill="#0A0A0A"/>
-  <rect x="1" y="1" width="198" height="58" rx="11" fill="none" stroke="url(#g)" stroke-width="1.5"/>
-  <text x="18" y="42" font-family="system-ui,-apple-system,sans-serif" font-size="32" font-weight="800" fill="white">NEME</text>
-  <text x="122" y="42" font-family="system-ui,-apple-system,sans-serif" font-size="32" font-weight="800" fill="#1AE89B">BET</text>
-  <circle cx="183" cy="20" r="6" fill="#0F6E56"/>
-  <path d="M180 20 L183 14 L186 20" stroke="#1AE89B" stroke-width="1.5" fill="none"/>
+
+  <!-- Net background -->
+  <g stroke="#1a3a2a" stroke-width="0.5" opacity="0.4">
+    <!-- Vertical net lines -->
+    <line x1="40" y1="12" x2="40" y2="108"/>
+    <line x1="65" y1="12" x2="65" y2="108"/>
+    <line x1="90" y1="12" x2="90" y2="108"/>
+    <line x1="115" y1="12" x2="115" y2="108"/>
+    <line x1="140" y1="12" x2="140" y2="108"/>
+    <line x1="165" y1="12" x2="165" y2="108"/>
+    <line x1="190" y1="12" x2="190" y2="108"/>
+    <line x1="215" y1="12" x2="215" y2="108"/>
+    <line x1="240" y1="12" x2="240" y2="108"/>
+    <line x1="265" y1="12" x2="265" y2="108"/>
+    <!-- Horizontal net lines -->
+    <line x1="20" y1="30" x2="280" y2="30"/>
+    <line x1="20" y1="50" x2="280" y2="50"/>
+    <line x1="20" y1="70" x2="280" y2="70"/>
+    <line x1="20" y1="90" x2="280" y2="90"/>
+  </g>
+
+  <!-- Goal frame -->
+  <!-- Left post -->
+  <rect x="16" y="8" width="5" height="104" rx="2" fill="white"/>
+  <!-- Right post -->
+  <rect x="279" y="8" width="5" height="104" rx="2" fill="white"/>
+  <!-- Crossbar -->
+  <rect x="16" y="8" width="268" height="5" rx="2" fill="white"/>
+  <!-- Corner details -->
+  <rect x="16" y="8" width="8" height="8" rx="1" fill="white" opacity="0.5"/>
+  <rect x="276" y="8" width="8" height="8" rx="1" fill="white" opacity="0.5"/>
+
+  <!-- Text NEMEBET -->
+  <text x="150" y="78" text-anchor="middle"
+        font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif"
+        font-size="52" font-weight="900" letter-spacing="-1"
+        fill="#0F6E56" filter="glow" opacity="0.4">NEMEBET</text>
+  <text x="150" y="78" text-anchor="middle"
+        font-family="system-ui,-apple-system,'Segoe UI',Roboto,sans-serif"
+        font-size="52" font-weight="900" letter-spacing="-1"
+        fill="white">NEMEBET</text>
 </svg>
