@@ -85,16 +85,16 @@
     <path d="M75,218 Q200,205 325,218" fill="none"/>
   </g>
 
-  <!-- GOAL FRAME in slight perspective -->
+  <!-- GOAL FRAME (thicker posts) -->
   <!-- Left post -->
-  <rect x="42" y="48" width="8" height="210" rx="3" fill="url(#posteV)"/>
-  <rect x="42" y="48" width="3" height="210" rx="1" fill="rgba(255,255,255,0.15)"/>
+  <rect x="40" y="46" width="10" height="214" rx="3" fill="url(#posteV)"/>
+  <rect x="40" y="46" width="4" height="214" rx="1" fill="rgba(255,255,255,0.15)"/>
   <!-- Right post -->
-  <rect x="350" y="48" width="8" height="210" rx="3" fill="url(#posteV)"/>
-  <rect x="355" y="48" width="3" height="210" rx="1" fill="rgba(0,0,0,0.2)"/>
+  <rect x="350" y="46" width="10" height="214" rx="3" fill="url(#posteV)"/>
+  <rect x="356" y="46" width="4" height="214" rx="1" fill="rgba(0,0,0,0.2)"/>
   <!-- Crossbar -->
-  <rect x="42" y="44" width="316" height="8" rx="3" fill="url(#poste)"/>
-  <rect x="42" y="44" width="316" height="3" rx="1" fill="rgba(255,255,255,0.2)"/>
+  <rect x="40" y="42" width="320" height="10" rx="3" fill="url(#poste)"/>
+  <rect x="40" y="42" width="320" height="4" rx="1" fill="rgba(255,255,255,0.2)"/>
   <!-- Post shadows on ground -->
   <rect x="46" y="256" width="4" height="6" rx="2" fill="#0F6E56" opacity="0.3"/>
   <rect x="352" y="256" width="4" height="6" rx="2" fill="#0F6E56" opacity="0.3"/>
@@ -112,28 +112,28 @@
   <!-- GREEN HALO behind shield -->
   <ellipse cx="200" cy="155" rx="80" ry="75" fill="url(#halo)" filter="glowStrong"/>
 
-  <!-- SHIELD shape -->
+  <!-- SHIELD shape (30% larger) -->
   <g filter="glow">
     <!-- Shield gold border -->
-    <path d="M148,95 L252,95 L252,180 Q252,215 200,230 Q148,215 148,180 Z"
-          fill="url(#gold)" stroke="#FFD700" stroke-width="1"/>
+    <path d="M132,78 L268,78 L268,192 Q268,240 200,258 Q132,240 132,192 Z"
+          fill="url(#gold)" stroke="#FFD700" stroke-width="1.5"/>
     <!-- Shield inner -->
-    <path d="M153,99 L247,99 L247,178 Q247,210 200,224 Q153,210 153,178 Z"
+    <path d="M138,84 L262,84 L262,189 Q262,234 200,251 Q138,234 138,189 Z"
           fill="url(#shield)"/>
     <!-- Shield shine highlight -->
-    <path d="M153,99 L247,99 L247,120 Q200,115 153,120 Z"
+    <path d="M138,84 L262,84 L262,112 Q200,105 138,112 Z"
           fill="white" opacity="0.08"/>
   </g>
 
-  <!-- Text NEME -->
-  <text x="200" y="158" text-anchor="middle"
+  <!-- Text NEME (bigger) -->
+  <text x="200" y="165" text-anchor="middle"
         font-family="system-ui,-apple-system,'Segoe UI',Impact,sans-serif"
-        font-size="42" font-weight="900" letter-spacing="3"
+        font-size="54" font-weight="900" letter-spacing="3"
         fill="white" filter="glow">NEME</text>
-  <!-- Text BET -->
-  <text x="200" y="198" text-anchor="middle"
+  <!-- Text BET (bigger) -->
+  <text x="200" y="212" text-anchor="middle"
         font-family="system-ui,-apple-system,'Segoe UI',Impact,sans-serif"
-        font-size="36" font-weight="900" letter-spacing="6"
+        font-size="44" font-weight="900" letter-spacing="7"
         fill="#FFD700" filter="glow">BET</text>
 
   <!-- SPARKLES / STARS -->
