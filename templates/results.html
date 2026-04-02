@@ -5,6 +5,13 @@
 {% block content %}
 {% if ocr_info %}<div style="padding:8px 12px;background:var(--bg3);border-radius:8px;font-size:12px;color:var(--text2);margin-bottom:14px;border-left:3px solid var(--purple)">{{ ocr_info }}</div>{% endif %}
 
+{% if show_upgrade %}
+<div style="background:rgba(26,232,155,0.1);border:1px solid #0F6E56;border-radius:12px;padding:12px;text-align:center;margin-bottom:14px">
+    <span style="background:rgba(26,232,155,0.15);color:#1AE89B;font-size:11px;font-weight:700;padding:3px 10px;border-radius:5px">ANALISIS PRO GRATUITO</span>
+    <div style="font-size:12px;color:#888;margin-top:4px">Nivel 65-75% confianza — analisis completo</div>
+</div>
+{% endif %}
+
 <!-- MEJORES ANALISIS -->
 <div class="picks-section">
     <h2>MEJORES ANALISIS</h2>
@@ -115,12 +122,13 @@
 </div>
 {% endfor %}
 
-{% if is_free %}
-<div id="freeUpgrade" style="margin:20px 0;background:linear-gradient(135deg,rgba(15,110,86,0.15),var(--bg2));border:1px solid var(--green2);border-radius:14px;padding:20px;text-align:center">
-    <div style="font-size:17px;font-weight:700;margin-bottom:6px">Desbloquea el analisis completo</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:14px">Scanner de cuotas, alineaciones, corners y mas</div>
-    <a href="/checkout/pro" style="display:block;padding:14px;background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff;border-radius:10px;font-weight:700;text-decoration:none;font-size:15px;margin-bottom:8px">Plan Pro — $24.99/mes</a>
-    <a href="/#pricing" style="font-size:12px;color:var(--text2)">Ver todos los planes</a>
+{% if show_upgrade %}
+<div id="freeUpgrade" style="margin:20px 0;background:linear-gradient(135deg,rgba(26,232,155,0.1),var(--bg2));border:1px solid var(--green2);border-radius:14px;padding:24px;text-align:center">
+    <div style="font-size:18px;font-weight:700;margin-bottom:6px">Te gusto este analisis Pro?</div>
+    <div style="font-size:14px;color:var(--text2);margin-bottom:4px">Recibelos todos los dias</div>
+    <div style="font-size:12px;color:var(--green);margin-bottom:16px">Continua con el mismo nivel de analisis que acabas de recibir</div>
+    <a href="/checkout/pro" style="display:block;padding:16px;background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff;border-radius:10px;font-weight:700;text-decoration:none;font-size:16px;margin-bottom:10px">Plan Pro — $24.99/mes</a>
+    <a href="/#pricing" style="font-size:13px;color:var(--text2)">Ver todos los planes</a>
 </div>
 {% endif %}
 

@@ -14,8 +14,8 @@ from data_dir import data_path
 USERS_PATH = data_path("users.json")
 
 PLANS = {
-    "free_trial": {"name": "Gratuito", "price_monthly": 0, "picks_limit": 1,
-                   "min_conf": 55, "max_conf": 59, "markets": ["1x2"]},
+    "free_trial": {"name": "Pro Gratuito", "price_monthly": 0, "picks_limit": 1,
+                   "min_conf": 65, "max_conf": 75, "markets": ["1x2", "btts", "ou", "corners"]},
     "basico": {"name": "Basico", "price_monthly": 9.99, "picks_limit": 3,
                "min_conf": 60, "max_conf": 64, "markets": ["1x2"]},
     "pro": {"name": "Pro", "price_monthly": 24.99, "picks_limit": 999,
@@ -43,7 +43,7 @@ def get_plan_badge(prob):
     elif prob >= 60:
         return {"label": "Basico", "color": "#4A9EFF", "bg": "rgba(74,158,255,0.15)", "icon": ""}
     else:
-        return {"label": "Gratuito", "color": "#888", "bg": "rgba(136,136,136,0.1)", "icon": ""}
+        return {"label": "Estandar", "color": "#888", "bg": "rgba(136,136,136,0.1)", "icon": ""}
 
 
 def _get_stripe():

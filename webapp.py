@@ -1035,13 +1035,16 @@ def analizar_partido():
     predictions, picks, log = process_matches([(home, away)])
 
     # For free users, limit visible data
-    is_free = plan == "free_trial"
+    # Free trial gets full Pro-level analysis (no blur)
+    is_free = False  # Free trial = Pro level, full access
+    show_upgrade = plan == "free_trial"  # But show upgrade CTA at bottom
 
     return render_template("results.html",
                            predictions=predictions, picks=picks,
                            log=log, ocr_info=None,
                            HIGH=75.0, MED=65.0,
-                           is_free=is_free)
+                           is_free=is_free,
+                           show_upgrade=show_upgrade)
 
 
 @app.route("/app")
