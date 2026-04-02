@@ -43,7 +43,7 @@ app.secret_key = os.environ.get("SECRET_KEY", "51c21f72a41d003683cf0b0d1848f332b
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
-app.config["SESSION_COOKIE_SECURE"] = True
+app.config["SESSION_COOKIE_SECURE"] = os.environ.get("SESSION_COOKIE_SECURE", "true").lower() == "true"
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
@@ -1026,6 +1026,7 @@ def analizar_partido():
     from auth import get_current_user
     user = get_current_user()
     if not user:
+        flash("Registrate gratis para ver el analisis")
         return redirect(url_for("landing"))
 
     plan = user.get("plan", "free_trial")
@@ -1650,21 +1651,6 @@ def push_subscribe():
 #  ADMIN DASHBOARD
 # ═══════════════════════════════════════════════════════════════════════════
 
-@app.route("/debug-admin")
-def debug_admin():
-    ak = os.environ.get("ADMIN_KEY", "")
-    provided = request.args.get("key", "")
-    return jsonify({
-        "admin_key_exists": bool(ak),
-        "admin_key_length": len(ak),
-        "admin_key_first_3": ak[:3] if ak else "",
-        "provided_key": provided[:3] if provided else "",
-        "provided_length": len(provided),
-        "match": ak == provided if ak and provided else False,
-        "env_keys_with_admin": [k for k in os.environ if "ADMIN" in k.upper()],
-    })
-
-
 def _admin_auth():
     admin_key = os.environ.get("ADMIN_KEY", "")
     provided = request.args.get("key", "") or request.form.get("key", "")
@@ -1815,22 +1801,6 @@ def _get_recent_wins():
         except Exception:
             pass
     return wins
-
-
-@app.route("/api/recent-wins")
-def api_recent_wins():
-    """Retorna analisis acertados recientes para auto-refresh."""
-    wins = _get_recent_wins()
-    now = datetime.now()
-    next_9am = now.replace(hour=9, minute=0, second=0)
-    if now.hour >= 9:
-        next_9am += timedelta(days=1)
-    return jsonify({
-        "wins": wins,
-        "updated_at": now.strftime("%H:%M"),
-        "hours_until_next": max(0, int((next_9am - now).total_seconds() / 3600)),
-        "has_today": any(w.get("date") == now.strftime("%Y-%m-%d") for w in wins),
-    })
 
 
 # ═══════════════════════════════════════════════════════════════════════════

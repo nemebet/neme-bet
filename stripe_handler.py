@@ -27,11 +27,24 @@ PLANS = {
 
 def filtrar_por_plan(analisis, plan):
     """Filtra analisis segun nivel de confianza del plan."""
-    p = PLANS.get(plan, PLANS["free_trial"])
-    min_c, max_c = p["min_conf"], p["max_conf"]
-    limit = p["picks_limit"]
-    filtered = [a for a in analisis if min_c <= a.get("prob", 0) <= max_c]
-    return filtered[:limit]
+    if plan in ("vip", "admin"):
+        # VIP/Admin: ve TODO lo que hay, minimo 65%, ordenado por confianza
+        result = [a for a in analisis if a.get("prob", 0) >= 65]
+        result.sort(key=lambda x: x.get("prob", 0), reverse=True)
+        return result
+    elif plan == "pro":
+        result = [a for a in analisis if 65 <= a.get("prob", 0) <= 75]
+        result.sort(key=lambda x: x.get("prob", 0), reverse=True)
+        return result
+    elif plan == "basico":
+        result = [a for a in analisis if 60 <= a.get("prob", 0) < 65]
+        result.sort(key=lambda x: x.get("prob", 0), reverse=True)
+        return result[:3]
+    elif plan == "free_trial":
+        result = [a for a in analisis if a.get("prob", 0) >= 65]
+        result.sort(key=lambda x: x.get("prob", 0), reverse=True)
+        return result[:1]
+    return []
 
 
 def get_plan_badge(prob):

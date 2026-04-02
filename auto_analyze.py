@@ -21,19 +21,39 @@ sys.path.insert(0, BASE_DIR)
 
 
 def analyze_today():
-    """Analiza todos los partidos relevantes del dia."""
+    """Analiza partidos del dia usando fuentes con nombres limpios."""
     print(f"\n[AUTO-ANALYZE] {datetime.now().strftime('%Y-%m-%d %H:%M')}")
 
-    if not os.path.exists(INPUT_PATH):
-        print("  No hay partidos_hoy.json — ejecuta besoccer_scraper primero")
-        return None
+    matches = []
 
-    with open(INPUT_PATH, encoding="utf-8") as f:
-        data = json.load(f)
+    # Fuente 1: featured_matches (API-Football + football-data.org, nombres limpios)
+    try:
+        from featured_matches import fetch_partidos
+        fm = fetch_partidos()
+        raw = fm.get("partidos", [])
+        # Convert to format expected by analyzer
+        for p in raw[:15]:  # Top 15 by relevance
+            matches.append({
+                "home": p.get("home", ""),
+                "away": p.get("away", ""),
+                "liga": p.get("competition", ""),
+                "hora": p.get("hora", ""),
+                "source": p.get("source", "featured"),
+            })
+        print(f"  featured_matches: {len(matches)} partidos")
+    except Exception as e:
+        print(f"  featured_matches error: {e}")
 
-    matches = data.get("matches_relevant", [])
-    if not matches:
-        matches = data.get("matches_all", [])[:10]
+    # Fuente 2: partidos_hoy.json (BeSoccer, backup)
+    if not matches and os.path.exists(INPUT_PATH):
+        try:
+            with open(INPUT_PATH, encoding="utf-8") as f:
+                data = json.load(f)
+            for p in data.get("matches_relevant", data.get("matches_all", []))[:10]:
+                matches.append(p)
+            print(f"  partidos_hoy.json: {len(matches)} partidos")
+        except Exception:
+            pass
 
     if not matches:
         print("  Sin partidos para analizar")
