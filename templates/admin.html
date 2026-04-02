@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Admin - NEME BET</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <meta name="theme-color" content="#0F6E56">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>NEME BET <span style="color:var(--green)">Admin</span></h1>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}{% for msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+
+    <!-- Revenue & Users -->
+    <div class="stats-grid">
+        <div class="stat-box"><div class="num">{{ stats.total_users }}</div><div class="lbl">Usuarios</div></div>
+        <div class="stat-box"><div class="num">{{ stats.active_users }}</div><div class="lbl">Activos</div></div>
+        <div class="stat-box"><div class="num" style="color:var(--green)">${{ stats.mrr }}</div><div class="lbl">MRR</div></div>
+    </div>
+
+    <!-- Plan breakdown -->
+    <div class="pred-card">
+        <div class="pred-head"><div class="teams">Usuarios por plan</div></div>
+        <div class="pred-body">
+            <div class="stat-row"><span class="label">Basico ($9.99)</span><span class="val">{{ stats.plan_basico }}</span></div>
+            <div class="stat-row"><span class="label">Pro ($24.99)</span><span class="val" style="color:var(--green)">{{ stats.plan_pro }}</span></div>
+            <div class="stat-row"><span class="label">VIP ($49.99)</span><span class="val" style="color:var(--purple)">{{ stats.plan_vip }}</span></div>
+            <div class="stat-row"><span class="label">Expirados</span><span class="val" style="color:var(--red)">{{ stats.expired }}</span></div>
+        </div>
+    </div>
+
+    <!-- Picks del dia -->
+    <div class="pred-card">
+        <div class="pred-head"><div class="teams">Picks del dia</div></div>
+        <div class="pred-body">
+            {% if picks_data %}
+            <div class="stat-row"><span class="label">Partidos analizados</span><span class="val">{{ picks_data.analyzed }}</span></div>
+            <div class="stat-row"><span class="label">Picks +75%</span><span class="val" style="color:var(--green)">{{ picks_data.high_confidence_picks|length }}</span></div>
+            <div class="stat-row"><span class="label">Picks 65-75%</span><span class="val" style="color:var(--yellow)">{{ picks_data.medium_confidence_picks|length }}</span></div>
+            <div class="stat-row"><span class="label">Ultimo escaneo</span><span class="val" style="font-size:12px">{{ picks_data.analyzed_at[:16] if picks_data.analyzed_at else 'nunca' }}</span></div>
+            {% else %}
+            <div style="color:var(--text2);font-size:13px">Sin picks hoy</div>
+            {% endif %}
+
+            {% if accuracy %}
+            <div style="border-top:1px solid var(--border);margin-top:10px;padding-top:10px">
+                <div class="stat-row"><span class="label">Acierto 1X2</span><span class="val">{{ accuracy.acc_1x2 if accuracy.acc_1x2 else '-' }}%</span></div>
+                <div class="stat-row"><span class="label">Acierto O/U</span><span class="val">{{ accuracy.acc_ou if accuracy.acc_ou else '-' }}%</span></div>
+                <div class="stat-row"><span class="label">Muestras</span><span class="val">{{ accuracy.n if accuracy.n else 0 }}</span></div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Scheduler status -->
+    <div class="pred-card">
+        <div class="pred-head"><div class="teams">Scheduler</div></div>
+        <div class="pred-body">
+            {% for log in scheduler_logs[-5:] %}
+            <div class="stat-row"><span class="label" style="font-size:11px">{{ log.time[:16] }} {{ log.job }}</span><span class="val" style="font-size:11px">{{ log.message[:40] }}</span></div>
+            {% endfor %}
+            {% if not scheduler_logs %}<div style="color:var(--text2);font-size:13px">Sin logs de scheduler</div>{% endif %}
+        </div>
+    </div>
+
+    <!-- Users list -->
+    <div class="pred-card">
+        <div class="pred-head"><div class="teams">Usuarios ({{ stats.total_users }})</div></div>
+        <div class="pred-body">
+            {% for token, user in users.items() %}
+            <div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:13px">
+                <div style="display:flex;justify-content:space-between">
+                    <span style="font-weight:700">{{ user.email }}</span>
+                    <span style="color:{% if user.active %}var(--green){% else %}var(--red){% endif %}">{{ user.plan|upper }}{% if not user.active %} (exp){% endif %}</span>
+                </div>
+                <div style="color:var(--text2);font-size:11px">Expira: {{ user.expires[:10] if user.expires else '?' }} | Token: {{ token[:12] }}...</div>
+                <form method="POST" action="/admin?key={{ key }}" style="margin-top:4px">
+                    <input type="hidden" name="action" value="cancel">
+                    <input type="hidden" name="token" value="{{ token }}">
+                    <button type="submit" style="background:var(--red-bg);color:var(--red);border:1px solid var(--red);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">Cancelar</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Create user form -->
+    <div class="pred-card">
+        <div class="pred-head"><div class="teams">Crear usuario</div></div>
+        <div class="pred-body">
+            <form method="POST" action="/admin?key={{ key }}">
+                <input type="hidden" name="action" value="create">
+                <label>Email</label>
+                <input type="text" name="email" placeholder="email@ejemplo.com" style="margin-bottom:8px">
+                <label>Plan</label>
+                <select name="plan" style="width:100%;padding:12px;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:15px;margin-bottom:8px">
+                    <option value="basico">Basico</option>
+                    <option value="pro" selected>Pro</option>
+                    <option value="vip">VIP</option>
+                </select>
+                <label>Dias</label>
+                <input type="number" name="days" value="30" style="margin-bottom:8px">
+                <button type="submit" class="btn">Crear usuario</button>
+            </form>
+        </div>
+    </div>
+
+    <a href="/" style="display:block;text-align:center;color:var(--green);margin:16px 0;font-size:14px">Volver al sitio</a>
+</div>
+</body>
+</html>

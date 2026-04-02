@@ -898,16 +898,8 @@ def login_page():
             return render_template("login.html")
 
         token = request.form.get("token", "").strip()
-        print(f"[LOGIN DEBUG] Token recibido: '{token}' (len={len(token)})")
-
-        from stripe_handler import verify_token, _load_users
-        users = _load_users()
-        print(f"[LOGIN DEBUG] Users en archivo: {len(users)} keys")
-        print(f"[LOGIN DEBUG] Keys: {list(users.keys())[:3]}")
-        print(f"[LOGIN DEBUG] Token en users: {token in users}")
-
+        from stripe_handler import verify_token
         user = verify_token(token)
-        print(f"[LOGIN DEBUG] verify_token result: {user}")
 
         if user:
             record_successful_login(ip, user.get("email", ""))
@@ -985,41 +977,6 @@ def stripe_webhook():
     if handle_webhook(payload, sig):
         return "ok", 200
     return "error", 400
-
-
-@app.route("/debug-users")
-def debug_users():
-    """Diagnostico temporal: muestra estado de users.json."""
-    users_path = os.path.join(BASE_DIR, "users.json")
-    info = {"file_exists": os.path.exists(users_path)}
-
-    if info["file_exists"]:
-        info["file_size"] = os.path.getsize(users_path)
-        try:
-            with open(users_path, encoding="utf-8") as f:
-                raw = f.read()
-            info["raw_preview"] = raw[:200]
-            data = json.loads(raw)
-            info["type"] = type(data).__name__
-            info["num_keys"] = len(data)
-            info["keys_preview"] = [k[:15] + "..." for k in list(data.keys())[:5]]
-            # Show structure of first user without sensitive data
-            if data:
-                first_key = list(data.keys())[0]
-                first_user = data[first_key]
-                info["first_user_fields"] = list(first_user.keys()) if isinstance(first_user, dict) else str(type(first_user))
-                info["first_user_plan"] = first_user.get("plan", "?") if isinstance(first_user, dict) else "?"
-                info["first_user_active"] = first_user.get("active", "?") if isinstance(first_user, dict) else "?"
-                info["first_user_expires"] = first_user.get("expires", "?") if isinstance(first_user, dict) else "?"
-        except Exception as e:
-            info["parse_error"] = str(e)
-    else:
-        info["note"] = "users.json does not exist on disk"
-
-    # Check if setup_railway ran
-    info["setup_railway_token"] = "GN6Xzul7mHyS156YVsRYxLFtkLSbNw_S-41wh6IY69M"[:15] + "..."
-
-    return jsonify(info)
 
 
 @app.route("/health")
@@ -1335,70 +1292,118 @@ def push_subscribe():
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-#  ADMIN ROUTES
+#  ADMIN DASHBOARD
 # ═══════════════════════════════════════════════════════════════════════════
 
-@app.route("/admin/create-user", methods=["GET", "POST"])
-def admin_create_user():
+def _admin_auth():
     admin_key = os.environ.get("ADMIN_KEY", "")
     provided = request.args.get("key", "") or request.form.get("key", "")
-
     if not admin_key or provided != admin_key:
-        return jsonify({"error": "Unauthorized"}), 403
+        return None, provided
+    return admin_key, provided
 
+
+@app.route("/admin", methods=["GET", "POST"])
+@app.route("/admin/create-user", methods=["GET", "POST"])
+def admin_dashboard():
+    key, provided = _admin_auth()
+    if not key:
+        return jsonify({"error": "Unauthorized. Use ?key=YOUR_ADMIN_KEY"}), 403
+
+    users_path = os.path.join(BASE_DIR, "users.json")
+    users = {}
+    if os.path.exists(users_path):
+        with open(users_path, encoding="utf-8") as f:
+            try: users = json.load(f)
+            except: users = {}
+
+    # Handle POST actions
     if request.method == "POST":
-        import secrets as sec
-        from datetime import timedelta as td
+        action = request.form.get("action", "")
 
-        email = request.form.get("email", "admin@nemebet.app")
-        plan = request.form.get("plan", "pro")
-        days = int(request.form.get("days", "30"))
+        if action == "create":
+            import secrets as sec
+            email = request.form.get("email", "").strip()
+            plan = request.form.get("plan", "pro")
+            days = int(request.form.get("days", "30"))
+            if email:
+                token = sec.token_urlsafe(32)
+                users[token] = {
+                    "email": email, "plan": plan, "token": token,
+                    "stripe_customer": "admin_created",
+                    "stripe_session": "admin_created",
+                    "created": datetime.now().isoformat(),
+                    "expires": (datetime.now() + timedelta(days=days)).isoformat(),
+                    "active": True,
+                }
+                with open(users_path, "w", encoding="utf-8") as f:
+                    json.dump(users, f, indent=2)
+                try:
+                    from email_service import send_welcome
+                    send_welcome(email, token, plan)
+                except Exception:
+                    pass
+                flash(f"Usuario creado: {email} ({plan}) Token: {token[:15]}...")
 
-        token = sec.token_urlsafe(32)
-        users_path = os.path.join(BASE_DIR, "users.json")
-        users = {}
-        if os.path.exists(users_path):
-            with open(users_path, encoding="utf-8") as f:
-                try: users = json.load(f)
-                except: users = {}
+        elif action == "cancel":
+            cancel_token = request.form.get("token", "")
+            if cancel_token in users:
+                users[cancel_token]["active"] = False
+                with open(users_path, "w", encoding="utf-8") as f:
+                    json.dump(users, f, indent=2)
+                flash(f"Usuario cancelado: {users[cancel_token].get('email', '?')}")
 
-        users[token] = {
-            "email": email,
-            "plan": plan,
-            "token": token,
-            "stripe_customer": "admin_created",
-            "stripe_session": "admin_created",
-            "created": datetime.now().isoformat(),
-            "expires": (datetime.now() + td(days=days)).isoformat(),
-            "active": True,
-        }
+        return redirect(f"/admin?key={provided}")
 
-        with open(users_path, "w", encoding="utf-8") as f:
-            json.dump(users, f, indent=2)
+    # Compute stats
+    prices = {"basico": 9.99, "pro": 24.99, "vip": 49.99}
+    active = {t: u for t, u in users.items() if u.get("active")}
+    plans = {}
+    for u in active.values():
+        p = u.get("plan", "?")
+        plans[p] = plans.get(p, 0) + 1
+    mrr = sum(prices.get(u.get("plan", ""), 0) for u in active.values())
+    expired = len(users) - len(active)
 
-        # Send welcome email
-        try:
-            from email_service import send_welcome
-            send_welcome(email, token, plan)
-        except Exception:
-            pass
+    stats = {
+        "total_users": len(users),
+        "active_users": len(active),
+        "mrr": f"{mrr:.2f}",
+        "plan_basico": plans.get("basico", 0),
+        "plan_pro": plans.get("pro", 0),
+        "plan_vip": plans.get("vip", 0),
+        "expired": expired,
+    }
 
-        return jsonify({"ok": True, "email": email, "plan": plan,
-                        "token": token, "expires": users[token]["expires"]})
+    # Picks data
+    picks_path = os.path.join(BASE_DIR, "picks_del_dia.json")
+    picks_data = None
+    if os.path.exists(picks_path):
+        with open(picks_path, encoding="utf-8") as f:
+            try: picks_data = json.load(f)
+            except: pass
 
-    # GET: show form
-    return '''<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Admin - NEME BET</title><link rel="stylesheet" href="/static/style.css"></head>
-    <body><div class="container"><div class="header"><h1>Admin</h1></div>
-    <form method="POST" action="/admin/create-user?key=''' + provided + '''">
-    <div class="card"><h2>Crear usuario</h2>
-    <label>Email</label><input type="text" name="email" value="swatfest2026@gmail.com">
-    <label style="margin-top:10px">Plan</label>
-    <select name="plan" style="width:100%;padding:12px;background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:8px;font-size:16px">
-    <option value="basico">Basico</option><option value="pro" selected>Pro</option><option value="vip">VIP</option></select>
-    <label style="margin-top:10px">Dias</label><input type="number" name="days" value="30">
-    </div><button type="submit" class="btn">Crear usuario</button></form>
-    </div></body></html>'''
+    # Accuracy
+    accuracy = None
+    try:
+        from calibration import get_dashboard
+        dash = get_dashboard()
+        accuracy = {"acc_1x2": dash.get("acc_all"), "acc_ou": None, "n": dash.get("verified", 0)}
+    except Exception:
+        pass
+
+    # Scheduler logs
+    slog_path = os.path.join(BASE_DIR, "scheduler_log.json")
+    scheduler_logs = []
+    if os.path.exists(slog_path):
+        with open(slog_path, encoding="utf-8") as f:
+            try: scheduler_logs = json.load(f)
+            except: pass
+
+    return render_template("admin.html",
+                           stats=stats, users=users, key=provided,
+                           picks_data=picks_data, accuracy=accuracy,
+                           scheduler_logs=scheduler_logs)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
