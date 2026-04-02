@@ -66,9 +66,14 @@
         <div class="ls"><div class="n">{{ stats.total_analyzed or '847' }}</div><div class="l">Partidos analizados</div></div>
     </div>
 
-    <!-- Recent wins -->
-    <div class="wins-section">
-        <h2 style="color:#1AE89B">Ultimos analisis acertados</h2>
+    <!-- Recent wins (max 48h, auto-refresh) -->
+    <div class="wins-section" id="winsSection">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <h2 style="color:#1AE89B;margin:0">Ultimos analisis acertados</h2>
+            <span id="winsUpdated" style="font-size:10px;color:#555">{{ last_updated }}</span>
+        </div>
+
+        <div id="winsContainer">
         {% if recent_wins %}
             {% for w in recent_wins[:3] %}
             <div class="win-card">
@@ -78,22 +83,19 @@
                     <span>Modelo: {{ w.prob }}%</span>
                     <span class="win-result">{{ w.result }}</span>
                 </div>
+                <div style="font-size:10px;color:#444;margin-top:4px">{{ w.date }}</div>
             </div>
             {% endfor %}
         {% else %}
-            <div class="win-card">
-                <div class="win-match">Arsenal vs Chelsea</div>
-                <div class="win-detail"><span>Mas de 1.5 goles</span><span>Modelo: 85%</span><span class="win-result">2-1</span></div>
-            </div>
-            <div class="win-card">
-                <div class="win-match">Real Madrid vs Barcelona</div>
-                <div class="win-detail"><span>1 Local</span><span>Modelo: 78%</span><span class="win-result">3-1</span></div>
-            </div>
-            <div class="win-card">
-                <div class="win-match">Napoli vs Juventus</div>
-                <div class="win-detail"><span>Mas de 2.5 goles</span><span>Modelo: 76%</span><span class="win-result">2-2</span></div>
+            <div style="background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:18px;text-align:center">
+                <div style="font-size:14px;color:#888">Los analisis del dia estaran disponibles a las 9:00 AM</div>
+                {% if hours_until_next %}
+                <div style="font-size:22px;font-weight:800;color:#1AE89B;margin:8px 0">{{ hours_until_next }}h</div>
+                <div style="font-size:12px;color:#555">para el proximo analisis</div>
+                {% endif %}
             </div>
         {% endif %}
+        </div>
     </div>
 
     <!-- Pricing -->
@@ -159,5 +161,45 @@
         Modelo estadistico basado en datos historicos. Resultados pasados no garantizan resultados futuros.
     </div>
 </div>
+<script>
+// Auto-refresh recent wins every 30 minutes
+function refreshWins() {
+    fetch('/api/recent-wins')
+        .then(r => r.json())
+        .then(data => {
+            const container = document.getElementById('winsContainer');
+            const updated = document.getElementById('winsUpdated');
+            if (!container) return;
+
+            if (data.wins && data.wins.length > 0) {
+                let html = '';
+                data.wins.forEach(w => {
+                    html += `<div class="win-card">
+                        <div class="win-match">${w.match}</div>
+                        <div class="win-detail">
+                            <span>${w.market}</span>
+                            <span>Modelo: ${w.prob}%</span>
+                            <span class="win-result">${w.result}</span>
+                        </div>
+                        <div style="font-size:10px;color:#444;margin-top:4px">${w.date}</div>
+                    </div>`;
+                });
+                if (data.has_today) {
+                    html = '<div style="text-align:center;margin-bottom:8px"><span style="display:inline-block;width:8px;height:8px;background:#1AE89B;border-radius:50%;animation:pulse 2s infinite"></span> <span style="font-size:11px;color:#1AE89B">Analisis de hoy</span></div>' + html;
+                }
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = `<div style="background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:18px;text-align:center">
+                    <div style="font-size:14px;color:#888">Los analisis del dia estaran disponibles a las 9:00 AM</div>
+                    <div style="font-size:22px;font-weight:800;color:#1AE89B;margin:8px 0">${data.hours_until_next}h</div>
+                    <div style="font-size:12px;color:#555">para el proximo analisis</div>
+                </div>`;
+            }
+            if (updated) updated.textContent = data.updated_at;
+        })
+        .catch(() => {});
+}
+setInterval(refreshWins, 30 * 60 * 1000); // 30 min
+</script>
 </body>
 </html>

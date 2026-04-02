@@ -860,27 +860,54 @@ def landing():
         except Exception:
             pass
 
-    # Recent wins
-    recent_wins = []
+    # Recent wins (max 48h old)
+    recent_wins = _get_recent_wins()
+
+    # Next analysis info
+    now = datetime.now()
+    next_9am = now.replace(hour=9, minute=0, second=0)
+    if now.hour >= 9:
+        next_9am += timedelta(days=1)
+    hours_until = max(0, int((next_9am - now).total_seconds() / 3600))
+
+    return render_template("landing.html", stats=stats, recent_wins=recent_wins,
+                           hours_until_next=hours_until,
+                           last_updated=now.strftime("%H:%M"))
+
+
+def _get_recent_wins():
+    """Retorna analisis acertados de las ultimas 48 horas."""
+    cutoff = (datetime.now() - timedelta(hours=48)).isoformat()
+    wins = []
+
     db_path = os.path.join(BASE_DIR, "results_db.json")
     if os.path.exists(db_path):
         try:
             with open(db_path, encoding="utf-8") as f:
                 db = json.load(f)
             for e in reversed(db):
+                # Skip if older than 48h
+                predicted_at = e.get("predicted_at", e.get("created", ""))
+                if predicted_at and predicted_at < cutoff:
+                    continue
+
                 if e.get("verified") and e.get("accuracy", {}).get("1x2_ok"):
-                    recent_wins.append({
+                    pred_1x2 = e["accuracy"]["1x2_pred"]
+                    prob = e["p1"] if pred_1x2 == "1" else (e["px"] if pred_1x2 == "X" else e["p2"])
+                    label = {"1": "Gana Local", "X": "Empate", "2": "Gana Visitante"}.get(pred_1x2, pred_1x2)
+                    wins.append({
                         "match": f"{e['home']} vs {e['away']}",
-                        "market": f"1X2 ({e['accuracy']['1x2_pred']})",
-                        "prob": e["p1"] if e["accuracy"]["1x2_pred"] == "1" else (e["px"] if e["accuracy"]["1x2_pred"] == "X" else e["p2"]),
+                        "market": label,
+                        "prob": prob,
                         "result": f"{e['home_goals']}-{e['away_goals']}",
+                        "date": predicted_at[:10] if predicted_at else "",
                     })
-                if len(recent_wins) >= 3:
+                if len(wins) >= 3:
                     break
         except Exception:
             pass
 
-    return render_template("landing.html", stats=stats, recent_wins=recent_wins)
+    return wins
 
 
 @app.route("/app")
@@ -1542,6 +1569,26 @@ def admin_dashboard():
                            stats=stats, users=users, key=provided,
                            picks_data=picks_data, accuracy=accuracy,
                            scheduler_logs=scheduler_logs)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  API: RECENT WINS (auto-refresh)
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/api/recent-wins")
+def api_recent_wins():
+    """Retorna analisis acertados recientes para auto-refresh."""
+    wins = _get_recent_wins()
+    now = datetime.now()
+    next_9am = now.replace(hour=9, minute=0, second=0)
+    if now.hour >= 9:
+        next_9am += timedelta(days=1)
+    return jsonify({
+        "wins": wins,
+        "updated_at": now.strftime("%H:%M"),
+        "hours_until_next": max(0, int((next_9am - now).total_seconds() / 3600)),
+        "has_today": any(w.get("date") == now.strftime("%Y-%m-%d") for w in wins),
+    })
 
 
 # ═══════════════════════════════════════════════════════════════════════════
