@@ -1811,9 +1811,13 @@ def api_recent_wins():
 
 @app.route("/api/partidos-hoy")
 def api_partidos_hoy():
-    """Retorna partidos proximos para la landing page (AJAX)."""
+    """Retorna partidos proximos (acepta ?horas=24)."""
+    horas = int(request.args.get("horas", 24))
     try:
-        from featured_matches import fetch_partidos
+        from featured_matches import fetch_partidos, CACHE_TTL
+        # Override cache TTL to 5 min (300s) and max_hours
+        import featured_matches
+        featured_matches.CACHE_TTL = 300  # 5 minutes
         data = fetch_partidos()
         return jsonify(data)
     except Exception as e:

@@ -6,8 +6,8 @@
       "competition": "II Liga - East",
       "hora": "10:00",
       "utc_date": "2026-04-02T10:00:00+00:00",
-      "mins_until": 374,
-      "countdown": "6h 14m",
+      "mins_until": 368,
+      "countdown": "6h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football",
@@ -19,8 +19,8 @@
       "competition": "III Liga - Group 3",
       "hora": "10:00",
       "utc_date": "2026-04-02T10:00:00+00:00",
-      "mins_until": 374,
-      "countdown": "6h 14m",
+      "mins_until": 368,
+      "countdown": "6h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -31,8 +31,8 @@
       "competition": "FKF Premier League",
       "hora": "11:00",
       "utc_date": "2026-04-02T11:00:00+00:00",
-      "mins_until": 434,
-      "countdown": "7h 14m",
+      "mins_until": 428,
+      "countdown": "7h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -43,8 +43,8 @@
       "competition": "U19 Bundesliga",
       "hora": "11:30",
       "utc_date": "2026-04-02T11:30:00+00:00",
-      "mins_until": 464,
-      "countdown": "7h 44m",
+      "mins_until": 458,
+      "countdown": "7h 38m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -55,8 +55,8 @@
       "competition": "III Liga - Group 4",
       "hora": "12:00",
       "utc_date": "2026-04-02T12:00:00+00:00",
-      "mins_until": 494,
-      "countdown": "8h 14m",
+      "mins_until": 488,
+      "countdown": "8h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -67,8 +67,8 @@
       "competition": "Liga 3",
       "hora": "12:00",
       "utc_date": "2026-04-02T12:00:00+00:00",
-      "mins_until": 494,
-      "countdown": "8h 14m",
+      "mins_until": 488,
+      "countdown": "8h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -79,8 +79,8 @@
       "competition": "Liga 3",
       "hora": "12:00",
       "utc_date": "2026-04-02T12:00:00+00:00",
-      "mins_until": 494,
-      "countdown": "8h 14m",
+      "mins_until": 488,
+      "countdown": "8h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -91,8 +91,8 @@
       "competition": "Liga 3",
       "hora": "12:00",
       "utc_date": "2026-04-02T12:00:00+00:00",
-      "mins_until": 494,
-      "countdown": "8h 14m",
+      "mins_until": 488,
+      "countdown": "8h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -103,8 +103,8 @@
       "competition": "Liga 3",
       "hora": "12:00",
       "utc_date": "2026-04-02T12:00:00+00:00",
-      "mins_until": 494,
-      "countdown": "8h 14m",
+      "mins_until": 488,
+      "countdown": "8h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -115,8 +115,8 @@
       "competition": "Liga 3",
       "hora": "12:00",
       "utc_date": "2026-04-02T12:00:00+00:00",
-      "mins_until": 494,
-      "countdown": "8h 14m",
+      "mins_until": 488,
+      "countdown": "8h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -127,8 +127,8 @@
       "competition": "Liga 3",
       "hora": "12:00",
       "utc_date": "2026-04-02T12:00:00+00:00",
-      "mins_until": 494,
-      "countdown": "8h 14m",
+      "mins_until": 488,
+      "countdown": "8h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -139,8 +139,8 @@
       "competition": "Liga 3",
       "hora": "12:00",
       "utc_date": "2026-04-02T12:00:00+00:00",
-      "mins_until": 494,
-      "countdown": "8h 14m",
+      "mins_until": 488,
+      "countdown": "8h 8m",
       "relevance": 8,
       "is_big": false,
       "source": "api-football"
@@ -149,5 +149,5 @@
   "total": 221,
   "rango_horas": 12,
   "fuente": "football-data.org / API-Football",
-  "actualizado": "2026-04-01T21:45:27.748947"
+  "actualizado": "2026-04-01T21:51:37.449583"
 }
