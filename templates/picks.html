@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% set active = 'picks' %}
+{% block title %}Picks del Dia - NEME BET{% endblock %}
+{% block subtitle %}{% if data %}{{ data.date }} | {{ data.total_picks }} picks{% else %}Sin datos aun{% endif %}{% endblock %}
+{% block content %}
+
+{% if not data %}
+<div class="no-picks">
+    Sin picks del dia<br>
+    <span style="font-size:11px">El scanner automatico se ejecuta a las 9AM o puedes ejecutarlo manualmente</span>
+</div>
+<form method="POST" action="/picks/scan">
+    <button type="submit" class="btn">Escanear partidos ahora</button>
+</form>
+{% else %}
+
+<!-- Stats -->
+<div class="stats-grid">
+    <div class="stat-box"><div class="num">{{ data.analyzed }}</div><div class="lbl">Analizados</div></div>
+    <div class="stat-box"><div class="num" style="color:var(--green)">{{ data.high_confidence_picks|length }}</div><div class="lbl">Picks +75%</div></div>
+    <div class="stat-box"><div class="num" style="color:var(--yellow)">{{ data.medium_confidence_picks|length }}</div><div class="lbl">Picks 65-75%</div></div>
+</div>
+
+<!-- High confidence picks -->
+{% if data.high_confidence_picks %}
+<div style="text-align:center;font-size:14px;font-weight:700;color:var(--green);margin:16px 0 10px">PICKS DE ALTA CONFIANZA (+75%)</div>
+{% for pick in data.high_confidence_picks %}
+<div class="pick-card high">
+    <div class="pick-head">
+        <div class="pick-bet">{{ pick.bet }}</div>
+        <div class="pick-prob high">{{ pick.prob }}%</div>
+    </div>
+    <div class="pick-match">{{ pick.match }}</div>
+    <div class="pick-meta">
+        <span>Cuota {{ pick.odds }}</span>
+        <span>{{ pick.agree }}/3 modelos</span>
+    </div>
+    <div style="font-size:11px;color:var(--text2);margin-top:4px">{{ pick.subs }}</div>
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- Medium confidence picks -->
+{% if data.medium_confidence_picks %}
+<div style="text-align:center;font-size:13px;font-weight:600;color:var(--yellow);margin:16px 0 10px">PICKS MODERADOS (65-75%)</div>
+{% for pick in data.medium_confidence_picks %}
+<div class="pick-card med">
+    <div class="pick-head">
+        <div class="pick-bet">{{ pick.bet }}</div>
+        <div class="pick-prob med">{{ pick.prob }}%</div>
+    </div>
+    <div class="pick-match">{{ pick.match }}</div>
+    <div class="pick-meta">
+        <span>Cuota {{ pick.odds }}</span>
+        <span>{{ pick.agree }}/3</span>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if not data.high_confidence_picks and not data.medium_confidence_picks %}
+<div class="no-picks">
+    Sin picks que superen el 65% de confianza hoy<br>
+    <span style="font-size:11px">{{ data.analyzed }} partidos analizados, ninguno con valor claro</span>
+</div>
+{% endif %}
+
+<!-- All analyzed matches (collapsible) -->
+{% if data.predictions %}
+<div class="coll" style="margin-top:16px">Ver {{ data.predictions|length }} partidos analizados</div>
+<div class="coll-body">
+    {% for pred in data.predictions %}
+    <div class="pred-card">
+        <div class="pred-head">
+            <div class="teams" style="font-size:14px">{{ pred.home }}<span class="vs"> vs </span>{{ pred.away }}</div>
+            <div class="date">{{ pred.hora }} {{ pred.liga }}</div>
+        </div>
+        <div class="pred-body">
+            <div class="prob-bar">
+                <div class="seg s1" style="flex:{{ pred.p1 }}">1:{{ pred.p1 }}%</div>
+                <div class="seg sx" style="flex:{{ pred.px }}">X:{{ pred.px }}%</div>
+                <div class="seg s2" style="flex:{{ pred.p2 }}">2:{{ pred.p2 }}%</div>
+            </div>
+            <div class="stat-row"><span class="label">O2.5</span><span class="val">{{ pred.o25 }}%</span></div>
+            <div class="stat-row"><span class="label">BTTS</span><span class="val">{{ pred.btts_y }}%</span></div>
+            <div class="stat-row"><span class="label">O1.5</span><span class="val">{{ pred.o15 }}%</span></div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div style="margin-top:16px">
+    <form method="POST" action="/picks/scan">
+        <button type="submit" class="btn" style="background:var(--bg3)">Re-escanear partidos</button>
+    </form>
+</div>
+
+<div style="font-size:11px;color:var(--text2);text-align:center;margin-top:10px">
+    Ultimo escaneo: {{ data.analyzed_at[:16] if data.analyzed_at else 'nunca' }}
+</div>
+{% endif %}
+{% endblock %}

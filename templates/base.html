@@ -28,9 +28,10 @@
 
         <div class="nav">
             <a href="/" {% if active == 'home' %}class="active"{% endif %}>Inicio</a>
+            <a href="/picks" {% if active == 'picks' %}class="active"{% endif %}>Picks{% if picks_count %}<span class="notif-dot"></span>{% endif %}</a>
             <a href="/scanner" {% if active == 'scanner' %}class="active"{% endif %}>Cuotas</a>
             <a href="/dashboard" {% if active == 'dashboard' %}class="active"{% endif %}>IA</a>
-            <a href="/history" {% if active == 'history' %}class="active"{% endif %}>Historial</a>
+            <a href="/history" {% if active == 'history' %}class="active"{% endif %}>Hist</a>
         </div>
 
         {% with messages = get_flashed_messages() %}

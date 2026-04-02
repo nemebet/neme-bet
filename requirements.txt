@@ -4,3 +4,8 @@ pillow
 requests
 anthropic
 flask-cors
+beautifulsoup4
+apscheduler
+pywebpush
+lxml
+cryptography

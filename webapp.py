@@ -1051,6 +1051,76 @@ def get_notifications():
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+#  PICKS DEL DIA
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/picks")
+def picks_route():
+    picks_path = os.path.join(BASE_DIR, "picks_del_dia.json")
+    data = None
+    if os.path.exists(picks_path):
+        with open(picks_path, encoding="utf-8") as f:
+            try:
+                data = json.load(f)
+            except Exception:
+                pass
+    return render_template("picks.html", data=data)
+
+
+@app.route("/picks/scan", methods=["POST"])
+def picks_scan():
+    """Ejecuta scraping + analisis manualmente."""
+    try:
+        from besoccer_scraper import scrape_today
+        scrape_result = scrape_today()
+        flash(f"Scraping: {scrape_result['relevant']} partidos relevantes")
+    except Exception as e:
+        flash(f"Error scraping: {e}")
+        return redirect(url_for("picks_route"))
+
+    try:
+        from auto_analyze import analyze_today
+        analysis = analyze_today()
+        if analysis:
+            high = len(analysis["high_confidence_picks"])
+            flash(f"Analisis: {analysis['analyzed']} partidos, {high} picks +75%")
+        else:
+            flash("Sin partidos para analizar")
+    except Exception as e:
+        flash(f"Error analisis: {e}")
+
+    return redirect(url_for("picks_route"))
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  PUSH NOTIFICATIONS
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/api/push/key")
+def push_public_key():
+    """Retorna clave publica VAPID para suscripcion push."""
+    try:
+        from push_notify import get_public_key
+        return jsonify({"publicKey": get_public_key()})
+    except Exception:
+        return jsonify({"publicKey": None})
+
+
+@app.route("/api/push/subscribe", methods=["POST"])
+def push_subscribe():
+    """Registra suscripcion push de un cliente."""
+    sub = request.get_json()
+    if not sub:
+        return jsonify({"error": "subscription required"}), 400
+    try:
+        from push_notify import save_subscription
+        count = save_subscription(sub)
+        return jsonify({"ok": True, "total": count})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 #  API JSON ENDPOINT
 # ═══════════════════════════════════════════════════════════════════════════
 
@@ -1065,6 +1135,45 @@ def api_predict():
     predictions, picks, log = process_matches(match_list)
     return jsonify({"predictions": predictions, "picks": picks,
                     "timestamp": datetime.now().isoformat()})
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  CONTEXT PROCESSOR — badge count for nav
+# ═══════════════════════════════════════════════════════════════════════════
+
+@app.context_processor
+def inject_picks_count():
+    picks_path = os.path.join(BASE_DIR, "picks_del_dia.json")
+    count = 0
+    if os.path.exists(picks_path):
+        try:
+            with open(picks_path, encoding="utf-8") as f:
+                data = json.load(f)
+                count = len(data.get("high_confidence_picks", []))
+        except Exception:
+            pass
+    return {"picks_count": count}
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  SCHEDULER INIT
+# ═══════════════════════════════════════════════════════════════════════════
+
+_scheduler_started = False
+
+def start_scheduler():
+    global _scheduler_started
+    if _scheduler_started:
+        return
+    _scheduler_started = True
+    try:
+        from scheduler import init_scheduler
+        init_scheduler(app)
+    except Exception as e:
+        print(f"[SCHEDULER] No iniciado: {e}")
+
+# Start scheduler when app is imported by gunicorn
+start_scheduler()
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -1085,8 +1194,6 @@ if __name__ == "__main__":
 
     print(f"\n{'=' * 60}")
     print(f"  NEME BET v5.0 — Predictor con IA y Autoaprendizaje")
-    print(f"  Ensemble: Poisson + Dixon-Coles + ELO")
-    print(f"  + Calibracion + Scanner de Cuotas + PWA Android")
     print(f"{'=' * 60}")
     print(f"\n  PC:       http://localhost:{port}")
     print(f"  Telefono: http://{local_ip}:{port}")
