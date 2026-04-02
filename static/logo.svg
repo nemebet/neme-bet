@@ -125,16 +125,29 @@
           fill="white" opacity="0.08"/>
   </g>
 
-  <!-- Text NEME (bigger) -->
+  <!-- Shine sweep animation -->
+  <clipPath id="shieldClip">
+    <path d="M132,78 L268,78 L268,192 Q268,240 200,258 Q132,240 132,192 Z"/>
+  </clipPath>
+  <rect x="-60" y="60" width="35" height="220" fill="white" opacity="0.12"
+        transform="rotate(-20,200,155)" clip-path="url(#shieldClip)">
+    <animateTransform attributeName="transform" type="translate"
+        values="-200,0;500,0;500,0" dur="4s" repeatCount="indefinite"
+        additive="sum"/>
+  </rect>
+
+  <!-- Text NEME — gold with green outline -->
   <text x="200" y="165" text-anchor="middle"
         font-family="system-ui,-apple-system,'Segoe UI',Impact,sans-serif"
         font-size="54" font-weight="900" letter-spacing="3"
-        fill="white" filter="glow">NEME</text>
-  <!-- Text BET (bigger) -->
+        stroke="#0A2A1A" stroke-width="2"
+        fill="#FFD700" filter="glow">NEME</text>
+  <!-- Text BET — white with gold outline -->
   <text x="200" y="212" text-anchor="middle"
         font-family="system-ui,-apple-system,'Segoe UI',Impact,sans-serif"
         font-size="44" font-weight="900" letter-spacing="7"
-        fill="#FFD700" filter="glow">BET</text>
+        stroke="#DAA520" stroke-width="1"
+        fill="white" filter="glow">BET</text>
 
   <!-- SPARKLES / STARS -->
   <g fill="#FFD700" opacity="0.7">

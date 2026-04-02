@@ -11,14 +11,17 @@
     <script defer data-domain="web-production-940b9.up.railway.app" src="https://plausible.io/js/script.js"></script>
     <style>
     .hero{text-align:center;padding:20px 16px}
-    .hero h1{font-size:22px;font-weight:900;margin-bottom:6px;line-height:1.3}
-    .hero .tag{color:#1AE89B;font-size:13px;font-weight:600}
+    .hero h1{font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#fff;line-height:1.2;margin-bottom:8px}
+    .hero h1 .hl{color:#FFD700}
     .hero .sub{color:#888;font-size:12px;margin-top:4px;line-height:1.4}
     .hero-form{display:flex;flex-direction:column;gap:8px;margin-top:14px;max-width:340px;margin-left:auto;margin-right:auto}
     .hero-form input{padding:10px 14px;background:#111;border:1px solid #0F6E56;border-radius:8px;color:#F0F0F0;font-size:14px;width:100%;box-sizing:border-box}
     .hero-form input:focus{outline:none;border-color:#1AE89B}
-    .hero-form button{padding:11px 16px;background:#0F6E56;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;width:100%}
+    .hero-form button{padding:11px 16px;background:#0F6E56;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;width:100%;text-transform:uppercase;letter-spacing:0.5px}
     .hero-count{font-size:11px;color:#555;margin-top:4px;text-align:center}
+    .logo-principal{animation:logop 3s ease-in-out infinite}
+    @keyframes logop{0%,100%{transform:scale(1);filter:drop-shadow(0 0 8px #0F6E56)}50%{transform:scale(1.03);filter:drop-shadow(0 0 16px #FFD700)}}
+    @media(max-width:480px){.hero{padding:16px 12px}.hero h1{font-size:19px}.hero .sub{font-size:11px}.hero-form input{padding:9px 12px;font-size:13px}.hero-form button{padding:10px 14px;font-size:13px}}
     @media(max-width:480px){.hero{padding:16px 12px}.hero h1{font-size:19px;margin-bottom:4px}.hero .sub{font-size:11px;margin-top:3px}.hero-form input{padding:9px 12px;font-size:13px}.hero-form button{padding:10px 14px;font-size:13px}}
     .live-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0}
     .ls{background:#111;border:1px solid #2A2A2A;border-radius:12px;padding:14px 8px;text-align:center}
@@ -71,14 +74,14 @@
 
     <!-- HERO -->
     <div class="hero">
-        <img src="/static/logo.svg" alt="NEMEBET" class="hero-logo" style="width:260px;max-width:70vw;height:auto;margin-bottom:12px">
-        <h1>Recibe tu primer analisis <span style="color:#1AE89B">Pro GRATIS</span></h1>
+        <img src="/static/logo.svg" alt="NEMEBET" class="logo-principal" style="width:260px;max-width:70vw;height:auto;margin-bottom:12px">
+        <h1>RECIBE TU PRIMER<br><span class="hl">ANALISIS GRATIS</span></h1>
         <div class="sub">Sin tarjeta de credito. Solo tu email.</div>
         <form class="hero-form" id="heroForm" onsubmit="openModal(event)">
             <input type="email" id="heroEmail" placeholder="tucorreo@email.com" required>
             <button type="submit">QUIERO MI ANALISIS GRATIS</button>
         </form>
-        <div class="hero-count">Sin spam. Cancela cuando quieras.</div>
+        <div class="hero-count">sin spam &middot; cancela cuando quieras</div>
     </div>
 
     <!-- URGENCY COUNTER -->
@@ -199,7 +202,7 @@
                 <li style="color:#555;padding:3px 0"><span style="color:#FF4757">&#10007;</span> Sin scanner de cuotas</li>
                 <li style="color:#555;padding:3px 0"><span style="color:#FF4757">&#10007;</span> Sin alineaciones</li>
             </ul>
-            <a href="/checkout/basico" class="btn btn-outline">Suscribirse</a>
+            <a href="/checkout/basico" class="btn btn-outline">SUSCRIBIRSE</a>
         </div>
 
         <div class="plan rec">
@@ -215,7 +218,7 @@
                 <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Alineaciones oficiales</li>
                 <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Historial completo</li>
             </ul>
-            <a href="/checkout/pro" class="btn" style="background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff">Suscribirse a Pro</a>
+            <a href="/checkout/pro" class="btn" style="background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff">SUSCRIBIRSE A PRO</a>
         </div>
 
         <div class="plan" style="border-color:#F5A623">
@@ -229,7 +232,7 @@
                 <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Scanner de errores de cuotas</li>
                 <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Badge VIP exclusivo</li>
             </ul>
-            <a href="/checkout/vip" class="btn" style="background:linear-gradient(135deg,#B8860B,#F5A623);color:#fff">Suscribirse VIP</a>
+            <a href="/checkout/vip" class="btn" style="background:linear-gradient(135deg,#B8860B,#F5A623);color:#fff">SUSCRIBIRSE VIP</a>
         </div>
     </div>
 
@@ -255,7 +258,7 @@
                 <input type="checkbox" name="terms" required>
                 <span>Acepto los <a href="#" style="color:#1AE89B">terminos y condiciones</a> y la politica de privacidad</span>
             </div>
-            <button type="submit" class="btn" style="width:100%;padding:14px;background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px">Crear mi cuenta gratis</button>
+            <button type="submit" class="btn" style="width:100%;padding:14px;background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px">CREAR MI CUENTA GRATIS</button>
         </form>
         <div style="text-align:center;margin-top:10px">
             <a href="#" onclick="document.getElementById('registerModal').classList.remove('show')" style="color:#888;font-size:13px">Cerrar</a>

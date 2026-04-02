@@ -33,11 +33,18 @@
   <path d="M164,118 L348,118 L348,165 Q256,150 164,165 Z"
         fill="white" opacity="0.07"/>
 
-  <!-- Text N B -->
-  <text x="256" y="290" text-anchor="middle"
+  <!-- Text N (gold) -->
+  <text x="200" y="290" text-anchor="middle"
         font-family="system-ui,-apple-system,'Segoe UI',Impact,sans-serif"
-        font-size="170" font-weight="900" letter-spacing="-5"
-        fill="white" filter="gl">NB</text>
+        font-size="170" font-weight="900"
+        stroke="#0A2A1A" stroke-width="3"
+        fill="#FFD700" filter="gl">N</text>
+  <!-- Text B (white) -->
+  <text x="315" y="290" text-anchor="middle"
+        font-family="system-ui,-apple-system,'Segoe UI',Impact,sans-serif"
+        font-size="170" font-weight="900"
+        stroke="#DAA520" stroke-width="1.5"
+        fill="white" filter="gl">B</text>
 
   <!-- Gold line separator -->
   <line x1="195" y1="310" x2="317" y2="310" stroke="url(#gd)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
