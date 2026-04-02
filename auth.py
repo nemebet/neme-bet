@@ -20,15 +20,28 @@ def login_required(f):
 
 def get_current_user():
     """Retorna el usuario actual o None."""
-    # New system: email-based
+    # New system: email-based with session guard
     email = session.get("user_email")
     if email:
         _, user = find_user_by_email(email)
-        if user and user.get("active"):
-            return user
-        # User expired/inactive
-        session.pop("user_email", None)
-        return None
+        if not user or not user.get("active"):
+            session.pop("user_email", None)
+            return None
+
+        # Validate session token (anti-sharing)
+        stk = session.get("session_token")
+        if stk:
+            try:
+                from session_guard import validate_session
+                valid, _ = validate_session(email, stk)
+                if not valid:
+                    session.pop("user_email", None)
+                    session.pop("session_token", None)
+                    return None
+            except Exception:
+                pass  # If session_guard fails, allow access
+
+        return user
 
     # Legacy: token-based (backwards compat)
     token = session.get("token")

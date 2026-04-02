@@ -58,6 +58,22 @@
         </div>
     </div>
 
+    <!-- Sharing alerts -->
+    {% if sharing_suspects %}
+    <div class="pred-card" style="border-left:3px solid var(--red)">
+        <div class="pred-head"><div class="teams" style="color:var(--red)">Cuentas sospechosas (multiples IPs)</div></div>
+        <div class="pred-body">
+            {% for s in sharing_suspects %}
+            <div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:12px">
+                <div style="font-weight:700">{{ s.email }} ({{ s.plan }})</div>
+                <div style="color:var(--text2)">IPs: {{ s.ips|join(', ') }}</div>
+                <div style="color:var(--text2)">Ubicaciones: {{ s.locations|join(', ') }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Scheduler status -->
     <div class="pred-card">
         <div class="pred-head"><div class="teams">Scheduler</div></div>

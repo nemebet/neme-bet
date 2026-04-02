@@ -883,9 +883,19 @@ def landing():
     import random
     viewer_count = random.randint(8, 23)
 
+    # Featured matches
+    featured = []
+    try:
+        from featured_matches import fetch_featured
+        fm = fetch_featured()
+        featured = fm.get("matches", [])
+    except Exception:
+        pass
+
     return render_template("landing.html", stats=stats, today_picks=today_picks,
                            hours_until_next=hours_until,
-                           viewer_count=viewer_count)
+                           viewer_count=viewer_count,
+                           featured=featured)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -1099,6 +1109,14 @@ def login_page():
                 session["user_email"] = email
                 session.permanent = True
                 app.permanent_session_lifetime = timedelta(days=30)
+                # Create guarded session
+                try:
+                    from session_guard import create_session
+                    stk, _ = create_session(email, request)
+                    if stk:
+                        session["session_token"] = stk
+                except Exception:
+                    pass
                 flash(f"Cuenta activada! Tu contrasena ha sido guardada.")
                 return redirect(url_for("app_home"))
             else:
@@ -1122,6 +1140,14 @@ def login_page():
                     app.permanent_session_lifetime = timedelta(days=30)
                 else:
                     session.permanent = False
+                # Create guarded session
+                try:
+                    from session_guard import create_session
+                    stk, _ = create_session(email, request)
+                    if stk:
+                        session["session_token"] = stk
+                except Exception:
+                    pass
                 flash(f"Bienvenido! Plan: {user['plan'].upper()}")
                 return redirect(url_for("app_home"))
             else:
@@ -1715,10 +1741,19 @@ def admin_dashboard():
             try: scheduler_logs = json.load(f)
             except: pass
 
+    # Sharing suspects
+    sharing_suspects = []
+    try:
+        from session_guard import get_multi_ip_users
+        sharing_suspects = get_multi_ip_users(24)
+    except Exception:
+        pass
+
     return render_template("admin.html",
                            stats=stats, users=users, key=provided,
                            picks_data=picks_data, accuracy=accuracy,
-                           scheduler_logs=scheduler_logs)
+                           scheduler_logs=scheduler_logs,
+                           sharing_suspects=sharing_suspects)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
