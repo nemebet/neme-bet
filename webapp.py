@@ -812,6 +812,11 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/health")
+def health():
+    return "ok", 200
+
+
 @app.route("/predict", methods=["POST"])
 def predict_route():
     match_list = []

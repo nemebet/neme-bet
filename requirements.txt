@@ -1,2 +1,6 @@
 flask
 gunicorn
+pillow
+requests
+anthropic
+flask-cors

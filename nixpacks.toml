@@ -2,7 +2,7 @@
 nixPkgs = ['python311', 'gcc']
 
 [phases.install]
-cmds = ['pip install flask gunicorn']
+cmds = ['pip install -r requirements.txt']
 
 [start]
 cmd = 'python start.py'

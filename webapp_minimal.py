@@ -1,11 +1,5 @@
-import os
-from flask import Flask
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return '<h1>NEME BET OK</h1>'
-
-@app.route('/health')
-def health():
-    return 'ok', 200
+"""
+NEME BET — Entry point for Railway/gunicorn.
+Imports the full app from webapp.py.
+"""
+from webapp import app  # noqa: F401
