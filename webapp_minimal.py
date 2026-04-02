@@ -4,12 +4,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return '<h1>NEME BET</h1><p>Funcionando</p>'
+    return '<h1>NEME BET OK</h1>'
 
 @app.route('/health')
 def health():
     return 'ok', 200
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
