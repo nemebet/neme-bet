@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% set active = 'home' %}
+{% block title %}Dashboard - NEMEBET{% endblock %}
+{% block subtitle %}{% endblock %}
+{% block content %}
+
+<style>
+.plan-badge{display:inline-block;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:6px}
+.plan-badge.basico{background:#185FA5;color:#fff}
+.plan-badge.pro{background:#0F6E56;color:#fff}
+.plan-badge.vip{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000}
+.plan-badge.admin{background:#6B21A8;color:#fff}
+.upgrade-strip{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin:12px 0;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.upgrade-strip a{color:var(--green);font-weight:700;text-decoration:none}
+.tarjeta-a{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;border-left:4px solid}
+.tarjeta-a.basico{border-left-color:#185FA5}
+.tarjeta-a.pro{border-left-color:#0F6E56}
+.tarjeta-a.vip{border-left-color:#FFD700}
+.tarjeta-a .th{padding:10px 14px;display:flex;justify-content:space-between;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)}
+.tarjeta-a .equipos{padding:12px 14px;font-size:16px;font-weight:700;text-align:center}
+.tarjeta-a .equipos .vs{color:var(--text2);font-weight:400;margin:0 6px;font-size:13px}
+.conf-bar{background:#1a1a1a;border-radius:10px;height:6px;margin:6px 14px;overflow:hidden}
+.conf-fill{height:100%;background:linear-gradient(90deg,#0F6E56,#FFD700);border-radius:10px;transition:width 1s}
+.tarjeta-a .pick-main{padding:8px 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.tarjeta-a .pick-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
+.tarjeta-a .pick-val{font-weight:700;color:var(--green)}
+.tarjeta-a .btn-ver{display:block;margin:0 14px 12px;padding:10px;background:var(--green2);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;text-align:center;text-transform:uppercase;text-decoration:none}
+</style>
+
+<!-- Dashboard header by plan -->
+{% if user_rol == 'admin' %}
+<div style="text-align:center;margin-bottom:14px">
+    <span class="plan-badge admin">ADMINISTRADOR</span>
+    <h2 style="font-size:18px;font-weight:800;margin:6px 0">PANEL COMPLETO</h2>
+    <p style="font-size:12px;color:var(--text2)">Acceso total a todos los analisis</p>
+    <a href="/admin?key={{ admin_key }}" style="font-size:12px;color:var(--green)">Ir al panel admin</a>
+</div>
+{% elif plan == 'vip' %}
+<div style="text-align:center;margin-bottom:14px">
+    <span class="plan-badge vip">VIP</span>
+    <h2 style="font-size:18px;font-weight:800;margin:6px 0">TUS ANALISIS EXCLUSIVOS</h2>
+    <p style="font-size:12px;color:var(--text2)">Los analisis con mayor precision — mas del 76%</p>
+</div>
+{% elif plan == 'pro' %}
+<div style="text-align:center;margin-bottom:14px">
+    <span class="plan-badge pro">PLAN PRO</span>
+    <h2 style="font-size:18px;font-weight:800;margin:6px 0">TUS ANALISIS DE HOY</h2>
+    <p style="font-size:12px;color:var(--text2)">Confianza 65-75%</p>
+</div>
+<div class="upgrade-strip"><span>Actualiza a VIP para los analisis mas precisos</span><a href="/#pricing">VER VIP</a></div>
+{% elif plan == 'basico' %}
+<div style="text-align:center;margin-bottom:14px">
+    <span class="plan-badge basico">PLAN BASICO</span>
+    <h2 style="font-size:18px;font-weight:800;margin:6px 0">TUS ANALISIS DE HOY</h2>
+    <p style="font-size:12px;color:var(--text2)">Confianza 60-64% | Maximo 3 por dia</p>
+</div>
+<div class="upgrade-strip"><span>Actualiza a Pro para analisis de mayor confianza</span><a href="/#pricing">VER PRO</a></div>
+{% elif plan == 'free_trial' %}
+<div style="text-align:center;margin-bottom:14px">
+    <span class="plan-badge pro">ANALISIS PRO GRATUITO</span>
+    <h2 style="font-size:18px;font-weight:800;margin:6px 0">TU ANALISIS GRATIS</h2>
+    <p style="font-size:12px;color:var(--text2)">Nivel Pro — 65-75% confianza</p>
+</div>
+{% endif %}
+
+<!-- Picks -->
+{% if picks %}
+{% for p in picks %}
+<div class="tarjeta-a {{ plan }}">
+    <div class="th">
+        <span>{{ p.match }}</span>
+        <span>{{ p.prob }}%</span>
+    </div>
+    <div class="equipos">{{ p.match }}</div>
+    <div class="conf-bar"><div class="conf-fill" style="width:{{ p.prob }}%"></div></div>
+    <div class="pick-main">
+        <div><div class="pick-label">ANALISIS SUGERIDO</div><div class="pick-val">{{ p.bet }}</div></div>
+        <div style="font-size:13px;color:var(--text2)">Cuota: {{ p.odds }}</div>
+    </div>
+    <a href="/predict" class="btn-ver">VER ANALISIS COMPLETO</a>
+</div>
+{% endfor %}
+{% else %}
+<!-- No picks -->
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center">
+    <div style="font-size:36px;margin-bottom:8px">&#9917;</div>
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:6px">ANALISIS CARGANDO</h3>
+    <p style="font-size:13px;color:var(--text2)">Estamos preparando los analisis del dia</p>
+    <p style="font-size:12px;color:var(--text2);margin-top:6px">Proxima actualizacion a las 9:00 AM</p>
+    <button onclick="location.reload()" class="btn" style="margin-top:12px;font-size:14px;padding:10px">ACTUALIZAR AHORA</button>
+</div>
+{% endif %}
+
+<!-- Nav to other sections -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px">
+    <a href="/picks" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:var(--text)">
+        <div style="font-size:18px">&#128200;</div>
+        <div style="font-size:12px;font-weight:600;margin-top:4px">ANALISIS DEL DIA</div>
+    </a>
+    <a href="/scanner" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:var(--text)">
+        <div style="font-size:18px">&#128269;</div>
+        <div style="font-size:12px;font-weight:600;margin-top:4px">SCANNER CUOTAS</div>
+    </a>
+    <a href="/dashboard" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:var(--text)">
+        <div style="font-size:18px">&#129504;</div>
+        <div style="font-size:12px;font-weight:600;margin-top:4px">RENDIMIENTO IA</div>
+    </a>
+    <a href="/history" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;text-decoration:none;color:var(--text)">
+        <div style="font-size:18px">&#128203;</div>
+        <div style="font-size:12px;font-weight:600;margin-top:4px">HISTORIAL</div>
+    </a>
+</div>
+
+<div style="text-align:center;margin-top:16px">
+    <a href="/logout" style="font-size:12px;color:var(--text2)">Cerrar sesion</a>
+</div>
+{% endblock %}

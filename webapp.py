@@ -39,9 +39,13 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app = Flask(__name__,
             template_folder=os.path.join(BASE_DIR, "templates"),
             static_folder=os.path.join(BASE_DIR, "static"))
-app.secret_key = os.environ.get("FLASK_SECRET", secrets.token_hex(32))
+app.secret_key = os.environ.get("SECRET_KEY", "51c21f72a41d003683cf0b0d1848f332bda785cbbbe0fb73dd0a552594461a0e")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16MB max
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
+app.config["SESSION_COOKIE_SECURE"] = True
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 # Initialize security layer
 try:
@@ -1059,12 +1063,37 @@ def analizar_partido():
 
 @app.route("/app")
 def app_home():
-    """Dashboard principal (requiere login)."""
+    """Dashboard personalizado por plan."""
     from auth import get_current_user
+    from stripe_handler import filtrar_por_plan
+
     user = get_current_user()
     if not user:
         return redirect(url_for("landing"))
-    return render_template("index.html", user=user)
+
+    plan = user.get("plan", "free_trial")
+    rol = user.get("rol", "user")
+
+    # Load picks filtered by plan
+    picks = []
+    picks_path = _dp("picks_del_dia.json")
+    if os.path.exists(picks_path):
+        try:
+            with open(picks_path, encoding="utf-8") as f:
+                pd = json.load(f)
+            all_picks = pd.get("high_confidence_picks", []) + pd.get("medium_confidence_picks", [])
+            if rol == "admin":
+                picks = all_picks  # Admin sees everything
+            else:
+                picks = filtrar_por_plan(all_picks, plan)
+        except Exception:
+            pass
+
+    admin_key = os.environ.get("ADMIN_KEY", "")
+
+    return render_template("app_home.html",
+                           user=user, plan=plan, picks=picks,
+                           user_rol=rol, admin_key=admin_key)
 
 
 @app.route("/login", methods=["GET", "POST"])
