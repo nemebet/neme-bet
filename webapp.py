@@ -1309,6 +1309,21 @@ def push_subscribe():
 #  ADMIN DASHBOARD
 # ═══════════════════════════════════════════════════════════════════════════
 
+@app.route("/debug-admin")
+def debug_admin():
+    ak = os.environ.get("ADMIN_KEY", "")
+    provided = request.args.get("key", "")
+    return jsonify({
+        "admin_key_exists": bool(ak),
+        "admin_key_length": len(ak),
+        "admin_key_first_3": ak[:3] if ak else "",
+        "provided_key": provided[:3] if provided else "",
+        "provided_length": len(provided),
+        "match": ak == provided if ak and provided else False,
+        "env_keys_with_admin": [k for k in os.environ if "ADMIN" in k.upper()],
+    })
+
+
 def _admin_auth():
     admin_key = os.environ.get("ADMIN_KEY", "")
     provided = request.args.get("key", "") or request.form.get("key", "")
