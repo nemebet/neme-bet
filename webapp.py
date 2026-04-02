@@ -1092,15 +1092,25 @@ def app_home():
 
     admin_key = os.environ.get("ADMIN_KEY", "")
 
-    # Referral code
     import hashlib
     ref_code = hashlib.md5(user.get("email", "").encode()).hexdigest()[:8].upper()
+    nombre = user.get("nombre", user.get("email", "").split("@")[0])
+    hour = datetime.now().hour
+    greeting = "BUENAS NOCHES" if hour >= 18 else ("BUENAS TARDES" if hour >= 12 else "BUENOS DIAS")
+    is_admin = rol == "admin"
+
+    # VIP/Admin get the new dashboard
+    if plan in ("vip",) or is_admin:
+        return render_template("vip_dashboard.html",
+                               user=user, plan=plan, is_admin=is_admin,
+                               admin_key=admin_key, ref_code=ref_code,
+                               nombre=nombre, greeting=greeting)
 
     return render_template("app_home.html",
                            user=user, plan=plan, picks=picks,
                            user_rol=rol, admin_key=admin_key,
-                           now_hour=datetime.now().hour,
-                           ref_code=ref_code)
+                           now_hour=hour, ref_code=ref_code,
+                           nombre=nombre, greeting=greeting)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -1812,6 +1822,42 @@ def _get_recent_wins():
 # ═══════════════════════════════════════════════════════════════════════════
 #  API: PARTIDOS HOY
 # ═══════════════════════════════════════════════════════════════════════════
+
+@app.route("/api/partidos-hoy")
+@app.route("/api/picks-ahora")
+def api_picks_ahora():
+    """Retorna picks disponibles ahora — sin restriccion de horario."""
+    from auth import get_current_user
+    from stripe_handler import filtrar_por_plan
+
+    user = get_current_user()
+    plan = user.get("plan", "free_trial") if user else "free_trial"
+
+    # Load existing picks
+    picks_path = _dp("picks_del_dia.json")
+    all_picks = []
+    if os.path.exists(picks_path):
+        try:
+            with open(picks_path, encoding="utf-8") as f:
+                pd = json.load(f)
+            all_picks = pd.get("high_confidence_picks", []) + pd.get("medium_confidence_picks", [])
+        except Exception:
+            pass
+
+    # Filter by plan
+    if user and user.get("rol") == "admin":
+        filtered = all_picks
+    else:
+        filtered = filtrar_por_plan(all_picks, plan)
+
+    return jsonify({
+        "picks": filtered,
+        "total": len(filtered),
+        "all_total": len(all_picks),
+        "plan": plan,
+        "generado": datetime.now().isoformat(),
+    })
+
 
 @app.route("/api/partidos-hoy")
 def api_partidos_hoy():

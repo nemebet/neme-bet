@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEMEBET VIP</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="icon" href="/static/icon-192.png">
+    <meta name="theme-color" content="#0F6E56">
+    <style>
+    :root{--gold:#FFD700;--green:#0F6E56;--ganado:#00C853;--perdido:#FF1744}
+    body{padding-bottom:70px}
+    .vip-hdr{background:linear-gradient(135deg,#0a1a0a,#0F6E56);padding:14px 16px;border-radius:14px;margin-bottom:12px;border-bottom:2px solid var(--gold)}
+    .vip-hdr h1{font-size:15px;font-weight:800;margin:0}
+    .vip-hdr .sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px}
+    .vip-mini{display:flex;gap:12px;margin-top:6px;font-size:12px;color:rgba(255,255,255,0.8)}
+    .tab-c{display:none}.tab-c.active{display:block}
+    .resumen{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+    .sbox{background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:10px 4px;text-align:center}
+    .sbox .n{font-size:20px;font-weight:800;color:var(--gold)}
+    .sbox .l{font-size:8px;color:#666;margin-top:2px;text-transform:uppercase}
+    .pick-star{background:linear-gradient(135deg,#0D1F0D,#1a3a1a);border:2px solid var(--gold);border-radius:16px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+    .conf-anim{height:8px;background:#1a1a1a;border-radius:4px;overflow:hidden;margin:8px 0}
+    .conf-anim .f{height:100%;background:linear-gradient(90deg,#0F6E56,#FFD700,#0F6E56);background-size:200% 100%;animation:sh 2s infinite;border-radius:4px}
+    @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .pick-item{background:#0D0D0D;border:1px solid #1a2a1a;border-left:4px solid var(--green);border-radius:10px;padding:10px;margin-bottom:6px}
+    .comb{border-radius:10px;padding:12px;margin-bottom:8px}
+    .comb.cons{border-left:4px solid #0F6E56;background:#0D1A0D}
+    .comb.val{border-left:4px solid #FFD700;background:#1A1500}
+    .match-card{background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:10px;margin-bottom:6px}
+    .fl{flex-shrink:0;padding:5px 10px;background:#111;border:1px solid #333;border-radius:8px;color:#888;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap}
+    .fl.active{background:var(--green);color:#fff;border-color:var(--green)}
+    .ref-section{background:linear-gradient(135deg,#0D1F0D,#1a3a1a);border:1px solid var(--gold);border-radius:14px;padding:14px;margin:10px 0}
+    .ref-link{display:flex;gap:6px;margin-top:8px}
+    .ref-link input{flex:1;padding:7px;background:#111;border:1px solid #333;border-radius:6px;color:#1AE89B;font-size:10px;font-family:monospace}
+    .ref-link button{padding:7px 10px;background:var(--green);border:none;border-radius:6px;color:#fff;font-size:10px;font-weight:700;cursor:pointer}
+    .bnav{position:fixed;bottom:0;left:0;right:0;background:#0a0a0a;border-top:1px solid var(--gold);display:flex;justify-content:space-around;padding:6px 0 14px;z-index:1000}
+    .bnav a{display:flex;flex-direction:column;align-items:center;gap:1px;color:#444;text-decoration:none;font-size:9px;font-weight:700}
+    .bnav a.on{color:var(--gold)}
+    .bnav .ico{font-size:18px}
+    .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 20px;border-radius:25px;font-weight:700;font-size:12px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
+    .skel{background:linear-gradient(90deg,#111 25%,#1a1a1a 50%,#111 75%);background-size:200% 100%;animation:sk 1.5s infinite;height:80px;border-radius:10px;margin-bottom:6px}
+    @keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .btn-scan{padding:10px 20px;background:var(--green);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;width:100%;margin-top:10px}
+    @media(max-width:480px){.resumen{grid-template-columns:repeat(2,1fr)}}
+    </style>
+</head>
+<body style="background:#050505;color:#E8E8E8;font-family:-apple-system,sans-serif">
+<div style="max-width:640px;margin:0 auto;padding:12px">
+
+<!-- HEADER -->
+<div class="vip-hdr">
+    <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:22px">{% if is_admin %}&#128295;{% else %}&#128081;{% endif %}</span>
+        <div>
+            <h1>{{ greeting }}, {{ nombre }}</h1>
+            <div class="sub">{% if is_admin %}Administrador{% else %}Plan VIP{% endif %} &middot; Acceso completo</div>
+        </div>
+    </div>
+    <div class="vip-mini">
+        <span>&#127919; <span id="pickCount">--</span> picks</span>
+        <span>&#128200; Acierto: --</span>
+        {% if is_admin %}<a href="/admin?key={{ admin_key }}" style="color:var(--gold);font-size:11px;text-decoration:none">ADMIN</a>{% endif %}
+    </div>
+</div>
+
+<!-- TAB: PICKS -->
+<div class="tab-c active" id="t-picks">
+    <div class="resumen">
+        <div class="sbox"><div class="n" id="sTotal">--</div><div class="l">PICKS</div></div>
+        <div class="sbox" style="border-color:var(--gold)"><div class="n" id="sBest">--%</div><div class="l">MEJOR</div></div>
+        <div class="sbox"><div class="n" id="sLive">0</div><div class="l">EN VIVO</div></div>
+        <div class="sbox"><div class="n" id="sPend">--</div><div class="l">PEND.</div></div>
+    </div>
+    <div id="picksContainer">
+        <div class="skel"></div><div class="skel"></div><div class="skel"></div>
+    </div>
+    <button class="btn-scan" onclick="scanNow()">&#9889; ESCANEAR PARTIDOS AHORA</button>
+</div>
+
+<!-- TAB: PARTIDOS -->
+<div class="tab-c" id="t-partidos">
+    <div style="display:flex;gap:5px;overflow-x:auto;padding:4px 0;margin-bottom:10px;-webkit-overflow-scrolling:touch">
+        <button class="fl active" onclick="filtLiga('todas',this)">TODAS</button>
+        <button class="fl" onclick="filtLiga('champions',this)">UCL</button>
+        <button class="fl" onclick="filtLiga('premier',this)">PL</button>
+        <button class="fl" onclick="filtLiga('liga',this)">LaLiga</button>
+        <button class="fl" onclick="filtLiga('serie a',this)">Serie A</button>
+        <button class="fl" onclick="filtLiga('bundesliga',this)">Bundes</button>
+        <button class="fl" onclick="filtLiga('colombia',this)">COL</button>
+        <button class="fl" onclick="filtLiga('argentin',this)">ARG</button>
+    </div>
+    <div id="matchesContainer"><div class="skel"></div><div class="skel"></div></div>
+</div>
+
+<!-- TAB: CUOTAS -->
+<div class="tab-c" id="t-cuotas">
+    <h3 style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:8px">&#128176; SCANNER DE CUOTAS</h3>
+    <div id="cuotasContainer" style="color:#888;font-size:13px">El scanner se activa con picks disponibles.<br>Toca ESCANEAR en la tab PICKS.</div>
+</div>
+
+<!-- TAB: STATS -->
+<div class="tab-c" id="t-stats">
+    <div style="text-align:center;margin:16px 0">
+        <div style="font-size:48px;font-weight:900;color:var(--ganado)">--</div>
+        <div style="font-size:14px;color:#888">ACIERTO TOTAL</div>
+    </div>
+    <div style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:12px;padding:14px">
+        <h4 style="font-size:13px;color:var(--gold);margin-bottom:8px">&#128176; SIMULADOR</h4>
+        <p style="font-size:11px;color:#888;margin-bottom:8px">Si apostaras por pick (30 dias):</p>
+        <div style="display:flex;gap:6px;margin-bottom:8px">
+            <button onclick="sim(5,this)" style="flex:1;padding:8px;background:#111;border:1px solid #333;border-radius:8px;color:#ccc;font-size:13px;font-weight:700;cursor:pointer">$5</button>
+            <button onclick="sim(10,this)" style="flex:1;padding:8px;background:var(--green);border:1px solid var(--green);border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer">$10</button>
+            <button onclick="sim(20,this)" style="flex:1;padding:8px;background:#111;border:1px solid #333;border-radius:8px;color:#ccc;font-size:13px;font-weight:700;cursor:pointer">$20</button>
+            <button onclick="sim(50,this)" style="flex:1;padding:8px;background:#111;border:1px solid #333;border-radius:8px;color:#ccc;font-size:13px;font-weight:700;cursor:pointer">$50</button>
+        </div>
+        <div style="text-align:center"><div id="simR" style="font-size:32px;font-weight:900;color:var(--ganado)">+$0</div><div id="simD" style="font-size:12px;color:#888">Selecciona monto</div></div>
+    </div>
+    <div style="font-size:11px;color:#666;text-align:center;margin-top:8px">Historial se construye automaticamente con cada resultado verificado</div>
+</div>
+
+<!-- TAB: REFERIDOS -->
+<div class="tab-c" id="t-ref">
+    <div class="ref-section">
+        <h3 style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px">&#127873; RECOMIENDA Y GANA</h3>
+        <div style="font-size:12px;color:#ccc;margin-bottom:8px">1 mes GRATIS por cada amigo que se suscriba</div>
+        <div class="ref-link">
+            <input type="text" value="https://web-production-940b9.up.railway.app/r/{{ ref_code }}" readonly id="refL">
+            <button onclick="navigator.clipboard.writeText(document.getElementById('refL').value);toast('Link copiado')">COPIAR</button>
+            <button onclick="shareRef()" style="background:var(--gold);color:#000">WA</button>
+        </div>
+    </div>
+</div>
+
+<div style="text-align:center;margin:12px 0"><a href="/logout" style="font-size:11px;color:#555">Cerrar sesion</a></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+    <a href="#" onclick="tab('picks',this);return false" class="on"><span class="ico">&#9889;</span>PICKS</a>
+    <a href="#" onclick="tab('partidos',this);return false"><span class="ico">&#9917;</span>PARTIDOS</a>
+    <a href="#" onclick="tab('cuotas',this);return false"><span class="ico">&#128176;</span>CUOTAS</a>
+    <a href="#" onclick="tab('stats',this);return false"><span class="ico">&#128200;</span>STATS</a>
+    <a href="#" onclick="tab('ref',this);return false"><span class="ico">&#127873;</span>REFERIR</a>
+</nav>
+
+<script>
+let allMatches=[];let filtro='todas';
+
+function tab(id,el){
+    document.querySelectorAll('.tab-c').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.bnav a').forEach(a=>a.classList.remove('on'));
+    document.getElementById('t-'+id).classList.add('active');
+    el.classList.add('on');
+    if(id==='partidos'&&!allMatches.length)loadMatches();
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══ PICKS ═══
+function loadPicks(){
+    fetch('/api/picks-ahora').then(r=>r.json()).then(d=>{
+        const c=document.getElementById('picksContainer');
+        const picks=d.picks||[];
+        document.getElementById('pickCount').textContent=picks.length;
+        document.getElementById('sTotal').textContent=picks.length;
+        document.getElementById('sPend').textContent=picks.length;
+        if(picks.length){
+            document.getElementById('sBest').textContent=picks[0].prob+'%';
+            let h='';
+            // Pick estrella
+            const p=picks[0];
+            h+=`<div class="pick-star"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="color:var(--gold);font-size:12px;font-weight:700">&#11088; PICK ESTRELLA</span><span style="font-size:26px;font-weight:900;color:var(--gold)">${p.prob}%</span></div><div style="text-align:center;font-size:17px;font-weight:800;margin:6px 0">${p.match}</div><div style="text-align:center"><span style="background:rgba(15,110,86,0.3);color:#1AE89B;padding:5px 14px;border-radius:8px;font-weight:700;font-size:13px;display:inline-block">${p.bet}</span></div><div class="conf-anim"><div class="f" style="width:${p.prob}%"></div></div><div style="display:flex;gap:6px"><button onclick="sharePick('${p.match}','${p.bet}','${p.prob}')" style="flex:1;padding:8px;border:1px solid #333;border-radius:8px;background:transparent;color:#ccc;font-size:11px;font-weight:600;cursor:pointer">&#128228; COMPARTIR</button><button onclick="toast('Guardado')" style="flex:1;padding:8px;border:1px solid #333;border-radius:8px;background:transparent;color:#ccc;font-size:11px;font-weight:600;cursor:pointer">&#128278; GUARDAR</button></div></div>`;
+            // Combinadas
+            if(picks.length>=2){
+                const o1=picks[0].odds||1.5,o2=picks[1].odds||1.5;
+                h+=`<div class="comb cons"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:11px;font-weight:700;color:#0F6E56">&#128737; CONSERVADORA</span><span style="font-size:22px;font-weight:800;color:var(--gold)">${(o1*o2).toFixed(2)}x</span></div><div style="font-size:11px;color:#ccc">${picks[0].bet} + ${picks[1].bet}</div></div>`;
+            }
+            // All picks
+            h+=`<div style="font-size:12px;font-weight:700;color:#666;margin:10px 0 6px">TODOS (${picks.length})</div>`;
+            picks.forEach(p=>{
+                h+=`<div class="pick-item"><div style="font-size:12px;color:#666">${p.match}</div><div style="display:flex;justify-content:space-between;margin-top:4px;font-size:13px"><span style="color:#1AE89B;font-weight:700">${p.bet}</span><span style="color:#888">${p.prob}% &middot; ${p.odds}</span></div></div>`;
+            });
+            c.innerHTML=h;
+        } else {
+            c.innerHTML=`<div style="text-align:center;padding:24px"><div style="font-size:36px;margin-bottom:8px">&#9917;</div><h3 style="font-size:15px;margin-bottom:4px">SIN PICKS AHORA</h3><p style="font-size:12px;color:#888">Los partidos de ligas principales se analizan cuando estan disponibles (4 AM - 3 PM hora Colombia)</p><p style="font-size:11px;color:#666;margin-top:6px">Toca ESCANEAR para buscar partidos analizables</p></div>`;
+        }
+    }).catch(()=>{
+        document.getElementById('picksContainer').innerHTML='<div style="text-align:center;padding:20px;color:#666">Error cargando picks</div>';
+    });
+}
+
+function scanNow(){
+    const btn=event.target;btn.textContent='ESCANEANDO...';btn.disabled=true;
+    fetch('/picks/scan',{method:'POST'}).then(()=>{
+        loadPicks();btn.textContent='&#9889; ESCANEAR PARTIDOS AHORA';btn.disabled=false;
+        toast('Escaneo completado');
+    }).catch(()=>{btn.textContent='&#9889; ESCANEAR PARTIDOS AHORA';btn.disabled=false;});
+}
+
+// ═══ PARTIDOS ═══
+function loadMatches(){
+    fetch('/api/partidos-hoy?horas=24').then(r=>r.json()).then(d=>{
+        allMatches=d.partidos||[];renderMatches();
+    }).catch(()=>{document.getElementById('matchesContainer').innerHTML='Error';});
+}
+function filtLiga(f,btn){
+    filtro=f;document.querySelectorAll('.fl').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMatches();
+}
+function renderMatches(){
+    const c=document.getElementById('matchesContainer');
+    let list=filtro==='todas'?allMatches:allMatches.filter(m=>(m.competition||'').toLowerCase().includes(filtro));
+    if(!list.length){c.innerHTML='<div style="text-align:center;padding:20px;color:#666">Sin partidos para este filtro</div>';return;}
+    let h='';
+    list.slice(0,20).forEach(m=>{
+        h+=`<div class="match-card"><div style="display:flex;justify-content:space-between;font-size:10px;color:#666;margin-bottom:4px"><span>${m.competition||''}</span><span style="color:var(--gold)">${m.hora||''}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-weight:700;font-size:13px;flex:1">${m.home}</span><span style="color:#444;font-size:11px;padding:0 6px">VS</span><span style="font-weight:700;font-size:13px;flex:1;text-align:right">${m.away}</span></div><div style="font-size:10px;color:#666;margin-bottom:6px">&#128344; ${m.countdown||''}</div><button onclick="analizarMatch('${m.home.replace(/'/g,"\\'")}','${m.away.replace(/'/g,"\\'")}')" style="width:100%;padding:8px;background:var(--green);color:#fff;border:none;border-radius:6px;font-weight:700;font-size:11px;cursor:pointer">&#9889; VER ANALISIS</button></div>`;
+    });
+    if(list.length>20) h+=`<div style="text-align:center;color:#666;font-size:12px;padding:10px">${list.length-20} partidos mas disponibles</div>`;
+    c.innerHTML=h;
+}
+function analizarMatch(h,a){
+    const form=document.createElement('form');form.method='POST';form.action='/analizar-partido';
+    const ih=document.createElement('input');ih.type='hidden';ih.name='home';ih.value=h;
+    const ia=document.createElement('input');ia.type='hidden';ia.name='away';ia.value=a;
+    form.appendChild(ih);form.appendChild(ia);document.body.appendChild(form);form.submit();
+}
+
+// ═══ UTILS ═══
+function sharePick(match,bet,prob){
+    const t=encodeURIComponent(`\u{1F3C6} *NEMEBET - PICK DEL DIA*\n\n\u26BD *${match}*\n\u2705 *${bet}*\n\u{1F4CA} Confianza: *${prob}%*\n\n_Analisis estadistico_\n\nhttps://web-production-940b9.up.railway.app`);
+    window.open('https://wa.me/?text='+t,'_blank');
+}
+function shareRef(){
+    const l=document.getElementById('refL').value;
+    const t=encodeURIComponent(`\u{1F3C6} *NEMEBET* - analisis de futbol +75%\nTu primer analisis Pro es *GRATIS*:\n${l}`);
+    window.open('https://wa.me/?text='+t,'_blank');
+}
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);}
+function sim(m,btn){
+    const p=30,w=0.72,o=1.65;const won=Math.round(p*w),g=Math.round(won*m*o-p*m),r=Math.round(g/(p*m)*100);
+    document.getElementById('simR').textContent=(g>=0?'+':'')+`$${g}`;
+    document.getElementById('simR').style.color=g>=0?'var(--ganado)':'var(--perdido)';
+    document.getElementById('simD').textContent=`${p} picks | ${won} ganados | ROI: ${r}%`;
+    btn.parentElement.querySelectorAll('button').forEach(b=>{b.style.background='#111';b.style.borderColor='#333';b.style.color='#ccc';});
+    btn.style.background='var(--green)';btn.style.borderColor='var(--green)';btn.style.color='#fff';
+}
+
+// Load picks on start + every 5 min
+loadPicks();
+setInterval(loadPicks, 5*60*1000);
+</script>
+</body>
+</html>
