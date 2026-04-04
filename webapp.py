@@ -1823,7 +1823,6 @@ def _get_recent_wins():
 #  API: PARTIDOS HOY
 # ═══════════════════════════════════════════════════════════════════════════
 
-@app.route("/api/partidos-hoy")
 @app.route("/api/picks-ahora")
 def api_picks_ahora():
     """Retorna picks disponibles ahora — sin restriccion de horario."""
