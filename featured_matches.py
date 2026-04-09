@@ -2,12 +2,13 @@
 FEATURED_MATCHES.PY — Partidos globales para NEMEBET
 ═══════════════════════════════════════════════════
 Todas las ligas del mundo: Europa, LATAM, Asia, Africa.
-Fuentes: API-Football (global) > football-data.org > Sofascore
+Fuentes: API-Football (global) > football-data.org
 """
 
 import json
 import os
 import time
+import threading
 import urllib.request
 import urllib.error
 import urllib.parse
@@ -15,8 +16,12 @@ from datetime import datetime, timedelta
 
 from data_dir import data_path
 
-CACHE_PATH = data_path("featured_matches.json")
+CACHE_FILE = data_path("featured_matches.json")
 CACHE_TTL = 300  # 5 min
+
+_cache_lock = threading.Lock()
+_memory_cache = None
+_memory_cache_time = 0
 
 # ═══════════════════════════════════════════════════════════
 #  ALL LEAGUES BY REGION
@@ -94,6 +99,7 @@ def _fetch_api_football_global():
     """Single call: all matches for today (most efficient)."""
     key = _env_key("API_FOOTBALL_KEY")
     if not key:
+        print("[FETCH] API_FOOTBALL_KEY not found — skipping")
         return []
 
     today = datetime.utcnow().strftime("%Y-%m-%d")
@@ -102,10 +108,10 @@ def _fetch_api_football_global():
     req.add_header("x-apisports-key", key)
 
     try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
+        with urllib.request.urlopen(req, timeout=30) as resp:
             data = json.loads(resp.read().decode())
     except Exception as e:
-        print(f"[FETCH] API-Football error: {e}")
+        print(f"[FETCH] API-Football error: {type(e).__name__}: {e}")
         return []
 
     matches = []
@@ -144,7 +150,7 @@ def _fetch_api_football_global():
         except Exception:
             continue
 
-    print(f"[FETCH] API-Football global: {len(matches)} matches")
+    print(f"[FETCH] API-Football: {len(matches)} matches from {len(data.get('response', []))} fixtures")
     return matches
 
 
@@ -267,65 +273,89 @@ def _process(raw, max_hours=24):
 
 
 # ═══════════════════════════════════════════════════════════
-#  MAIN
+#  MAIN — with memory cache + disk cache + thread safety
 # ═══════════════════════════════════════════════════════════
 
-def fetch_partidos():
-    """Main function: fetch all global matches with cache."""
-    # Check cache
-    if os.path.exists(CACHE_PATH):
+def fetch_partidos(force=False):
+    """Main function: fetch all global matches with smart cache."""
+    global _memory_cache, _memory_cache_time
+
+    now = time.time()
+
+    # 1. Memory cache (fastest)
+    if not force and _memory_cache and (now - _memory_cache_time) < CACHE_TTL:
+        return _memory_cache
+
+    with _cache_lock:
+        # Double-check after acquiring lock
+        if not force and _memory_cache and (now - _memory_cache_time) < CACHE_TTL:
+            return _memory_cache
+
+        # 2. Disk cache
+        if not force and os.path.exists(CACHE_FILE):
+            try:
+                mtime = os.path.getmtime(CACHE_FILE)
+                age = now - mtime
+                if age < CACHE_TTL:
+                    with open(CACHE_FILE, encoding="utf-8") as f:
+                        cached = json.load(f)
+                    if cached.get("partidos"):
+                        _memory_cache = cached
+                        _memory_cache_time = now
+                        return cached
+            except Exception as e:
+                print(f"[CACHE] Error reading: {e}")
+
+        # 3. Fetch fresh data
+        print(f"[FEATURED] Fetching global {datetime.now().strftime('%H:%M')}")
+
+        raw = _fetch_api_football_global()
+        if len(raw) < 10:
+            raw.extend(_fetch_football_data())
+
+        # Dedup
+        seen = set()
+        unique = []
+        for m in raw:
+            key = (m["home"].lower(), m["away"].lower())
+            if key not in seen:
+                seen.add(key)
+                unique.append(m)
+
+        # Process with 24h window (fallback to 48h)
+        partidos = _process(unique, 24)
+        rango = 24
+        if len(partidos) < 3:
+            partidos = _process(unique, 48)
+            rango = 48
+
+        # Region counts
+        regions = {}
+        for p in partidos:
+            r = p.get("region", "OTHER")
+            regions[r] = regions.get(r, 0) + 1
+
+        result = {
+            "partidos": partidos[:100],
+            "total": len(partidos),
+            "en_vivo": sum(1 for p in partidos if p.get("is_live")),
+            "rango_horas": rango,
+            "fuente": "API-Football global",
+            "actualizado": datetime.now().isoformat(),
+            "regions": regions,
+            "live_count": sum(1 for p in partidos if p.get("is_live")),
+        }
+
+        # 4. Save to disk and memory
         try:
-            mtime = os.path.getmtime(CACHE_PATH)
-            if time.time() - mtime < CACHE_TTL:
-                with open(CACHE_PATH, encoding="utf-8") as f:
-                    cached = json.load(f)
-                if cached.get("partidos"):
-                    return cached
-        except Exception:
-            pass
+            with open(CACHE_FILE, "w", encoding="utf-8") as f:
+                json.dump(result, f, ensure_ascii=False)
+        except Exception as e:
+            print(f"[CACHE] Error saving: {e}")
 
-    print(f"[FEATURED] Fetching global {datetime.now().strftime('%H:%M')}")
+        _memory_cache = result
+        _memory_cache_time = time.time()
 
-    # Fetch from all sources
-    raw = _fetch_api_football_global()
-    if len(raw) < 10:
-        raw.extend(_fetch_football_data())
-
-    # Dedup
-    seen = set()
-    unique = []
-    for m in raw:
-        key = (m["home"].lower(), m["away"].lower())
-        if key not in seen:
-            seen.add(key)
-            unique.append(m)
-
-    # Process with 24h window (fallback to 48h)
-    partidos = _process(unique, 24)
-    rango = 24
-    if len(partidos) < 3:
-        partidos = _process(unique, 48)
-        rango = 48
-
-    # Region counts
-    regions = {}
-    for p in partidos:
-        r = p.get("region", "OTHER")
-        regions[r] = regions.get(r, 0) + 1
-
-    result = {
-        "partidos": partidos[:100],  # Max 100 for performance
-        "total": len(partidos),
-        "rango_horas": rango,
-        "fuente": "API-Football global",
-        "actualizado": datetime.now().isoformat(),
-        "regions": regions,
-        "live_count": sum(1 for p in partidos if p.get("is_live")),
-    }
-
-    with open(CACHE_PATH, "w", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False, indent=2)
-
-    live = result["live_count"]
-    print(f"[FEATURED] {len(partidos)} partidos ({live} live) | Regions: {regions}")
-    return result
+        live = result["live_count"]
+        print(f"[FEATURED] {len(partidos)} partidos ({live} live) | Regions: {regions}")
+        return result

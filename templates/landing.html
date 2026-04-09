@@ -286,24 +286,33 @@ setInterval(updateCountdown,1000);updateCountdown();
 const vc=document.getElementById('viewerCount');
 if(vc) setInterval(()=>{vc.textContent=Math.floor(Math.random()*16)+8;},30000);
 
-// ═══ SCANNER + PAGINATION + FILTERS ═══
-let scanSecs=300;
+// ═══ SCANNER + PAGINATION + FILTERS + AUTO-REFRESH ═══
+let segundosRestantes=300;
 let allPartidos=[];
 let filtroActual='todas';
 let paginaActual=0;
+let estaEscaneando=false;
+let countdownTimer=null;
 const POR_PAGINA=20;
-const TOP_LEAGUES=['champions','premier','primera division','serie a','bundesliga','ligue 1','betplay','liga profesional','copa libertadores'];
+const TOP_LEAGUES=['champions','europa','premier','primera division','serie a','bundesliga','ligue 1','betplay','liga profesional','copa libertadores'];
 
 function esTopLeague(comp){
     const c=(comp||'').toLowerCase();
     return TOP_LEAGUES.some(t=>c.includes(t));
 }
 
-function ejecutarScan(){
+async function ejecutarScan(forzar=false){
+    if(estaEscaneando) return;
+    estaEscaneando=true;
+
     const st=document.getElementById('scanner-status');
-    if(st){st.innerHTML='&#128260; ESCANEANDO...';st.style.color='#FFD700';}
-    fetch('/api/partidos-hoy?horas=24').then(r=>r.json()).then(data=>{
-        // Sort: top leagues first, then by time
+    if(st){st.innerHTML='&#128260; ESCANEANDO...';st.style.color='#FF6B00';}
+
+    try{
+        const url=forzar?'/api/partidos-hoy?force=true':'/api/partidos-hoy';
+        const res=await fetch(url);
+        const data=await res.json();
+
         allPartidos=(data.partidos||[]).sort((a,b)=>{
             const at=esTopLeague(a.competition)?0:1;
             const bt=esTopLeague(b.competition)?0:1;
@@ -312,12 +321,38 @@ function ejecutarScan(){
         });
         paginaActual=0;
         renderPartidos();
-        if(st){st.innerHTML=`&#9989; ${data.total||0} partidos`;st.style.color='#0F6E56';}
-        scanSecs=300;
-    }).catch(()=>{
-        if(st){st.innerHTML='&#9888; Error';st.style.color='#ff4444';}
-    });
+
+        if(st){
+            const live=data.en_vivo||data.live_count||0;
+            st.innerHTML=`&#9989; ${data.total||0} partidos`+(live>0?` · ${live} EN VIVO`:'');
+            st.style.color='#0F6E56';
+        }
+        segundosRestantes=300;
+        iniciarCountdown();
+    }catch(err){
+        console.error('Error scaneando:',err);
+        if(st){st.innerHTML='&#10060; Error — reintentando en 1 min';st.style.color='#cc4444';}
+        segundosRestantes=60;
+        iniciarCountdown();
+    }finally{
+        estaEscaneando=false;
+    }
 }
+
+function iniciarCountdown(){
+    if(countdownTimer) clearInterval(countdownTimer);
+    const el=document.getElementById('proxima-actualizacion');
+    countdownTimer=setInterval(()=>{
+        segundosRestantes--;
+        if(el){const m=Math.floor(segundosRestantes/60),s=segundosRestantes%60;el.textContent=m+':'+String(s).padStart(2,'0');}
+        if(segundosRestantes<=0){clearInterval(countdownTimer);ejecutarScan();}
+    },1000);
+}
+
+// Cuando el usuario regresa a la app, refrescar si el cache esta viejo
+document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden && segundosRestantes<240) ejecutarScan();
+});
 
 function filtrarLiga(filtro,btn){
     filtroActual=filtro;paginaActual=0;
@@ -375,15 +410,7 @@ function renderPartidos(){
     c.innerHTML=html;
 }
 
-// 5-min countdown
-setInterval(()=>{
-    scanSecs--;
-    const el=document.getElementById('proxima-actualizacion');
-    if(el){const m=Math.floor(scanSecs/60),s=scanSecs%60;el.textContent=m+':'+String(s).padStart(2,'0');}
-    if(scanSecs<=0)ejecutarScan();
-},1000);
-
-// Match countdowns
+// Match countdowns (update every minute)
 setInterval(()=>{
     document.querySelectorAll('.cnt').forEach(el=>{
         let mins=parseInt(el.dataset.mins)||0;mins=Math.max(0,mins-1);el.dataset.mins=mins;
@@ -392,6 +419,7 @@ setInterval(()=>{
     });
 },60000);
 
+// Initial scan on load
 ejecutarScan();
 </script>
 </body>

@@ -1847,18 +1847,37 @@ def api_picks_ahora():
 
 @app.route("/api/partidos-hoy")
 def api_partidos_hoy():
-    """Retorna partidos proximos (acepta ?horas=24)."""
-    horas = int(request.args.get("horas", 24))
+    """Retorna partidos proximos. ?force=true para forzar refresco."""
     try:
-        from featured_matches import fetch_partidos, CACHE_TTL
-        # Override cache TTL to 5 min (300s) and max_hours
-        import featured_matches
-        featured_matches.CACHE_TTL = 300  # 5 minutes
-        data = fetch_partidos()
+        force = request.args.get("force", "false").lower() == "true"
+        from featured_matches import fetch_partidos
+        data = fetch_partidos(force=force)
         return jsonify(data)
     except Exception as e:
+        print(f"[ERROR] /api/partidos-hoy: {e}")
         return jsonify({"partidos": [], "total": 0, "error": str(e),
                         "actualizado": datetime.now().isoformat()})
+
+
+@app.route("/api/status")
+def api_status():
+    """Estado del sistema en tiempo real."""
+    try:
+        from featured_matches import CACHE_FILE, _env_key
+        cache_age = None
+        if os.path.exists(CACHE_FILE):
+            cache_age = int(time.time() - os.path.getmtime(CACHE_FILE))
+
+        return jsonify({
+            "status": "ok",
+            "cache_age_seconds": cache_age,
+            "cache_fresco": cache_age < 300 if cache_age else False,
+            "scheduler_activo": _scheduler_started,
+            "hora_servidor": datetime.now().isoformat(),
+            "api_football_key": bool(_env_key("API_FOOTBALL_KEY")),
+        })
+    except Exception as e:
+        return jsonify({"status": "error", "error": str(e)})
 
 
 # ═══════════════════════════════════════════════════════════════════════════

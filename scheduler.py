@@ -47,13 +47,14 @@ def init_scheduler(app):
         replace_existing=True,
     )
 
-    # Cada 5 minutos — Actualizar cache de partidos
+    # Cada 5 minutos — Actualizar cache de partidos (ejecutar inmediatamente al arrancar)
     scheduler.add_job(
         func=job_update_matches,
         trigger=IntervalTrigger(minutes=5),
         id="scanner_partidos",
         name="Scanner partidos cada 5 min",
         replace_existing=True,
+        next_run_time=datetime.now(),
     )
 
     # Cada 6 horas — Captura de resultados
@@ -88,10 +89,8 @@ def job_update_matches():
     """Tarea: actualizar cache de partidos cada 5 min."""
     try:
         from featured_matches import fetch_partidos
-        import featured_matches
-        featured_matches.CACHE_TTL = 300
-        result = fetch_partidos()
-        _log_job("scanner", f"{result.get('total', 0)} partidos ({result.get('rango_horas', '?')}h)")
+        result = fetch_partidos(force=True)
+        _log_job("scanner", f"{result.get('total', 0)} partidos ({result.get('en_vivo', 0)} live)")
     except Exception as e:
         _log_job("scanner", f"ERROR: {e}")
 
