@@ -1998,59 +1998,6 @@ start_scheduler()
 # ═══════════════════════════════════════════════════════════════════════════
 
 
-@app.route('/api/debug-env')
-def debug_env():
-    import os
-    key = os.environ.get('API_FOOTBALL_KEY', '')
-    return jsonify({
-        'key_len': len(key),
-        'key_present': bool(key),
-        'key_first4': key[:4] if key else 'EMPTY',
-        'env_keys': [k for k in os.environ.keys() if 'FOOTBALL' in k or 'API' in k]
-    })
-
-
-@app.route('/api/debug-fetch')
-def debug_fetch():
-    import urllib.request
-    try:
-        key = 'a1572eeacc1837fb47d69dba3f1958ae'
-        url = 'https://v3.football.api-sports.io/status'
-        req = urllib.request.Request(url)
-        req.add_header('x-apisports-key', key)
-        with urllib.request.urlopen(req, timeout=10) as r:
-            import json as _json
-            data = _json.loads(r.read().decode())
-            return jsonify({'success': True, 'data': data})
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e), 'type': type(e).__name__})
-
-
-@app.route('/api/debug-fetch2')
-def debug_fetch2():
-    import urllib.request, json as _json
-    try:
-        from datetime import datetime
-        key = 'a1572eeacc1837fb47d69dba3f1958ae'
-        today = datetime.utcnow().strftime('%Y-%m-%d')
-        url = f'https://v3.football.api-sports.io/fixtures?date={today}'
-        req = urllib.request.Request(url)
-        req.add_header('x-apisports-key', key)
-        with urllib.request.urlopen(req, timeout=15) as r:
-            data = _json.loads(r.read().decode())
-            total = len(data.get('response', []))
-            first = data['response'][0] if total > 0 else None
-            return jsonify({
-                'success': True,
-                'total': total,
-                'date_used': today,
-                'errors': data.get('errors', {}),
-                'first_match': f"{first['teams']['home']['name']} vs {first['teams']['away']['name']}" if first else None
-            })
-    except Exception as e:
-        import traceback
-        return jsonify({'success': False, 'error': str(e), 'trace': traceback.format_exc()})
-
 if __name__ == "__main__":
     import socket
     port = int(os.environ.get("PORT", 5000))
