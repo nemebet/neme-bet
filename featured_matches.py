@@ -75,6 +75,11 @@ TOP_TEAMS = {
 
 
 def _env_key(name):
+    # Hardcoded fallbacks para Railway
+    HARDCODED = {
+        "API_FOOTBALL_KEY": "a1572eeacc1837fb47d69dba3f1958ae",
+        "FOOTBALL_DATA_API_KEY": "dd3d5d1c1bb940ddb78096ea7abd6db7",
+    }
     val = os.environ.get(name, "")
     if val:
         return val
