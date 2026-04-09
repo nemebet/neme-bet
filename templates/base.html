@@ -73,14 +73,6 @@
             });
         }
     }
-    // Register SW
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/static/sw.js').catch(() => {});
-    }
-    // Notification permission
-    if ('Notification' in window && Notification.permission === 'default') {
-        setTimeout(() => Notification.requestPermission(), 5000);
-    }
     // Collapsibles
     document.addEventListener('click', e => {
         if (e.target.classList.contains('coll')) {
@@ -89,6 +81,65 @@
             if (body) body.classList.toggle('show');
         }
     });
+
+    // ═══ AUTO-UPDATE NEMEBET ═══
+    const SW_VERSION_KEY = 'nemebet_ver'
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/static/sw.js').then(reg => {
+        reg.addEventListener('updatefound', () => {
+          const w = reg.installing
+          w.addEventListener('statechange', () => {
+            if (w.state === 'installed' && navigator.serviceWorker.controller) {
+              mostrarBannerUpdate()
+            }
+          })
+        })
+        setInterval(() => reg.update(), 60000)
+      }).catch(() => {})
+      let refreshing = false
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) { refreshing = true; location.reload() }
+      })
+    }
+
+    if ('Notification' in window && Notification.permission === 'default') {
+        setTimeout(() => Notification.requestPermission(), 5000);
+    }
+
+    async function checkVersion() {
+      try {
+        const r = await fetch('/api/version?t=' + Date.now())
+        const d = await r.json()
+        const saved = localStorage.getItem(SW_VERSION_KEY)
+        if (!saved) { localStorage.setItem(SW_VERSION_KEY, d.version); return }
+        if (saved !== d.version) {
+          localStorage.setItem(SW_VERSION_KEY, d.version)
+          mostrarBannerUpdate()
+        }
+      } catch(e) {}
+    }
+
+    function mostrarBannerUpdate() {
+      if (document.getElementById('sw-banner')) return
+      const b = document.createElement('div')
+      b.id = 'sw-banner'
+      b.style.cssText = 'position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,#0F6E56,#085041);color:white;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:99999;box-shadow:0 2px 10px rgba(0,0,0,0.5);'
+      b.innerHTML = '<div><div style="font-size:13px;font-weight:700">&#9889; NUEVA ACTUALIZACION</div><div style="font-size:11px;opacity:0.8">Nuevos picks disponibles</div></div><button onclick="aplicarUpdate()" style="background:white;color:#0F6E56;border:none;padding:8px 16px;border-radius:20px;font-weight:700;font-size:12px;cursor:pointer;">ACTUALIZAR</button>'
+      document.body.prepend(b)
+      setTimeout(aplicarUpdate, 8000)
+    }
+
+    function aplicarUpdate() {
+      if ('caches' in window) caches.keys().then(ks => ks.forEach(k => caches.delete(k)))
+      if (navigator.serviceWorker && navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage('SKIP_WAITING')
+      location.href = location.pathname + '?v=' + Date.now()
+    }
+
+    checkVersion()
+    setInterval(checkVersion, 300000)
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) checkVersion() })
+    window.addEventListener('focus', checkVersion)
     </script>
     {% block scripts %}{% endblock %}
 </body>

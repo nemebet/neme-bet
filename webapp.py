@@ -1881,6 +1881,26 @@ def api_partidos_hoy():
                         "actualizado": datetime.now().isoformat()})
 
 
+@app.route("/api/version")
+def api_version():
+    import hashlib
+    try:
+        mtime = str(os.path.getmtime(os.path.abspath(__file__)))
+        version = hashlib.md5(mtime.encode()).hexdigest()[:8]
+    except Exception:
+        version = "v1"
+    return jsonify({"version": version, "ts": datetime.now().isoformat()})
+
+
+@app.after_request
+def cache_headers(response):
+    if "text/html" in response.content_type:
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+    return response
+
+
 @app.route("/api/status")
 def api_status():
     """Estado del sistema en tiempo real."""

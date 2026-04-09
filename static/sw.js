@@ -1,32 +1,32 @@
-const CACHE = 'nemebet-v5';
-const ASSETS = ['/', '/static/style.css', '/static/logo.svg',
-                '/static/manifest.json', '/static/icon-192.png'];
+const CACHE_NAME = 'nemebet-v1'
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
-  self.skipWaiting();
-});
+  self.skipWaiting()
+})
 
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(
-    ks.filter(k => k !== CACHE).map(k => caches.delete(k))
-  )));
-  self.clients.claim();
-});
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  )
+})
 
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  if (e.request.url.includes('/static/')) {
-    e.respondWith(caches.match(e.request).then(c => c || fetch(e.request)
-      .then(r => { caches.open(CACHE).then(c => c.put(e.request, r.clone())); return r; })));
-  } else {
-    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+  if (e.request.url.includes('/api/')) {
+    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)))
+    return
   }
-});
+  e.respondWith(fetch(e.request))
+})
+
+self.addEventListener('message', e => {
+  if (e.data === 'SKIP_WAITING') self.skipWaiting()
+})
 
 // Push notifications
 self.addEventListener('push', e => {
-  const data = e.data ? e.data.json() : {};
+  const data = e.data ? e.data.json() : {}
   e.waitUntil(self.registration.showNotification(
     data.title || 'NEME BET', {
       body: data.body || '',
@@ -35,11 +35,11 @@ self.addEventListener('push', e => {
       tag: data.tag || 'nemebet',
       data: data.url ? { url: data.url } : {},
     }
-  ));
-});
+  ))
+})
 
 self.addEventListener('notificationclick', e => {
-  e.notification.close();
-  const url = e.notification.data?.url || '/';
-  e.waitUntil(clients.openWindow(url));
-});
+  e.notification.close()
+  const url = e.notification.data?.url || '/'
+  e.waitUntil(clients.openWindow(url))
+})
