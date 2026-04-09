@@ -1042,46 +1042,25 @@ def partidos_hoy():
                            free_available=free_available)
 
 
-@app.route("/analizar-partido", methods=["POST"])
+@app.route("/analizar-partido", methods=["GET", "POST"])
 def analizar_partido():
-    """Analiza un partido (gratis o de pago)."""
-    from auth import get_current_user
-    user = get_current_user()
-    if not user:
-        flash("Registrate gratis para ver el analisis")
-        return redirect(url_for("landing"))
-
-    plan = user.get("plan", "free_trial")
-    home = request.form.get("home", "")
-    away = request.form.get("away", "")
+    """Analiza un partido — acceso libre sin restriccion."""
+    home = request.form.get("home", "") or request.args.get("home", "")
+    away = request.form.get("away", "") or request.args.get("away", "")
 
     if not home or not away:
         flash("Partido no valido")
-        return redirect(url_for("partidos_hoy"))
-
-    # Mark free analysis as used
-    if plan == "free_trial" and not user.get("free_analysis_used"):
-        from stripe_handler import find_user_by_email, _load_users, _save_users
-        token_key, _ = find_user_by_email(user["email"])
-        if token_key:
-            users = _load_users()
-            users[token_key]["free_analysis_used"] = True
-            _save_users(users)
+        return redirect(url_for("landing"))
 
     # Run prediction
     predictions, picks, log = process_matches([(home, away)])
-
-    # For free users, limit visible data
-    # Free trial gets full Pro-level analysis (no blur)
-    is_free = False  # Free trial = Pro level, full access
-    show_upgrade = plan == "free_trial"  # But show upgrade CTA at bottom
 
     return render_template("results.html",
                            predictions=predictions, picks=picks,
                            log=log, ocr_info=None,
                            HIGH=75.0, MED=65.0,
-                           is_free=is_free,
-                           show_upgrade=show_upgrade)
+                           is_free=False,
+                           show_upgrade=False)
 
 
 @app.route("/app")
@@ -2011,6 +1990,82 @@ except Exception as e:
     print(f"[SETUP] {e}")
 
 start_scheduler()
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  ENSURE PICKS EXIST (Railway pierde /app/data en redeploys)
+# ═══════════════════════════════════════════════════════════════════════════
+
+def ensure_picks_del_dia():
+    """Recrea picks hardcoded si no existen (para sobrevivir redeploys)."""
+    path = _dp("picks_del_dia.json")
+    if os.path.exists(path):
+        try:
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+            if data.get("high_confidence_picks"):
+                return
+        except Exception:
+            pass
+
+    picks = {
+        "fecha": "2026-04-09",
+        "generado": datetime.now().isoformat(),
+        "high_confidence_picks": [
+            {
+                "id": "uel_freiburg_celta", "local": "Freiburg", "visitante": "Celta Vigo",
+                "match": "Freiburg vs Celta Vigo",
+                "liga": "UEFA Europa League", "hora": "21:00",
+                "confianza": 74, "prob": 74,
+                "mercado": "Ambos Marcan \u2014 S\u00cd", "bet": "Ambos Marcan \u2014 S\u00cd",
+                "cuota_referencia": 1.75, "odds": 1.75, "edge": 29, "agree": 3,
+                "justificacion": "BTTS s\u00ed en 6 de 7 partidos de Celta. BTTS s\u00ed en 4 de 5 de Freiburg en casa. Celta m\u00e1ximo goleador UEL (21 goles). Freiburg 9 victorias seguidas en casa europea.",
+                "mercados_adicionales": [
+                    {"mercado": "M\u00e1s de 2.5 goles", "confianza": 68},
+                    {"mercado": "Freiburg Gana", "confianza": 66}
+                ],
+                "estado": "pendiente", "recomendado": True
+            },
+            {
+                "id": "uel_bologna_villa", "local": "Bologna", "visitante": "Aston Villa",
+                "match": "Bologna vs Aston Villa",
+                "liga": "UEFA Europa League", "hora": "21:00",
+                "confianza": 77, "prob": 77,
+                "mercado": "Aston Villa NO pierde", "bet": "Aston Villa NO pierde",
+                "cuota_referencia": 1.65, "odds": 1.65, "edge": 22, "agree": 3,
+                "justificacion": "Villa gan\u00f3 los 2 H2H vs Bologna sin conceder. 7 victorias UEL seguidas. Emery 4 t\u00edtulos UEL. Bologna sin Skorupski ni Vitik.",
+                "mercados_adicionales": [
+                    {"mercado": "Menos de 2.5 goles", "confianza": 72},
+                    {"mercado": "McGinn Anytime scorer", "confianza": 47}
+                ],
+                "estado": "pendiente", "recomendado": False
+            },
+            {
+                "id": "uel_porto_forest", "local": "Porto", "visitante": "Nottingham Forest",
+                "match": "Porto vs Nottingham Forest",
+                "liga": "UEFA Europa League", "hora": "21:00",
+                "confianza": 62, "prob": 62,
+                "mercado": "Porto Gana", "bet": "Porto Gana",
+                "cuota_referencia": 2.10, "odds": 2.10, "edge": 12, "agree": 2,
+                "justificacion": "Porto invicto en casa UEL (5V 0E 0P). L\u00edderes Liga Portugal. Forest ya gan\u00f3 2-0 a Porto esta temporada. Porto sin Aghehowa.",
+                "mercados_adicionales": [
+                    {"mercado": "Forest +0.25 Asian Handicap", "confianza": 61},
+                    {"mercado": "Igor Jesus Anytime scorer", "confianza": 52}
+                ],
+                "estado": "pendiente", "recomendado": False
+            }
+        ],
+        "medium_confidence_picks": []
+    }
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(picks, f, ensure_ascii=False, indent=2)
+    print(f"[PICKS] Picks UEL recreados en {path}")
+
+try:
+    ensure_picks_del_dia()
+except Exception as e:
+    print(f"[PICKS] Error: {e}")
 
 
 # ═══════════════════════════════════════════════════════════════════════════

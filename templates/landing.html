@@ -242,26 +242,14 @@ function openModal(e){
 
 function verAnalisis(local, visitante, e){
     if(e) e.preventDefault();
-    // Check if user might be logged in (cookie exists)
-    // If not, open registration modal instead of blind redirect
-    fetch('/api/notifications').then(r=>{
-        if(r.ok){
-            // Logged in — submit to analysis
-            const form=document.createElement('form');
-            form.method='POST';form.action='/analizar-partido';
-            const h=document.createElement('input');h.type='hidden';h.name='home';h.value=local;
-            const a=document.createElement('input');a.type='hidden';a.name='away';a.value=visitante;
-            form.appendChild(h);form.appendChild(a);
-            document.body.appendChild(form);
-            form.submit();
-        } else { throw new Error(); }
-    }).catch(()=>{
-        // Not logged in — open register modal with match context
-        mostrarMensaje('Registrate gratis para ver el analisis de '+local+' vs '+visitante);
-        document.getElementById('heroEmail').focus();
-        document.querySelector('.hero').scrollIntoView({behavior:'smooth'});
-        setTimeout(()=>openModal(),500);
-    });
+    // Analisis libre — enviar directo sin verificar login
+    const form=document.createElement('form');
+    form.method='POST';form.action='/analizar-partido';
+    const h=document.createElement('input');h.type='hidden';h.name='home';h.value=local;
+    const a=document.createElement('input');a.type='hidden';a.name='away';a.value=visitante;
+    form.appendChild(h);form.appendChild(a);
+    document.body.appendChild(form);
+    form.submit();
 }
 
 function mostrarMensaje(texto){
