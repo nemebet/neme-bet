@@ -2009,6 +2009,22 @@ def debug_env():
         'env_keys': [k for k in os.environ.keys() if 'FOOTBALL' in k or 'API' in k]
     })
 
+
+@app.route('/api/debug-fetch')
+def debug_fetch():
+    import urllib.request
+    try:
+        key = 'a1572eeacc1837fb47d69dba3f1958ae'
+        url = 'https://v3.football.api-sports.io/status'
+        req = urllib.request.Request(url)
+        req.add_header('x-apisports-key', key)
+        with urllib.request.urlopen(req, timeout=10) as r:
+            import json as _json
+            data = _json.loads(r.read().decode())
+            return jsonify({'success': True, 'data': data})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e), 'type': type(e).__name__})
+
 if __name__ == "__main__":
     import socket
     port = int(os.environ.get("PORT", 5000))
