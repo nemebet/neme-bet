@@ -83,7 +83,7 @@ def _env_key(name):
         with open(env_path) as f:
             for line in f:
                 if line.strip().startswith(name + "="):
-                    return line.strip().split("=", 1)[1]
+                    return line.strip().split("=", 1)[1].strip()
     return ""
 
 

@@ -67,10 +67,15 @@ def load_env():
                         k, v = line.split("=", 1)
                         env[k.strip()] = v.strip()
     # 2. System env vars override (Railway/Render inject these)
-    for key in ["FOOTBALL_DATA_API_KEY", "API_FOOTBALL_KEY", "ANTHROPIC_API_KEY"]:
+    for key in ["FOOTBALL_DATA_API_KEY", "API_FOOTBALL_KEY", "ANTHROPIC_API_KEY",
+                "STRIPE_SECRET_KEY", "RESEND_API_KEY", "ADMIN_KEY"]:
         val = os.environ.get(key)
         if val:
             env[key] = val
+    # 3. Export to os.environ so all modules (featured_matches, etc.) can see them
+    for k, v in env.items():
+        if k not in os.environ:
+            os.environ[k] = v
     return env
 
 ENV = load_env()
