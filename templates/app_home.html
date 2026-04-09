@@ -115,43 +115,22 @@
         <a href="/admin?key={{ admin_key }}" style="color:var(--vip-gold);font-size:11px;text-decoration:none">ADMIN PANEL</a>
     </div>
 </div>
-{% elif plan == 'vip' %}
+{% else %}
 <div class="vip-hdr">
     <div style="display:flex;align-items:center;gap:10px">
-        <span style="font-size:24px">&#128081;</span>
+        <span style="font-size:24px">&#9889;</span>
         <div>
             <h1>{{ greeting }}, {{ nombre }}</h1>
-            <div class="sub">Plan VIP &middot; Acceso completo &middot; Sesion segura</div>
+            <div class="sub">Acceso completo &middot; Todos los analisis gratis</div>
         </div>
     </div>
     <div class="vip-mini">
         <span>&#127919; Hoy: {{ picks|length }} picks</span>
     </div>
 </div>
-{% elif plan == 'pro' %}
-<div style="text-align:center;margin-bottom:12px">
-    <span class="plan-badge pro">PLAN PRO</span>
-    <h2 style="font-size:16px;font-weight:800;margin:4px 0">{{ greeting }}, {{ nombre }}</h2>
-    <p style="font-size:12px;color:#888">{{ picks|length }} analisis Pro disponibles</p>
-</div>
-<div class="upgrade-strip"><span>Actualiza a VIP para los mas precisos</span><a href="/#pricing">VER VIP</a></div>
-{% elif plan == 'basico' %}
-<div style="text-align:center;margin-bottom:12px">
-    <span class="plan-badge basico">PLAN BASICO</span>
-    <h2 style="font-size:16px;font-weight:800;margin:4px 0">{{ greeting }}, {{ nombre }}</h2>
-    <p style="font-size:12px;color:#888">{{ picks|length }} analisis disponibles (max 3)</p>
-</div>
-<div class="upgrade-strip"><span>Actualiza a Pro para mayor confianza</span><a href="/#pricing">VER PRO</a></div>
-{% else %}
-<div style="text-align:center;margin-bottom:12px">
-    <span class="plan-badge pro">ANALISIS PRO GRATUITO</span>
-    <h2 style="font-size:16px;font-weight:800;margin:4px 0">{{ greeting }}, {{ nombre }}</h2>
-    <p style="font-size:12px;color:#888">Tienes 1 analisis Pro gratuito</p>
-</div>
 {% endif %}
 
-<!-- TABS (VIP/Admin only) -->
-{% if plan in ('vip', 'admin') or user_rol == 'admin' %}
+<!-- TABS -->
 <div class="tabs-vip">
     <button class="tab activo" onclick="showTab('picks',this)">&#9889; PICKS</button>
     <button class="tab" onclick="showTab('partidos',this)">&#9917; PARTIDOS</button>
@@ -159,7 +138,6 @@
     <button class="tab" onclick="showTab('stats',this)">&#128200; STATS</button>
     <button class="tab" onclick="showTab('referidos',this)">&#127873; REFERIR</button>
 </div>
-{% endif %}
 
 <!-- TAB: PICKS -->
 <div class="tab-content active" id="tab-picks">
@@ -168,7 +146,7 @@
 {% if picks %}
 <div class="resumen">
     <div class="sbox"><div class="n">{{ picks|length }}</div><div class="l">PICKS HOY</div></div>
-    <div class="sbox hl"><div class="n">{{ picks[0].prob if picks else 0 }}%</div><div class="l">MEJOR PICK</div></div>
+    <div class="sbox hl"><div class="n">{{ (picks[0].prob or picks[0].confianza) if picks else 0 }}%</div><div class="l">MEJOR PICK</div></div>
     <div class="sbox"><div class="n">0</div><div class="l">EN CURSO</div></div>
     <div class="sbox"><div class="n">{{ picks|length }}</div><div class="l">PENDIENTES</div></div>
 </div>
@@ -177,17 +155,19 @@
 <div class="pick-star">
     <div class="hdr">
         <span class="lbl">&#11088; PICK ESTRELLA DEL DIA</span>
-        <span class="conf">{{ picks[0].prob }}%</span>
+        <span class="conf">{{ picks[0].prob or picks[0].confianza }}%</span>
     </div>
-    <div class="equipos">{{ picks[0].match }}</div>
-    <div class="mercado"><span class="nombre">{{ picks[0].bet }}</span></div>
+    {% if picks[0].liga %}<div style="text-align:center;margin-bottom:6px"><span style="background:#FF6B00;color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:10px">{{ picks[0].liga|upper }}</span></div>{% endif %}
+    <div class="equipos">{{ picks[0].match or (picks[0].local ~ ' vs ' ~ picks[0].visitante) }}</div>
+    <div class="mercado"><span class="nombre">{{ picks[0].bet or picks[0].mercado }}</span></div>
     <div style="display:flex;justify-content:center;gap:16px;font-size:12px;color:#888;margin:6px 0">
-        <span>Cuota: {{ picks[0].odds }}</span>
-        <span>{{ picks[0].agree }}/3 modelos</span>
+        <span>Cuota: {{ picks[0].odds or picks[0].cuota_referencia }}</span>
+        {% if picks[0].agree %}<span>{{ picks[0].agree }}/3 modelos</span>{% endif %}
     </div>
-    <div class="conf-bar-anim"><div class="fill" style="width:{{ picks[0].prob }}%"></div></div>
+    <div class="conf-bar-anim"><div class="fill" style="width:{{ picks[0].prob or picks[0].confianza }}%"></div></div>
+    {% if picks[0].justificacion %}<div style="font-size:11px;color:#aaa;margin:8px 0;line-height:1.4;text-align:center">{{ picks[0].justificacion }}</div>{% endif %}
     <div class="pick-actions">
-        <button onclick="compartirPick('{{ picks[0].match }}','{{ picks[0].bet }}','{{ picks[0].prob }}')">&#128228; COMPARTIR</button>
+        <button onclick="compartirPick('{{ picks[0].match or (picks[0].local ~ ' vs ' ~ picks[0].visitante) }}','{{ picks[0].bet or picks[0].mercado }}','{{ picks[0].prob or picks[0].confianza }}')">&#128228; COMPARTIR</button>
         <button onclick="mostrarToast('Pick guardado')">&#128278; GUARDAR</button>
     </div>
 </div>
@@ -197,17 +177,22 @@
 <div style="margin:14px 0">
     <h3 style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--vip-gold)">&#128161; COMBINADAS SUGERIDAS</h3>
     {% if picks|length >= 2 %}
+    {% set o0 = picks[0].odds or picks[0].cuota_referencia or 1 %}
+    {% set o1 = picks[1].odds or picks[1].cuota_referencia or 1 %}
     <div class="comb cons">
-        <div class="ch"><span style="font-size:12px;font-weight:700;color:#0F6E56">&#128737; CONSERVADORA</span><span class="ct">{{ "%.2f"|format(picks[0].odds * picks[1].odds) }}x</span></div>
-        <div class="picks">{{ picks[0].bet }} ({{ picks[0].match }}) + {{ picks[1].bet }} ({{ picks[1].match }})</div>
-        <div class="sim">Si apuestas $10 ganas: ${{ "%.2f"|format(10 * picks[0].odds * picks[1].odds) }}</div>
+        <div class="ch"><span style="font-size:12px;font-weight:700;color:#0F6E56">&#128737; CONSERVADORA</span><span class="ct">{{ "%.2f"|format(o0 * o1) }}x</span></div>
+        <div class="picks">{{ picks[0].bet or picks[0].mercado }} ({{ picks[0].match or (picks[0].local ~ ' vs ' ~ picks[0].visitante) }}) + {{ picks[1].bet or picks[1].mercado }} ({{ picks[1].match or (picks[1].local ~ ' vs ' ~ picks[1].visitante) }})</div>
+        <div class="sim">Si apuestas $10 ganas: ${{ "%.2f"|format(10 * o0 * o1) }}</div>
     </div>
     {% endif %}
     {% if picks|length >= 3 %}
+    {% set o0 = picks[0].odds or picks[0].cuota_referencia or 1 %}
+    {% set o1 = picks[1].odds or picks[1].cuota_referencia or 1 %}
+    {% set o2 = picks[2].odds or picks[2].cuota_referencia or 1 %}
     <div class="comb val">
-        <div class="ch"><span style="font-size:12px;font-weight:700;color:#FFD700">&#127919; VALOR</span><span class="ct">{{ "%.2f"|format(picks[0].odds * picks[1].odds * picks[2].odds) }}x</span></div>
-        <div class="picks">{{ picks[0].bet }} + {{ picks[1].bet }} + {{ picks[2].bet }}</div>
-        <div class="sim">Si apuestas $10 ganas: ${{ "%.2f"|format(10 * picks[0].odds * picks[1].odds * picks[2].odds) }}</div>
+        <div class="ch"><span style="font-size:12px;font-weight:700;color:#FFD700">&#127919; VALOR</span><span class="ct">{{ "%.2f"|format(o0 * o1 * o2) }}x</span></div>
+        <div class="picks">{{ picks[0].bet or picks[0].mercado }} + {{ picks[1].bet or picks[1].mercado }} + {{ picks[2].bet or picks[2].mercado }}</div>
+        <div class="sim">Si apuestas $10 ganas: ${{ "%.2f"|format(10 * o0 * o1 * o2) }}</div>
     </div>
     {% endif %}
 </div>
@@ -217,12 +202,22 @@
 <div style="font-size:13px;font-weight:700;margin:10px 0 8px;color:#888">TODOS LOS PICKS ({{ picks|length }})</div>
 {% for p in picks %}
 <div class="pick-item">
-    <div class="row"><span class="liga">{{ p.match }}</span><span style="font-size:12px;color:var(--pendiente)">&#9203; PENDIENTE</span></div>
-    <div class="mkt">
-        <span class="bet">{{ p.bet }}</span>
-        <span class="odds">Cuota {{ p.odds }} &middot; {{ p.prob }}%</span>
+    <div class="row">
+        <div>
+            {% if p.liga %}<span style="background:#FF6B00;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;margin-right:4px">{{ p.liga|upper }}</span>{% endif %}
+            <span class="liga">{{ p.match or (p.local ~ ' vs ' ~ p.visitante) }}</span>
+        </div>
+        <span style="font-size:12px;color:var(--pendiente)">&#9203; PENDIENTE</span>
     </div>
-    <div class="conf-mini"><div class="f" style="width:{{ p.prob }}%"></div></div>
+    <div class="mkt">
+        <span class="bet">{{ p.bet or p.mercado }}</span>
+        <span class="odds">Cuota {{ p.odds or p.cuota_referencia }} &middot; {{ p.prob or p.confianza }}%</span>
+    </div>
+    <div class="conf-mini"><div class="f" style="width:{{ p.prob or p.confianza }}%"></div></div>
+    {% if p.justificacion %}<div style="font-size:10px;color:#888;margin-top:4px;line-height:1.3">{{ p.justificacion }}</div>{% endif %}
+    <div style="margin-top:6px">
+        <button onclick="compartirPick('{{ p.match or (p.local ~ ' vs ' ~ p.visitante) }}','{{ p.bet or p.mercado }}','{{ p.prob or p.confianza }}')" style="padding:6px 12px;background:#25D366;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">&#128172; WhatsApp</button>
+    </div>
 </div>
 {% endfor %}
 
@@ -254,11 +249,11 @@
     {% if picks %}
     {% for p in picks[:5] %}
     <div style="background:#0D0D0D;border:1px solid #1a2a1a;border-radius:10px;padding:10px;margin-bottom:6px">
-        <div style="font-size:12px;font-weight:700;margin-bottom:4px">{{ p.match }}</div>
+        <div style="font-size:12px;font-weight:700;margin-bottom:4px">{{ p.match or (p.local ~ ' vs ' ~ p.visitante) }}</div>
         <div style="display:flex;justify-content:space-between;font-size:12px">
-            <span>{{ p.bet }}</span>
-            <span style="color:#1AE89B">Modelo: {{ p.prob }}%</span>
-            <span style="color:#888">Cuota: {{ p.odds }}</span>
+            <span>{{ p.bet or p.mercado }}</span>
+            <span style="color:#1AE89B">Modelo: {{ p.prob or p.confianza }}%</span>
+            <span style="color:#888">Cuota: {{ p.odds or p.cuota_referencia }}</span>
         </div>
     </div>
     {% endfor %}
@@ -315,7 +310,6 @@
 <div style="text-align:center;margin-top:8px;margin-bottom:16px"><a href="/logout" style="font-size:12px;color:#666">Cerrar sesion</a></div>
 
 <!-- BOTTOM NAV FIXED -->
-{% if plan in ('vip', 'admin') or user_rol == 'admin' %}
 <nav style="position:fixed;bottom:0;left:0;right:0;background:#0a0a0a;border-top:1px solid #FFD700;display:flex;justify-content:space-around;padding:8px 0 16px;z-index:1000">
     <a href="#" onclick="showTab('picks',this);bnav(this);return false" class="bnav-item active" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#FFD700;text-decoration:none;font-size:10px;font-weight:700">
         <span style="font-size:20px">&#9889;</span><span>PICKS</span></a>
@@ -328,7 +322,6 @@
     <a href="#" onclick="showTab('referidos',this);bnav(this);return false" class="bnav-item" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#444;text-decoration:none;font-size:10px;font-weight:700">
         <span style="font-size:20px">&#127873;</span><span>REFERIR</span></a>
 </nav>
-{% endif %}
 
 <script>
 function bnav(el){document.querySelectorAll('.bnav-item').forEach(a=>a.style.color='#444');el.style.color='#FFD700';}

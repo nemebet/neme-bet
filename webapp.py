@@ -1083,10 +1083,7 @@ def app_home():
             with open(picks_path, encoding="utf-8") as f:
                 pd = json.load(f)
             all_picks = pd.get("high_confidence_picks", []) + pd.get("medium_confidence_picks", [])
-            if rol == "admin":
-                picks = all_picks  # Admin sees everything
-            else:
-                picks = filtrar_por_plan(all_picks, plan)
+            picks = filtrar_por_plan(all_picks, plan)
         except Exception:
             pass
 
@@ -1098,13 +1095,6 @@ def app_home():
     hour = datetime.now().hour
     greeting = "BUENAS NOCHES" if hour >= 18 else ("BUENAS TARDES" if hour >= 12 else "BUENOS DIAS")
     is_admin = rol == "admin"
-
-    # VIP/Admin get the new dashboard
-    if plan in ("vip",) or is_admin:
-        return render_template("vip_dashboard.html",
-                               user=user, plan=plan, is_admin=is_admin,
-                               admin_key=admin_key, ref_code=ref_code,
-                               nombre=nombre, greeting=greeting)
 
     return render_template("app_home.html",
                            user=user, plan=plan, picks=picks,
@@ -1843,11 +1833,8 @@ def api_picks_ahora():
         except Exception:
             pass
 
-    # Filter by plan
-    if user and user.get("rol") == "admin":
-        filtered = all_picks
-    else:
-        filtered = filtrar_por_plan(all_picks, plan)
+    # All users see all picks
+    filtered = filtrar_por_plan(all_picks, plan)
 
     return jsonify({
         "picks": filtered,

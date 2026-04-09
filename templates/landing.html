@@ -96,64 +96,17 @@
         <h2>Analisis del dia</h2>
 
         {% if today_picks and today_picks|length > 0 %}
-        <!-- FREE = Pro level visible -->
+        {% for p in today_picks %}
         <div class="pick-visible" style="border-left-color:#1AE89B">
             <div style="display:flex;justify-content:space-between;align-items:center">
-                <div><span style="background:rgba(26,232,155,0.15);color:#1AE89B;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-right:6px">GRATIS — Nivel Pro</span><span style="font-size:15px;font-weight:700">{{ today_picks[0].bet }}</span></div>
-                <div style="font-size:20px;font-weight:800;color:#1AE89B">{{ today_picks[0].prob }}%</div>
+                <div><span style="background:rgba(26,232,155,0.15);color:#1AE89B;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-right:6px">GRATIS</span><span style="font-size:15px;font-weight:700">{{ p.bet or p.mercado }}</span></div>
+                <div style="font-size:20px;font-weight:800;color:#1AE89B">{{ p.prob or p.confianza }}%</div>
             </div>
-            <div style="font-size:13px;color:#888;margin-top:4px">{{ today_picks[0].match }}</div>
-            <div style="font-size:11px;color:#555;margin-top:4px">Cuota justa: {{ today_picks[0].odds }} | {{ today_picks[0].agree }}/3 modelos</div>
+            <div style="font-size:13px;color:#888;margin-top:4px">{{ p.match or (p.local ~ ' vs ' ~ p.visitante) }}</div>
+            <div style="font-size:11px;color:#555;margin-top:4px">{% if p.odds %}Cuota: {{ p.odds }}{% endif %}{% if p.cuota_referencia %} Cuota ref: {{ p.cuota_referencia }}{% endif %}{% if p.agree %} | {{ p.agree }}/3 modelos{% endif %}</div>
+            {% if p.justificacion %}<div style="font-size:11px;color:#888;margin-top:6px;line-height:1.4">{{ p.justificacion }}</div>{% endif %}
         </div>
-
-        <!-- BASIC: blurred blue badge -->
-        <div class="pick-blurred" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
-            <div class="blur-content" style="border-left:4px solid #4A9EFF">
-                <div style="display:flex;justify-content:space-between">
-                    <div><span style="background:rgba(74,158,255,0.15);color:#4A9EFF;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-right:6px">BASICO 60-64%</span><span style="font-size:15px;font-weight:700">Gana Local</span></div>
-                    <div style="font-size:20px;font-weight:800;color:#4A9EFF">62%</div>
-                </div>
-                <div style="font-size:13px;color:#888;margin-top:4px">{% if today_picks|length > 1 %}{{ today_picks[1].match }}{% else %}Partido del dia{% endif %}</div>
-            </div>
-            <div class="lock-overlay">
-                <div class="lock-icon">&#128274;</div>
-                <div class="lock-text">Plan Basico — $9.99/mes</div>
-                <div class="lock-btn">Desbloquear</div>
-            </div>
-        </div>
-
-        <!-- PRO: blurred green badge -->
-        <div class="pick-blurred" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
-            <div class="blur-content" style="border-left:4px solid #1AE89B">
-                <div style="display:flex;justify-content:space-between">
-                    <div><span style="background:rgba(26,232,155,0.15);color:#1AE89B;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-right:6px">PRO 65-75%</span><span style="font-size:15px;font-weight:700">Ambos Marcan: Si</span></div>
-                    <div style="font-size:20px;font-weight:800;color:#1AE89B">71%</div>
-                </div>
-                <div style="font-size:13px;color:#888;margin-top:4px">{% if today_picks|length > 1 %}{{ today_picks[1].match }}{% else %}Partido destacado{% endif %}</div>
-            </div>
-            <div class="lock-overlay">
-                <div class="lock-icon">&#128274;</div>
-                <div class="lock-text">Plan Pro — $24.99/mes</div>
-                <div class="lock-btn" style="background:#0F6E56">Desbloquear</div>
-            </div>
-        </div>
-
-        <!-- VIP: blurred gold badge -->
-        <div class="pick-blurred" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
-            <div class="blur-content" style="border-left:4px solid #F5A623">
-                <div style="display:flex;justify-content:space-between">
-                    <div><span style="background:rgba(245,166,35,0.15);color:#F5A623;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-right:6px">VIP +76%</span><span style="font-size:15px;font-weight:700">Mas de 2.5 goles</span></div>
-                    <div style="font-size:20px;font-weight:800;color:#F5A623">82%</div>
-                </div>
-                <div style="font-size:13px;color:#888;margin-top:4px">{% if today_picks|length > 2 %}{{ today_picks[2].match }}{% else %}Analisis premium{% endif %}</div>
-            </div>
-            <div class="lock-overlay">
-                <div class="lock-icon" style="font-size:28px">&#11088;</div>
-                <div class="lock-text">Plan VIP — $49.99/mes</div>
-                <div class="lock-btn" style="background:#B8860B">Desbloquear VIP</div>
-            </div>
-        </div>
-
+        {% endfor %}
         {% else %}
         <div class="pick-visible" style="text-align:center;border-left-color:#888">
             <div style="font-size:14px;color:#888">Los analisis del dia se publican a las 9:00 AM</div>
@@ -162,6 +115,42 @@
         </div>
         {% endif %}
     </div>
+
+    <!-- PICKS DEL DIA — EUROPA LEAGUE -->
+    {% if today_picks and today_picks|length > 0 %}
+    <div style="margin:24px 0">
+        <div style="text-align:center;margin-bottom:14px">
+            <span style="background:#FF6B00;color:#fff;font-size:11px;font-weight:800;padding:4px 12px;border-radius:10px">UEFA EUROPA LEAGUE</span>
+            <h2 style="font-size:18px;font-weight:800;color:#FFD700;margin:8px 0 4px">PICKS DEL DIA — EUROPA LEAGUE</h2>
+            <p style="font-size:12px;color:#888">Cuartos de Final &middot; Todos los analisis visibles gratis</p>
+        </div>
+        {% for p in today_picks %}
+        <div class="pick-visible" style="border-left-color:{% if p.recomendado %}#FFD700{% else %}#1AE89B{% endif %};margin-bottom:10px">
+            {% if p.recomendado %}<div style="background:#FFD700;color:#000;font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:6px">&#11088; PICK ESTRELLA</div>{% endif %}
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                    <span style="background:#FF6B00;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;margin-right:4px">UEL</span>
+                    <span style="font-size:15px;font-weight:700">{{ p.bet or p.mercado }}</span>
+                </div>
+                <div style="font-size:20px;font-weight:800;color:#1AE89B">{{ p.prob or p.confianza }}%</div>
+            </div>
+            <div style="font-size:13px;color:#888;margin-top:4px">{{ p.match or (p.local ~ ' vs ' ~ p.visitante) }}</div>
+            {% if p.justificacion %}<div style="font-size:11px;color:#aaa;margin-top:6px;line-height:1.4">{{ p.justificacion }}</div>{% endif %}
+            <div style="font-size:11px;color:#555;margin-top:4px">{% if p.odds %}Cuota: {{ p.odds }}{% endif %}{% if p.cuota_referencia %} Cuota ref: {{ p.cuota_referencia }}{% endif %}</div>
+            {% if p.mercados_adicionales %}
+            <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+                {% for m in p.mercados_adicionales %}
+                <span style="background:#1a1a1a;border:1px solid #333;padding:3px 8px;border-radius:6px;font-size:10px;color:#ccc">{{ m.mercado }} ({{ m.confianza }}%)</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <div style="text-align:center;margin-top:12px">
+            <button onclick="openModal()" style="padding:12px 24px;background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">REGISTRATE GRATIS PARA RECIBIR PICKS DIARIOS</button>
+        </div>
+    </div>
+    {% endif %}
 
     <!-- PARTIDOS PROXIMAS 24H — Scanner cada 5 min -->
     <div style="margin:24px 0">
@@ -207,55 +196,11 @@
         <div class="ls"><div class="n">{{ stats.total_analyzed or 847 }}</div><div class="l">Partidos</div></div>
     </div>
 
-    <!-- PRICING -->
-    <div class="pricing" id="pricing">
-        <h2>Desbloquea todos los analisis</h2>
-        <div class="psub">Cada plan accede a un nivel de confianza diferente</div>
-
-        <div class="plan">
-            <h3 style="color:#4A9EFF">Basico</h3>
-            <div class="price">$9.99 <span>/mes</span></div>
-            <div style="font-size:12px;color:#4A9EFF;margin:4px 0;font-weight:600">Confianza: 60% — 64%</div>
-            <ul style="list-style:none;padding:0;margin:10px 0;font-size:13px">
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> 3 analisis por dia</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Resultado del partido</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Notificaciones basicas</li>
-                <li style="color:#555;padding:3px 0"><span style="color:#FF4757">&#10007;</span> Sin corners</li>
-                <li style="color:#555;padding:3px 0"><span style="color:#FF4757">&#10007;</span> Sin scanner de cuotas</li>
-                <li style="color:#555;padding:3px 0"><span style="color:#FF4757">&#10007;</span> Sin alineaciones</li>
-            </ul>
-            <a href="/checkout/basico" class="btn btn-outline">SUSCRIBIRSE</a>
-        </div>
-
-        <div class="plan rec">
-            <div class="badge-rec">RECOMENDADO</div>
-            <h3 style="color:#1AE89B">Pro</h3>
-            <div class="price">$24.99 <span>/mes</span></div>
-            <div style="font-size:12px;color:#1AE89B;margin:4px 0;font-weight:600">Confianza: 65% — 75%</div>
-            <ul style="list-style:none;padding:0;margin:10px 0;font-size:13px">
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Analisis ilimitados</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Todos los mercados</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Analisis de corners</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Scanner de cuotas</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Alineaciones oficiales</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Historial completo</li>
-            </ul>
-            <a href="/checkout/pro" class="btn" style="background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff">SUSCRIBIRSE A PRO</a>
-        </div>
-
-        <div class="plan" style="border-color:#F5A623">
-            <h3 style="color:#F5A623">&#11088; VIP</h3>
-            <div class="price">$49.99 <span>/mes</span></div>
-            <div style="font-size:12px;color:#F5A623;margin:4px 0;font-weight:600">Confianza: +76% — Solo los mejores</div>
-            <ul style="list-style:none;padding:0;margin:10px 0;font-size:13px">
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Todo lo del plan Pro</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Los analisis mas precisos</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Analisis anticipados desde 8 AM</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Scanner de errores de cuotas</li>
-                <li style="color:#ccc;padding:3px 0"><span style="color:#1AE89B">&#10003;</span> Badge VIP exclusivo</li>
-            </ul>
-            <a href="/checkout/vip" class="btn" style="background:linear-gradient(135deg,#B8860B,#F5A623);color:#fff">SUSCRIBIRSE VIP</a>
-        </div>
+    <!-- CTA REGISTRO GRATIS -->
+    <div id="pricing" style="background:linear-gradient(135deg,rgba(15,110,86,0.15),#111 60%);border:1px solid #0F6E56;border-radius:14px;padding:20px;margin:30px 0;text-align:center">
+        <h2 style="font-size:18px;color:#1AE89B;margin-bottom:6px">Todos los analisis son GRATIS</h2>
+        <p style="font-size:13px;color:#888;margin-bottom:14px">Registrate y recibe picks diarios sin costo</p>
+        <button onclick="openModal()" class="btn" style="display:inline-block;padding:14px 28px;background:linear-gradient(135deg,#0F6E56,#0D8B6A);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;text-transform:uppercase">REGISTRATE GRATIS PARA RECIBIR PICKS DIARIOS</button>
     </div>
 
     <!-- LOGIN -->

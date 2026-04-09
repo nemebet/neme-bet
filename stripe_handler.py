@@ -26,25 +26,8 @@ PLANS = {
 
 
 def filtrar_por_plan(analisis, plan):
-    """Filtra analisis segun nivel de confianza del plan."""
-    if plan in ("vip", "admin"):
-        # VIP/Admin: ve TODO lo que hay, minimo 65%, ordenado por confianza
-        result = [a for a in analisis if a.get("prob", 0) >= 65]
-        result.sort(key=lambda x: x.get("prob", 0), reverse=True)
-        return result
-    elif plan == "pro":
-        result = [a for a in analisis if 65 <= a.get("prob", 0) <= 75]
-        result.sort(key=lambda x: x.get("prob", 0), reverse=True)
-        return result
-    elif plan == "basico":
-        result = [a for a in analisis if 60 <= a.get("prob", 0) < 65]
-        result.sort(key=lambda x: x.get("prob", 0), reverse=True)
-        return result[:3]
-    elif plan == "free_trial":
-        result = [a for a in analisis if a.get("prob", 0) >= 65]
-        result.sort(key=lambda x: x.get("prob", 0), reverse=True)
-        return result[:1]
-    return []
+    """Sin restricciones por ahora — todos ven todo."""
+    return sorted(analisis, key=lambda x: x.get("prob", x.get("confianza", 0)), reverse=True)
 
 
 def get_plan_badge(prob):
