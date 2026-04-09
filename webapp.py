@@ -9,6 +9,23 @@ Ejecutar: python3 webapp.py
 Acceder:  http://<IP>:5000
 """
 
+import os
+import sys
+
+# Cargar variables de entorno ANTES de todo
+def _bootstrap_env():
+    for path in [os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')]:
+        if os.path.exists(path):
+            with open(path) as f:
+                for line in f:
+                    line = line.strip()
+                    if '=' in line and not line.startswith('#'):
+                        k, v = line.split('=', 1)
+                        k, v = k.strip(), v.strip()
+                        if k not in os.environ:
+                            os.environ[k] = v
+_bootstrap_env()
+
 import json
 import os
 import re
@@ -1979,6 +1996,18 @@ start_scheduler()
 # ═══════════════════════════════════════════════════════════════════════════
 #  MAIN
 # ═══════════════════════════════════════════════════════════════════════════
+
+
+@app.route('/api/debug-env')
+def debug_env():
+    import os
+    key = os.environ.get('API_FOOTBALL_KEY', '')
+    return jsonify({
+        'key_len': len(key),
+        'key_present': bool(key),
+        'key_first4': key[:4] if key else 'EMPTY',
+        'env_keys': [k for k in os.environ.keys() if 'FOOTBALL' in k or 'API' in k]
+    })
 
 if __name__ == "__main__":
     import socket
