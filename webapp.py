@@ -1879,7 +1879,7 @@ def api_status():
             "cache_fresco": cache_age < 300 if cache_age else False,
             "scheduler_activo": _scheduler_started,
             "hora_servidor": datetime.now().isoformat(),
-            "api_football_key": bool(_env_key("API_FOOTBALL_KEY")),
+            "api_football_key": bool(os.environ.get("API_FOOTBALL_KEY") or ENV.get("API_FOOTBALL_KEY")),
         })
     except Exception as e:
         return jsonify({"status": "error", "error": str(e)})
