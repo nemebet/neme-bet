@@ -2317,15 +2317,25 @@ if __name__ == "__main__":
 
 @app.route('/admin/regenerar-picks')
 def admin_regenerar_picks():
+    import traceback, io, sys
+    log_capture = io.StringIO()
+    old_stdout = sys.stdout
+    sys.stdout = log_capture
+    error_detail = None
     try:
         auto_generar_picks_hoy()
-        path = _dp('picks_del_dia.json')
-        if os.path.exists(path):
+    except Exception as e:
+        error_detail = traceback.format_exc()
+    finally:
+        sys.stdout = old_stdout
+    logs = log_capture.getvalue()
+    path = _dp('picks_del_dia.json')
+    if os.path.exists(path):
+        try:
             with open(path, encoding='utf-8') as f:
                 data = json.load(f)
-            return jsonify({'ok': True, 'picks': len(data.get('high_confidence_picks', [])), 'fecha': data.get('fecha')})
-        return jsonify({'ok': False, 'error': 'Archivo no creado'})
-    except Exception as e:
-        import traceback
-        return jsonify({'ok': False, 'error': str(e), 'trace': traceback.format_exc()})
+            return jsonify({'ok': True, 'picks': len(data.get('high_confidence_picks', [])), 'fecha': data.get('fecha'), 'logs': logs})
+        except Exception as e:
+            return jsonify({'ok': False, 'error': str(e), 'logs': logs})
+    return jsonify({'ok': False, 'error': error_detail or 'Archivo no creado', 'logs': logs})
 
