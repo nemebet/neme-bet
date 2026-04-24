@@ -1996,6 +1996,109 @@ start_scheduler()
 #  ENSURE PICKS EXIST (Railway pierde /app/data en redeploys)
 # ═══════════════════════════════════════════════════════════════════════════
 
+
+def auto_generar_picks_hoy():
+    """Toma partidos de API-Football y genera picks con Claude."""
+    import urllib.request, json
+    from featured_matches import fetch_partidos
+
+    path = _dp('picks_del_dia.json')
+    hoy = datetime.now().strftime('%Y-%m-%d')
+
+    # Si ya hay picks de hoy no hacer nada
+    if os.path.exists(path):
+        try:
+            with open(path, encoding='utf-8') as f:
+                data = json.load(f)
+            if data.get('fecha') == hoy and data.get('high_confidence_picks'):
+                print('[AUTO-PICKS] Ya existen picks de hoy')
+                return
+        except Exception:
+            pass
+
+    print('[AUTO-PICKS] Generando picks nuevos...')
+    try:
+        data_partidos = fetch_partidos(force=True)
+        partidos = data_partidos.get('partidos', [])[:15]
+        if not partidos:
+            print('[AUTO-PICKS] No hay partidos disponibles hoy')
+            return
+
+        lista = chr(10).join([f"- {p['home']} vs {p['away']} ({p['liga']}, {p['hora']})" for p in partidos])
+
+        prompt = f"""Eres NEMEBET, experto en predicciones deportivas. Hoy es {hoy}.
+
+Partidos disponibles hoy:
+{lista}
+
+Selecciona los 3-5 mejores picks aplicando estas reglas:
+1. BTTS es mas seguro que +2.5 en partidos europeos
+2. Sistema defensivo del visitante es critico
+3. Bajas de mediocampo impactan mas que bajas de ataque
+4. H2H reciente es el indicador mas confiable
+5. Solo picks con probabilidad real mayor al 62%
+6. Si la cuota no justifica el riesgo, omitir
+
+Responde SOLO con JSON valido, sin texto extra, sin markdown:
+{{
+  "fecha": "{hoy}",
+  "high_confidence_picks": [
+    {{
+      "id": "unico_id",
+      "local": "nombre local",
+      "visitante": "nombre visitante",
+      "match": "Local vs Visitante",
+      "liga": "nombre liga",
+      "hora": "HH:MM",
+      "confianza": 70,
+      "prob": 70,
+      "mercado": "descripcion mercado",
+      "bet": "descripcion apuesta",
+      "cuota_referencia": 1.75,
+      "odds": 1.75,
+      "edge": 20,
+      "justificacion": "razon matematica",
+      "estado": "pendiente",
+      "recomendado": true
+    }}
+  ],
+  "medium_confidence_picks": []
+}}"""
+
+        key = os.environ.get('ANTHROPIC_API_KEY', ENV.get('ANTHROPIC_API_KEY', ''))
+        if not key:
+            print('[AUTO-PICKS] Sin ANTHROPIC_API_KEY')
+            return
+
+        body = json.dumps({
+            'model': 'claude-sonnet-4-20250514',
+            'max_tokens': 2000,
+            'messages': [{'role': 'user', 'content': prompt}]
+        }).encode()
+
+        req = urllib.request.Request('https://api.anthropic.com/v1/messages', data=body)
+        req.add_header('x-api-key', key)
+        req.add_header('anthropic-version', '2023-06-01')
+        req.add_header('content-type', 'application/json')
+
+        with urllib.request.urlopen(req, timeout=60) as r:
+            resp = json.loads(r.read().decode())
+
+        texto = resp['content'][0]['text'].strip()
+        # Limpiar markdown si viene con backticks
+        if texto.startswith('''''):
+            texto = texto.split(''''')[1] if ''''json' in texto else texto.replace(''''json','').replace(''''','')
+        
+        picks_data = json.loads(texto)
+        picks_data['generado'] = datetime.now().isoformat()
+
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(picks_data, f, ensure_ascii=False, indent=2)
+        print(f'[AUTO-PICKS] {len(picks_data.get("high_confidence_picks",[]))} picks guardados')
+
+    except Exception as e:
+        print(f'[AUTO-PICKS] Error: {e}')
+
 def ensure_picks_del_dia():
     """Solo conserva picks si son de HOY. Si son viejos los elimina."""
     path = _dp("picks_del_dia.json")
@@ -2066,6 +2169,10 @@ def ensure_picks_del_dia():
         json.dump(picks, f, ensure_ascii=False, indent=2)
     print(f"[PICKS] Picks UEL recreados en {path}")
 
+try:
+    auto_generar_picks_hoy()
+except Exception as e:
+    print(f"[AUTO-PICKS] Error al inicio: {e}")
 try:
     ensure_picks_del_dia()
 except Exception as e:
