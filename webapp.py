@@ -1997,16 +1997,20 @@ start_scheduler()
 # ═══════════════════════════════════════════════════════════════════════════
 
 def ensure_picks_del_dia():
-    """Recrea picks hardcoded si no existen (para sobrevivir redeploys)."""
+    """Solo conserva picks si son de HOY. Si son viejos los elimina."""
     path = _dp("picks_del_dia.json")
+    hoy = datetime.now().strftime("%Y-%m-%d")
     if os.path.exists(path):
         try:
             with open(path, encoding="utf-8") as f:
                 data = json.load(f)
-            if data.get("high_confidence_picks"):
+            if data.get("fecha") == hoy and data.get("high_confidence_picks"):
                 return
         except Exception:
             pass
+        os.remove(path)
+        print("[PICKS] Picks viejos eliminados")
+        return
 
     picks = {
         "fecha": "2026-04-09",
