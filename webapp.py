@@ -2006,13 +2006,20 @@ def auto_generar_picks_hoy():
     hoy = datetime.now().strftime('%Y-%m-%d')
 
     # Si ya hay picks de hoy no hacer nada
+    # Siempre eliminar picks viejos al arrancar
     if os.path.exists(path):
         try:
             with open(path, encoding='utf-8') as f:
                 data = json.load(f)
-            if data.get('fecha') == hoy and data.get('high_confidence_picks'):
-                print('[AUTO-PICKS] Ya existen picks de hoy')
+            fecha_picks = data.get('fecha', '')
+            if fecha_picks == hoy and data.get('high_confidence_picks'):
+                print('[AUTO-PICKS] Ya existen picks de hoy:', hoy)
                 return
+            else:
+                os.remove(path)
+                print('[AUTO-PICKS] Picks viejos eliminados, fecha era:', fecha_picks)
+        except Exception:
+            os.remove(path)
         except Exception:
             pass
 
