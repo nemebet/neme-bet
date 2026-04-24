@@ -2025,13 +2025,67 @@ def auto_generar_picks_hoy():
 
     print('[AUTO-PICKS] Generando picks nuevos...')
     try:
-        data_partidos = fetch_partidos(force=True)
-        partidos = data_partidos.get('partidos', [])[:15]
-        if not partidos:
-            print('[AUTO-PICKS] No hay partidos disponibles hoy')
+        import urllib.request as _ur
+        hoy2 = datetime.now().strftime('%Y-%m-%d')
+        partidos_raw = []
+
+        # Fuente 1: football-data.org
+        try:
+            fd_key = os.environ.get('FOOTBALL_DATA_API_KEY', 'dd3d5d1c1bb940ddb78096ea7abd6db7')
+            fd_url = f'https://api.football-data.org/v4/matches?dateFrom={hoy2}&dateTo={hoy2}'
+            fd_req = _ur.Request(fd_url)
+            fd_req.add_header('X-Auth-Token', fd_key)
+            fd_req.add_header('User-Agent', 'NEMEBET/1.0')
+            with _ur.urlopen(fd_req, timeout=15) as fd_r:
+                fd_data = json.loads(fd_r.read().decode())
+            for m in fd_data.get('matches', []):
+                estado = m.get('status', '')
+                if estado not in ['FINISHED', 'CANCELLED', 'POSTPONED']:
+                    home = m.get('homeTeam', {}).get('name', '')
+                    away = m.get('awayTeam', {}).get('name', '')
+                    liga = m.get('competition', {}).get('name', '')
+                    hora = m.get('utcDate', '')[:16].replace('T', ' ')
+                    if home and away:
+                        partidos_raw.append(f'- {home} vs {away} ({liga}, {hora} UTC)')
+            print(f'[AUTO-PICKS] football-data: {len(partidos_raw)} partidos')
+        except Exception as e_fd:
+            print(f'[AUTO-PICKS] football-data error: {e_fd}')
+
+        # Fuente 2: API-Football si hay key y no hay partidos
+        if not partidos_raw:
+            try:
+                af_key = os.environ.get('API_FOOTBALL_KEY', '')
+                if af_key:
+                    af_url = f'https://v3.football.api-sports.io/fixtures?date={hoy2}&timezone=America/Bogota'
+                    af_req = _ur.Request(af_url)
+                    af_req.add_header('x-apisports-key', af_key)
+                    af_req.add_header('User-Agent', 'Mozilla/5.0')
+                    with _ur.urlopen(af_req, timeout=15) as af_r:
+                        af_data = json.loads(af_r.read().decode())
+                    for f in af_data.get('response', [])[:20]:
+                        est = f['fixture']['status']['short']
+                        if est not in ['FT', 'AET', 'PEN', 'CANC', 'PST']:
+                            h = f['teams']['home']['name']
+                            a = f['teams']['away']['name']
+                            l = f['league']['name']
+                            t = f['fixture']['date'][:16].replace('T', ' ')
+                            partidos_raw.append(f'- {h} vs {a} ({l}, {t} UTC)')
+                    print(f'[AUTO-PICKS] api-football: {len(partidos_raw)} partidos')
+            except Exception as e_af:
+                print(f'[AUTO-PICKS] api-football error: {e_af}')
+
+        # Fuente 3: partidos conocidos del dia si todo falla
+        if not partidos_raw:
+            from featured_matches import fetch_partidos as _fp
+            _d = _fp(force=True)
+            for p in _d.get('partidos', [])[:15]:
+                partidos_raw.append(f"- {p['home']} vs {p['away']} ({p.get('liga','')}, {p.get('hora','')}) ")
+
+        if not partidos_raw:
+            print('[AUTO-PICKS] No hay partidos disponibles hoy en ninguna fuente')
             return
 
-        lista = chr(10).join([f"- {p['home']} vs {p['away']} ({p['liga']}, {p['hora']})" for p in partidos])
+        lista = chr(10).join(partidos_raw[:20])
 
         prompt = f"""Eres NEMEBET v5, el sistema experto en pronosticos deportivos mas avanzado. Hoy es {hoy}.
 
