@@ -2087,7 +2087,75 @@ def auto_generar_picks_hoy():
                 partidos_raw.append(f"- {p['home']} vs {p['away']} ({p.get('liga','')}, {p.get('hora','')}) ")
 
         if not partidos_raw:
-            print('[AUTO-PICKS] No hay partidos disponibles hoy en ninguna fuente')
+            # Fallback: Claude genera picks con su conocimiento propio
+            hoy_dt = datetime.now()
+            dia_semana = hoy_dt.strftime('%A')
+            print(f'[AUTO-PICKS] Sin API disponible, usando conocimiento propio de Claude para {hoy2}')
+            lista = f"No hay datos de API disponibles. Genera picks para partidos tipicos de un {dia_semana} {hoy2} en las principales ligas europeas (Premier League, LaLiga, Serie A, Bundesliga, Ligue 1, UCL, UEL) basandote en tu conocimiento de la temporada 2025-26 actual. Selecciona partidos reales que se jueguen hoy."
+            try:
+                key_c = os.environ.get('ANTHROPIC_API_KEY', '')
+                if not key_c:
+                    return
+                body_c = json.dumps({
+                    'model': 'claude-sonnet-4-20250514',
+                    'max_tokens': 3000,
+                    'messages': [{'role': 'user', 'content': f"""Eres NEMEBET v5. Hoy es {hoy2}.
+
+{lista}
+
+Responde SOLO JSON sin markdown con picks reales de partidos de HOY {hoy2}:
+{{
+  "fecha": "{hoy2}",
+  "generado": "{datetime.now().isoformat()}",
+  "high_confidence_picks": [
+    {{
+      "id": "liga_local_visit",
+      "local": "Local",
+      "visitante": "Visitante", 
+      "match": "Local vs Visitante",
+      "liga": "Liga",
+      "hora": "HH:MM",
+      "confianza": 70,
+      "prob": 70,
+      "mercado": "mercado",
+      "bet": "apuesta",
+      "cuota_referencia": 1.75,
+      "odds": 1.75,
+      "edge": 22,
+      "justificacion": "razon matematica con valor (prob x cuota - 1)",
+      "importancia": "importancia del partido",
+      "bajas_consideradas": "bajas conocidas",
+      "estado": "pendiente",
+      "recomendado": true,
+      "tipo": "goles"
+    }}
+  ],
+  "medium_confidence_picks": [],
+  "picks_corners": [],
+  "picks_remates": []
+}}"""}]
+                }).encode()
+                req_c = urllib.request.Request('https://api.anthropic.com/v1/messages', data=body_c)
+                req_c.add_header('x-api-key', key_c)
+                req_c.add_header('anthropic-version', '2023-06-01')
+                req_c.add_header('content-type', 'application/json')
+                with urllib.request.urlopen(req_c, timeout=90) as r_c:
+                    resp_c = json.loads(r_c.read().decode())
+                texto_c = resp_c['content'][0]['text'].strip()
+                if '```' in texto_c:
+                    partes_c = texto_c.split('```')
+                    for p_c in partes_c:
+                        p_c = p_c.strip().lstrip('json').strip()
+                        if p_c.startswith('{'):
+                            texto_c = p_c
+                            break
+                picks_c = json.loads(texto_c)
+                picks_c['generado'] = datetime.now().isoformat()
+                with open(path, 'w', encoding='utf-8') as f_c:
+                    json.dump(picks_c, f_c, ensure_ascii=False, indent=2)
+                print(f'[AUTO-PICKS] {len(picks_c.get("high_confidence_picks",[]))} picks generados con conocimiento propio')
+            except Exception as e_c:
+                print(f'[AUTO-PICKS] Error fallback Claude: {e_c}')
             return
 
         lista = chr(10).join(partidos_raw[:20])
