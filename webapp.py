@@ -2084,10 +2084,23 @@ Responde SOLO con JSON valido, sin texto extra, sin markdown:
         with urllib.request.urlopen(req, timeout=60) as r:
             resp = json.loads(r.read().decode())
 
+        texto = resp["content"][0]["text"].strip()
         texto = resp['content'][0]['text'].strip()
-        # Limpiar markdown si viene con backticks
-        if texto.startswith('''''):
-            texto = texto.split(''''')[1] if ''''json' in texto else texto.replace(''''json','').replace(''''','')
+        # Limpiar markdown
+        if '```' in texto:
+            partes = texto.split('```')
+            for p in partes:
+                p = p.strip().lstrip('json').strip()
+                if p.startswith('{'):
+                    texto = p
+                    break
+            for p in partes:
+                p = p.strip()
+                if p.startswith("json"):
+                    p = p[4:].strip()
+                if p.startswith("{"):
+                    texto = p
+                    break
         
         picks_data = json.loads(texto)
         picks_data['generado'] = datetime.now().isoformat()
