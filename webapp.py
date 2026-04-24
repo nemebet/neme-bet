@@ -1998,15 +1998,12 @@ start_scheduler()
 
 
 def auto_generar_picks_hoy():
-    """Toma partidos de API-Football y genera picks con Claude."""
-    import urllib.request, json
-    from featured_matches import fetch_partidos
-
+    """Genera picks frescos con Claude usando football-data.org."""
+    import urllib.request as _ur
     path = _dp('picks_del_dia.json')
     hoy = datetime.now().strftime('%Y-%m-%d')
 
     # Si ya hay picks de hoy no hacer nada
-    # Siempre eliminar picks viejos al arrancar
     if os.path.exists(path):
         try:
             with open(path, encoding='utf-8') as f:
@@ -2019,297 +2016,118 @@ def auto_generar_picks_hoy():
                 os.remove(path)
                 print('[AUTO-PICKS] Picks viejos eliminados, fecha era:', fecha_picks)
         except Exception:
-            os.remove(path)
-        except Exception:
-            pass
+            try:
+                os.remove(path)
+            except Exception:
+                pass
 
     print('[AUTO-PICKS] Generando picks nuevos...')
+
+    # Obtener partidos de football-data.org por liga
+    partidos_raw = []
     try:
-        import urllib.request as _ur
-        hoy2 = datetime.now().strftime('%Y-%m-%d')
-        partidos_raw = []
-
-        # Fuente 1: football-data.org por liga
-        try:
-            fd_key = os.environ.get('FOOTBALL_DATA_API_KEY', 'dd3d5d1c1bb940ddb78096ea7abd6db7')
-            ligas_fd = ['PL','PD','SA','BL1','FL1','PPL','CL']
-            for codigo in ligas_fd:
-                try:
-                    fd_url = f'https://api.football-data.org/v4/competitions/{codigo}/matches?dateFrom={hoy2}&dateTo={hoy2}'
-                    fd_req = _ur.Request(fd_url)
-                    fd_req.add_header('X-Auth-Token', fd_key)
-                    fd_req.add_header('User-Agent', 'NEMEBET/1.0')
-                    with _ur.urlopen(fd_req, timeout=10) as fd_r:
-                        fd_data = json.loads(fd_r.read().decode())
-                    for m in fd_data.get('matches', []):
-                        estado = m.get('status', '')
-                        if estado not in ['FINISHED','CANCELLED','POSTPONED']:
-                            home = m.get('homeTeam',{}).get('name','')
-                            away = m.get('awayTeam',{}).get('name','')
-                            liga = m.get('competition',{}).get('name','')
-                            hora = m.get('utcDate','')[:16].replace('T',' ')
-                            if home and away:
-                                partidos_raw.append(f'- {home} vs {away} ({liga}, {hora} UTC)')
-                except Exception:
-                    pass
-            print(f'[AUTO-PICKS] football-data: {len(partidos_raw)} partidos')
-        except Exception as e_fd:
-            print(f'[AUTO-PICKS] football-data error: {e_fd}')
-
-        # Fuente 2: API-Football si hay key y no hay partidos
-        if not partidos_raw:
+        fd_key = os.environ.get('FOOTBALL_DATA_API_KEY', 'dd3d5d1c1bb940ddb78096ea7abd6db7')
+        ligas_fd = ['PL', 'PD', 'SA', 'BL1', 'FL1', 'PPL', 'CL']
+        for codigo in ligas_fd:
             try:
-                af_key = os.environ.get('API_FOOTBALL_KEY', '')
-                if af_key:
-                    af_url = f'https://v3.football.api-sports.io/fixtures?date={hoy2}&timezone=America/Bogota'
-                    af_req = _ur.Request(af_url)
-                    af_req.add_header('x-apisports-key', af_key)
-                    af_req.add_header('User-Agent', 'Mozilla/5.0')
-                    with _ur.urlopen(af_req, timeout=15) as af_r:
-                        af_data = json.loads(af_r.read().decode())
-                    for f in af_data.get('response', [])[:20]:
-                        est = f['fixture']['status']['short']
-                        if est not in ['FT', 'AET', 'PEN', 'CANC', 'PST']:
-                            h = f['teams']['home']['name']
-                            a = f['teams']['away']['name']
-                            l = f['league']['name']
-                            t = f['fixture']['date'][:16].replace('T', ' ')
-                            partidos_raw.append(f'- {h} vs {a} ({l}, {t} UTC)')
-                    print(f'[AUTO-PICKS] api-football: {len(partidos_raw)} partidos')
-            except Exception as e_af:
-                print(f'[AUTO-PICKS] api-football error: {e_af}')
+                fd_url = 'https://api.football-data.org/v4/competitions/' + codigo + '/matches?dateFrom=' + hoy + '&dateTo=' + hoy
+                fd_req = _ur.Request(fd_url)
+                fd_req.add_header('X-Auth-Token', fd_key)
+                fd_req.add_header('User-Agent', 'NEMEBET/1.0')
+                with _ur.urlopen(fd_req, timeout=10) as fd_r:
+                    fd_data = json.loads(fd_r.read().decode())
+                for m in fd_data.get('matches', []):
+                    estado = m.get('status', '')
+                    if estado not in ['FINISHED', 'CANCELLED', 'POSTPONED']:
+                        home = m.get('homeTeam', {}).get('name', '')
+                        away = m.get('awayTeam', {}).get('name', '')
+                        liga = m.get('competition', {}).get('name', '')
+                        hora = m.get('utcDate', '')[:16].replace('T', ' ')
+                        if home and away:
+                            partidos_raw.append('- ' + home + ' vs ' + away + ' (' + liga + ', ' + hora + ' UTC)')
+            except Exception:
+                pass
+        print('[AUTO-PICKS] football-data: ' + str(len(partidos_raw)) + ' partidos')
+    except Exception as e_fd:
+        print('[AUTO-PICKS] football-data error: ' + str(e_fd))
 
-        # Fuente 3: partidos conocidos del dia si todo falla
-        if not partidos_raw:
-            from featured_matches import fetch_partidos as _fp
-            _d = _fp(force=True)
-            for p in _d.get('partidos', [])[:15]:
-                partidos_raw.append(f"- {p['home']} vs {p['away']} ({p.get('liga','')}, {p.get('hora','')}) ")
-
-        if not partidos_raw:
-            # Fallback: Claude genera picks con su conocimiento propio
-            hoy_dt = datetime.now()
-            dia_semana = hoy_dt.strftime('%A')
-            print(f'[AUTO-PICKS] Sin API disponible, usando conocimiento propio de Claude para {hoy2}')
-            lista = f"No hay datos de API disponibles. Genera picks para partidos tipicos de un {dia_semana} {hoy2} en las principales ligas europeas (Premier League, LaLiga, Serie A, Bundesliga, Ligue 1, UCL, UEL) basandote en tu conocimiento de la temporada 2025-26 actual. Selecciona partidos reales que se jueguen hoy."
-            try:
-                key_c = os.environ.get('ANTHROPIC_API_KEY', '')
-                if not key_c:
-                    return
-                body_c = json.dumps({
-                    'model': 'claude-sonnet-4-20250514',
-                    'max_tokens': 3000,
-                    'messages': [{'role': 'user', 'content': f"""Eres NEMEBET v5. Hoy es {hoy2}.
-
-{lista}
-
-Responde SOLO JSON sin markdown con picks reales de partidos de HOY {hoy2}:
-{{
-  "fecha": "{hoy2}",
-  "generado": "{datetime.now().isoformat()}",
-  "high_confidence_picks": [
-    {{
-      "id": "liga_local_visit",
-      "local": "Local",
-      "visitante": "Visitante", 
-      "match": "Local vs Visitante",
-      "liga": "Liga",
-      "hora": "HH:MM",
-      "confianza": 70,
-      "prob": 70,
-      "mercado": "mercado",
-      "bet": "apuesta",
-      "cuota_referencia": 1.75,
-      "odds": 1.75,
-      "edge": 22,
-      "justificacion": "razon matematica con valor (prob x cuota - 1)",
-      "importancia": "importancia del partido",
-      "bajas_consideradas": "bajas conocidas",
-      "estado": "pendiente",
-      "recomendado": true,
-      "tipo": "goles"
-    }}
-  ],
-  "medium_confidence_picks": [],
-  "picks_corners": [],
-  "picks_remates": []
-}}"""}]
-                }).encode()
-                req_c = urllib.request.Request('https://api.anthropic.com/v1/messages', data=body_c)
-                req_c.add_header('x-api-key', key_c)
-                req_c.add_header('anthropic-version', '2023-06-01')
-                req_c.add_header('content-type', 'application/json')
-                with urllib.request.urlopen(req_c, timeout=90) as r_c:
-                    resp_c = json.loads(r_c.read().decode())
-                texto_c = resp_c['content'][0]['text'].strip()
-                if '```' in texto_c:
-                    partes_c = texto_c.split('```')
-                    for p_c in partes_c:
-                        p_c = p_c.strip().lstrip('json').strip()
-                        if p_c.startswith('{'):
-                            texto_c = p_c
-                            break
-                picks_c = json.loads(texto_c)
-                picks_c['generado'] = datetime.now().isoformat()
-                with open(path, 'w', encoding='utf-8') as f_c:
-                    json.dump(picks_c, f_c, ensure_ascii=False, indent=2)
-                print(f'[AUTO-PICKS] {len(picks_c.get("high_confidence_picks",[]))} picks generados con conocimiento propio')
-            except Exception as e_c:
-                print(f'[AUTO-PICKS] Error fallback Claude: {e_c}')
-            return
-
+    # Si no hay partidos de API usar conocimiento de Claude
+    if partidos_raw:
         lista = chr(10).join(partidos_raw[:20])
+        intro = 'Partidos disponibles hoy via API:'
+    else:
+        lista = 'No hay datos de API. Usa tu conocimiento de la temporada 2025-26 para identificar partidos reales de hoy ' + hoy + ' en Premier League, LaLiga, Serie A, Bundesliga, Ligue 1, UCL o UEL.'
+        intro = 'Sin datos de API:'
 
-        prompt = f"""Eres NEMEBET v5, el sistema experto en pronosticos deportivos mas avanzado. Hoy es {hoy}.
-
-PARTIDOS DISPONIBLES HOY:
-{lista}
-
-METODOLOGIA OBLIGATORIA — aplica TODAS estas reglas antes de seleccionar un pick:
-
-1. IMPORTANCIA DEL PARTIDO
-   - Evalua que esta en juego: titulo, clasificacion, descenso, playoff, derby, sin nada en juego
-   - Un equipo que necesita ganar tiene motivacion 3x superior
-   - Si ambos equipos no tienen nada en juego -> partido impredecible -> OMITIR
-
-2. CONDICION LOCAL vs VISITANTE
-   - Verifica si el equipo es fuerte en casa o fuera
-   - Un equipo con 5+ derrotas visitante recientes NO debe ser pick de victoria visitante
-   - Considera el factor estadio: atmosfera, altitud, viaje largo
-
-3. ALINEACIONES Y BAJAS CRITICAS
-   - Baja del portero titular -> mas goles esperados
-   - Baja del mediocampista organizador -> peor estructura defensiva
-   - Baja del goleador -> reduccion del 25% en capacidad ofensiva
-   - Baja de lateral desbordante -> menos corners generados
-   - Si no hay info de alineacion -> aumentar incertidumbre, bajar confianza 5%
-
-4. H2H RECIENTE (el indicador mas confiable)
-   - Usar SOLO los ultimos 3-5 H2H directos
-   - Si Under 2.5 en 3 de 5 H2H -> apostar Under
-   - Si BTTS en 4 de 5 H2H -> apostar BTTS
-   - El H2H pesa mas que la forma reciente
-
-5. VALOR MATEMATICO DE LA CUOTA (CRITICO)
-   - Calcular: Valor = (Probabilidad_real x Cuota) - 1
-   - Si valor < 0.05 -> NO HAY VALOR -> OMITIR el pick
-   - Cuotas menores a 1.40 casi nunca tienen valor matematico real
-   - Cuotas entre 1.65 y 2.50 con prob real >55% = zona de valor optimo
-   - NUNCA recomendar cuota 1.20 o menor aunque la prob sea 90%
-
-6. SISTEMA TACTICO Y CORNERS
-   - Si visitante juega 5 defensas (5-3-2 o 5-4-1) -> apostar corners del local NO goles totales
-   - Equipos con laterales ofensivos (atacan por banda) generan 40% mas corners
-   - Local con extremos veloces vs visitante en bloque bajo = Over corners local
-   - Si ambos equipos atacan por banda = Over corners totales
-   - Umbral minimo: el promedio de corners del equipo debe estar 1.5 unidades SOBRE el umbral apostado
-
-7. REMATES AL ARCO POR JUGADOR
-   - Identificar el jugador con mayor promedio de remates a puerta del partido
-   - Solo recomendar si el jugador promedia 2+ SOT por partido esta temporada
-   - El jugador debe enfrentar una defensa con debilidades aereas o en banda
-   - Cuota minima 1.80 para que tenga valor matematico real
-
-8. BTTS vs OVER 2.5
-   - En partidos europeos de eliminatoria: BTTS es mas seguro que Over 2.5
-   - Si el visitante tiene sistema defensivo solido: apostar BTTS no Over 2.5
-   - Over 2.5 solo si ambas defensas son debiles (conceden 1.5+ goles/partido)
-
-9. UMBRALES MINIMOS DE CONFIANZA
-   - high_confidence: probabilidad real >= 63% Y valor matematico >= +8%
-   - medium_confidence: probabilidad real 57-62% Y valor matematico >= +5%
-   - Si no hay 3 picks que cumplan -> devolver solo los que cumplen, no inventar
-
-10. MERCADOS PRIORITARIOS POR ORDEN DE VALOR
-    1. Under/Over 2.5 goles (mas predecible)
-    2. BTTS Si/No (segundo mas predecible)
-    3. Resultado 1X2 con valor claro
-    4. Corners equipo local Over X.5
-    5. Jugador remates a puerta Over 1.5
-
-SELECCIONA 3-6 picks que cumplan TODOS los criterios. Si un partido no cumple al menos 7 de las 10 reglas -> OMITIRLO.
-
-Responde SOLO con JSON valido y minimalista, sin texto, sin markdown, sin explicaciones fuera del JSON:
-{{
-  "fecha": "{hoy}",
-  "high_confidence_picks": [
-    {{
-      "id": "liga_local_visitante",
-      "local": "Nombre Local",
-      "visitante": "Nombre Visitante",
-      "match": "Local vs Visitante",
-      "liga": "Nombre Liga",
-      "hora": "HH:MM",
-      "confianza": 71,
-      "prob": 71,
-      "mercado": "Under 2.5 Goles",
-      "bet": "Under 2.5 Goles",
-      "cuota_referencia": 1.75,
-      "odds": 1.75,
-      "edge": 24,
-      "justificacion": "H2H: Under 2.5 en 4/5 ultimos. Visitante 5-3-2 defensivo. Local promedia 0.9 goles en casa. Valor matematico: (0.71 x 1.75) - 1 = +24%",
-      "reglas_aplicadas": ["H2H", "Sistema_tactico", "Valor_cuota"],
-      "bajas_consideradas": "Sin bajas criticas confirmadas",
-      "importancia": "Local necesita ganar para no descender",
-      "mercados_adicionales": [
-        {{"mercado": "BTTS No", "confianza": 65}}
-      ],
-      "estado": "pendiente",
-      "recomendado": true,
-      "tipo": "goles"
-    }}
-  ],
-  "medium_confidence_picks": [],
-  "picks_corners": [
-    {{
-      "id": "corners_liga_local",
-      "match": "Local vs Visitante",
-      "liga": "Nombre Liga",
-      "mercado": "Local Over 5.5 Corners",
-      "confianza": 68,
-      "odds": 1.78,
-      "edge": 21,
-      "justificacion": "Visitante en bloque bajo 4-5-1. Local con extremos desbordantes. Promedio local 6.2 corners en casa.",
-      "tipo": "corners"
-    }}
-  ],
-  "picks_remates": [
-    {{
-      "id": "sot_liga_jugador",
-      "match": "Local vs Visitante",
-      "jugador": "Nombre Jugador",
-      "equipo": "Nombre Equipo",
-      "mercado": "Jugador Over 1.5 Remates a Puerta",
-      "confianza": 64,
-      "odds": 2.10,
-      "edge": 34,
-      "justificacion": "Jugador promedia 2.3 SOT/partido. Enfrenta defensa que concede 8+ remates/partido. Valor matematico +34%.",
-      "tipo": "remates"
-    }}
-  ]
-}}"""
-
-        key = os.environ.get('ANTHROPIC_API_KEY', ENV.get('ANTHROPIC_API_KEY', ''))
-        if not key:
+    # Llamar a Claude
+    try:
+        anthropic_key = os.environ.get('ANTHROPIC_API_KEY', '')
+        if not anthropic_key:
             print('[AUTO-PICKS] Sin ANTHROPIC_API_KEY')
             return
 
+        prompt = (
+            'Eres NEMEBET v5, experto en pronosticos deportivos. Hoy es ' + hoy + '.\n\n' +
+            intro + '\n' + lista + '\n\n' +
+            'REGLAS OBLIGATORIAS:\n' +
+            '1. Solo picks con probabilidad real mayor 63% y valor matematico mayor 8%\n' +
+            '2. Valor = (prob x cuota) - 1\n' +
+            '3. BTTS mas seguro que Over 2.5 en partidos europeos\n' +
+            '4. Si visitante bloque bajo, apostar corners local no goles\n' +
+            '5. H2H reciente es el indicador mas confiable\n' +
+            '6. Cuotas entre 1.65 y 2.50 zona optima\n' +
+            '7. NUNCA cuotas menores a 1.40\n' +
+            '8. Bajas de mediocampo impactan mas que bajas de ataque\n\n' +
+            'Responde SOLO JSON sin markdown ni texto extra.'
+        )
+
+        mensaje = {
+            'local': 'Equipo Local',
+            'visitante': 'Equipo Visitante',
+            'match': 'Local vs Visitante',
+            'liga': 'Liga',
+            'hora': '21:00',
+            'confianza': 70,
+            'prob': 70,
+            'mercado': 'Under 2.5 Goles',
+            'bet': 'Under 2.5 Goles',
+            'cuota_referencia': 1.75,
+            'odds': 1.75,
+            'edge': 22,
+            'justificacion': 'H2H Under en 4/5. Valor +22%',
+            'importancia': 'descripcion importancia',
+            'bajas_consideradas': 'ninguna critica',
+            'estado': 'pendiente',
+            'recomendado': True,
+            'tipo': 'goles'
+        }
+        estructura = json.dumps({
+            'fecha': hoy,
+            'generado': datetime.now().isoformat(),
+            'high_confidence_picks': [mensaje],
+            'medium_confidence_picks': [],
+            'picks_corners': [],
+            'picks_remates': []
+        }, ensure_ascii=False, indent=2)
+
+        prompt_final = prompt + '\n\nEstructura esperada (reemplaza con datos reales):\n' + estructura
+
         body = json.dumps({
             'model': 'claude-sonnet-4-20250514',
-            'max_tokens': 2000,
-            'messages': [{'role': 'user', 'content': prompt}]
+            'max_tokens': 3000,
+            'messages': [{'role': 'user', 'content': prompt_final}]
         }).encode()
 
-        req = urllib.request.Request('https://api.anthropic.com/v1/messages', data=body)
-        req.add_header('x-api-key', key)
+        req = _ur.Request('https://api.anthropic.com/v1/messages', data=body)
+        req.add_header('x-api-key', anthropic_key)
         req.add_header('anthropic-version', '2023-06-01')
         req.add_header('content-type', 'application/json')
 
-        with urllib.request.urlopen(req, timeout=60) as r:
+        with _ur.urlopen(req, timeout=90) as r:
             resp = json.loads(r.read().decode())
 
-        texto = resp["content"][0]["text"].strip()
         texto = resp['content'][0]['text'].strip()
+
         # Limpiar markdown
         if '```' in texto:
             partes = texto.split('```')
@@ -2318,23 +2136,19 @@ Responde SOLO con JSON valido y minimalista, sin texto, sin markdown, sin explic
                 if p.startswith('{'):
                     texto = p
                     break
-            for p in partes:
-                p = p.strip()
-                if p.startswith("json"):
-                    p = p[4:].strip()
-                if p.startswith("{"):
-                    texto = p
-                    break
-        
+
         picks_data = json.loads(texto)
         picks_data['generado'] = datetime.now().isoformat()
 
         with open(path, 'w', encoding='utf-8') as f:
             json.dump(picks_data, f, ensure_ascii=False, indent=2)
-        print(f'[AUTO-PICKS] {len(picks_data.get("high_confidence_picks",[]))} picks guardados')
+
+        total = len(picks_data.get('high_confidence_picks', []))
+        print('[AUTO-PICKS] ' + str(total) + ' picks guardados correctamente')
 
     except Exception as e:
-        print(f'[AUTO-PICKS] Error: {e}')
+        print('[AUTO-PICKS] Error Claude: ' + str(e))
+
 
 def ensure_picks_del_dia():
     """Solo conserva picks si son de HOY. Si son viejos los elimina."""
