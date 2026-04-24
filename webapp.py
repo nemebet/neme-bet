@@ -2224,3 +2224,18 @@ if __name__ == "__main__":
     print(f"\n  Ctrl+C para detener\n")
 
     app.run(host="0.0.0.0", port=port, debug=False)
+
+@app.route('/admin/regenerar-picks')
+def admin_regenerar_picks():
+    try:
+        auto_generar_picks_hoy()
+        path = _dp('picks_del_dia.json')
+        if os.path.exists(path):
+            with open(path, encoding='utf-8') as f:
+                data = json.load(f)
+            return jsonify({'ok': True, 'picks': len(data.get('high_confidence_picks', [])), 'fecha': data.get('fecha')})
+        return jsonify({'ok': False, 'error': 'Archivo no creado'})
+    except Exception as e:
+        import traceback
+        return jsonify({'ok': False, 'error': str(e), 'trace': traceback.format_exc()})
+
