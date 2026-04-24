@@ -2033,43 +2033,133 @@ def auto_generar_picks_hoy():
 
         lista = chr(10).join([f"- {p['home']} vs {p['away']} ({p['liga']}, {p['hora']})" for p in partidos])
 
-        prompt = f"""Eres NEMEBET, experto en predicciones deportivas. Hoy es {hoy}.
+        prompt = f"""Eres NEMEBET v5, el sistema experto en pronosticos deportivos mas avanzado. Hoy es {hoy}.
 
-Partidos disponibles hoy:
+PARTIDOS DISPONIBLES HOY:
 {lista}
 
-Selecciona los 3-5 mejores picks aplicando estas reglas:
-1. BTTS es mas seguro que +2.5 en partidos europeos
-2. Sistema defensivo del visitante es critico
-3. Bajas de mediocampo impactan mas que bajas de ataque
-4. H2H reciente es el indicador mas confiable
-5. Solo picks con probabilidad real mayor al 62%
-6. Si la cuota no justifica el riesgo, omitir
+METODOLOGIA OBLIGATORIA — aplica TODAS estas reglas antes de seleccionar un pick:
 
-Responde SOLO con JSON valido, sin texto extra, sin markdown:
+1. IMPORTANCIA DEL PARTIDO
+   - Evalua que esta en juego: titulo, clasificacion, descenso, playoff, derby, sin nada en juego
+   - Un equipo que necesita ganar tiene motivacion 3x superior
+   - Si ambos equipos no tienen nada en juego -> partido impredecible -> OMITIR
+
+2. CONDICION LOCAL vs VISITANTE
+   - Verifica si el equipo es fuerte en casa o fuera
+   - Un equipo con 5+ derrotas visitante recientes NO debe ser pick de victoria visitante
+   - Considera el factor estadio: atmosfera, altitud, viaje largo
+
+3. ALINEACIONES Y BAJAS CRITICAS
+   - Baja del portero titular -> mas goles esperados
+   - Baja del mediocampista organizador -> peor estructura defensiva
+   - Baja del goleador -> reduccion del 25% en capacidad ofensiva
+   - Baja de lateral desbordante -> menos corners generados
+   - Si no hay info de alineacion -> aumentar incertidumbre, bajar confianza 5%
+
+4. H2H RECIENTE (el indicador mas confiable)
+   - Usar SOLO los ultimos 3-5 H2H directos
+   - Si Under 2.5 en 3 de 5 H2H -> apostar Under
+   - Si BTTS en 4 de 5 H2H -> apostar BTTS
+   - El H2H pesa mas que la forma reciente
+
+5. VALOR MATEMATICO DE LA CUOTA (CRITICO)
+   - Calcular: Valor = (Probabilidad_real x Cuota) - 1
+   - Si valor < 0.05 -> NO HAY VALOR -> OMITIR el pick
+   - Cuotas menores a 1.40 casi nunca tienen valor matematico real
+   - Cuotas entre 1.65 y 2.50 con prob real >55% = zona de valor optimo
+   - NUNCA recomendar cuota 1.20 o menor aunque la prob sea 90%
+
+6. SISTEMA TACTICO Y CORNERS
+   - Si visitante juega 5 defensas (5-3-2 o 5-4-1) -> apostar corners del local NO goles totales
+   - Equipos con laterales ofensivos (atacan por banda) generan 40% mas corners
+   - Local con extremos veloces vs visitante en bloque bajo = Over corners local
+   - Si ambos equipos atacan por banda = Over corners totales
+   - Umbral minimo: el promedio de corners del equipo debe estar 1.5 unidades SOBRE el umbral apostado
+
+7. REMATES AL ARCO POR JUGADOR
+   - Identificar el jugador con mayor promedio de remates a puerta del partido
+   - Solo recomendar si el jugador promedia 2+ SOT por partido esta temporada
+   - El jugador debe enfrentar una defensa con debilidades aereas o en banda
+   - Cuota minima 1.80 para que tenga valor matematico real
+
+8. BTTS vs OVER 2.5
+   - En partidos europeos de eliminatoria: BTTS es mas seguro que Over 2.5
+   - Si el visitante tiene sistema defensivo solido: apostar BTTS no Over 2.5
+   - Over 2.5 solo si ambas defensas son debiles (conceden 1.5+ goles/partido)
+
+9. UMBRALES MINIMOS DE CONFIANZA
+   - high_confidence: probabilidad real >= 63% Y valor matematico >= +8%
+   - medium_confidence: probabilidad real 57-62% Y valor matematico >= +5%
+   - Si no hay 3 picks que cumplan -> devolver solo los que cumplen, no inventar
+
+10. MERCADOS PRIORITARIOS POR ORDEN DE VALOR
+    1. Under/Over 2.5 goles (mas predecible)
+    2. BTTS Si/No (segundo mas predecible)
+    3. Resultado 1X2 con valor claro
+    4. Corners equipo local Over X.5
+    5. Jugador remates a puerta Over 1.5
+
+SELECCIONA 3-6 picks que cumplan TODOS los criterios. Si un partido no cumple al menos 7 de las 10 reglas -> OMITIRLO.
+
+Responde SOLO con JSON valido y minimalista, sin texto, sin markdown, sin explicaciones fuera del JSON:
 {{
   "fecha": "{hoy}",
   "high_confidence_picks": [
     {{
-      "id": "unico_id",
-      "local": "nombre local",
-      "visitante": "nombre visitante",
+      "id": "liga_local_visitante",
+      "local": "Nombre Local",
+      "visitante": "Nombre Visitante",
       "match": "Local vs Visitante",
-      "liga": "nombre liga",
+      "liga": "Nombre Liga",
       "hora": "HH:MM",
-      "confianza": 70,
-      "prob": 70,
-      "mercado": "descripcion mercado",
-      "bet": "descripcion apuesta",
+      "confianza": 71,
+      "prob": 71,
+      "mercado": "Under 2.5 Goles",
+      "bet": "Under 2.5 Goles",
       "cuota_referencia": 1.75,
       "odds": 1.75,
-      "edge": 20,
-      "justificacion": "razon matematica",
+      "edge": 24,
+      "justificacion": "H2H: Under 2.5 en 4/5 ultimos. Visitante 5-3-2 defensivo. Local promedia 0.9 goles en casa. Valor matematico: (0.71 x 1.75) - 1 = +24%",
+      "reglas_aplicadas": ["H2H", "Sistema_tactico", "Valor_cuota"],
+      "bajas_consideradas": "Sin bajas criticas confirmadas",
+      "importancia": "Local necesita ganar para no descender",
+      "mercados_adicionales": [
+        {{"mercado": "BTTS No", "confianza": 65}}
+      ],
       "estado": "pendiente",
-      "recomendado": true
+      "recomendado": true,
+      "tipo": "goles"
     }}
   ],
-  "medium_confidence_picks": []
+  "medium_confidence_picks": [],
+  "picks_corners": [
+    {{
+      "id": "corners_liga_local",
+      "match": "Local vs Visitante",
+      "liga": "Nombre Liga",
+      "mercado": "Local Over 5.5 Corners",
+      "confianza": 68,
+      "odds": 1.78,
+      "edge": 21,
+      "justificacion": "Visitante en bloque bajo 4-5-1. Local con extremos desbordantes. Promedio local 6.2 corners en casa.",
+      "tipo": "corners"
+    }}
+  ],
+  "picks_remates": [
+    {{
+      "id": "sot_liga_jugador",
+      "match": "Local vs Visitante",
+      "jugador": "Nombre Jugador",
+      "equipo": "Nombre Equipo",
+      "mercado": "Jugador Over 1.5 Remates a Puerta",
+      "confianza": 64,
+      "odds": 2.10,
+      "edge": 34,
+      "justificacion": "Jugador promedia 2.3 SOT/partido. Enfrenta defensa que concede 8+ remates/partido. Valor matematico +34%.",
+      "tipo": "remates"
+    }}
+  ]
 }}"""
 
         key = os.environ.get('ANTHROPIC_API_KEY', ENV.get('ANTHROPIC_API_KEY', ''))
