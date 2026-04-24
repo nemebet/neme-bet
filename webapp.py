@@ -2029,24 +2029,29 @@ def auto_generar_picks_hoy():
         hoy2 = datetime.now().strftime('%Y-%m-%d')
         partidos_raw = []
 
-        # Fuente 1: football-data.org
+        # Fuente 1: football-data.org por liga
         try:
             fd_key = os.environ.get('FOOTBALL_DATA_API_KEY', 'dd3d5d1c1bb940ddb78096ea7abd6db7')
-            fd_url = f'https://api.football-data.org/v4/matches?dateFrom={hoy2}&dateTo={hoy2}'
-            fd_req = _ur.Request(fd_url)
-            fd_req.add_header('X-Auth-Token', fd_key)
-            fd_req.add_header('User-Agent', 'NEMEBET/1.0')
-            with _ur.urlopen(fd_req, timeout=15) as fd_r:
-                fd_data = json.loads(fd_r.read().decode())
-            for m in fd_data.get('matches', []):
-                estado = m.get('status', '')
-                if estado not in ['FINISHED', 'CANCELLED', 'POSTPONED']:
-                    home = m.get('homeTeam', {}).get('name', '')
-                    away = m.get('awayTeam', {}).get('name', '')
-                    liga = m.get('competition', {}).get('name', '')
-                    hora = m.get('utcDate', '')[:16].replace('T', ' ')
-                    if home and away:
-                        partidos_raw.append(f'- {home} vs {away} ({liga}, {hora} UTC)')
+            ligas_fd = ['PL','PD','SA','BL1','FL1','PPL','CL']
+            for codigo in ligas_fd:
+                try:
+                    fd_url = f'https://api.football-data.org/v4/competitions/{codigo}/matches?dateFrom={hoy2}&dateTo={hoy2}'
+                    fd_req = _ur.Request(fd_url)
+                    fd_req.add_header('X-Auth-Token', fd_key)
+                    fd_req.add_header('User-Agent', 'NEMEBET/1.0')
+                    with _ur.urlopen(fd_req, timeout=10) as fd_r:
+                        fd_data = json.loads(fd_r.read().decode())
+                    for m in fd_data.get('matches', []):
+                        estado = m.get('status', '')
+                        if estado not in ['FINISHED','CANCELLED','POSTPONED']:
+                            home = m.get('homeTeam',{}).get('name','')
+                            away = m.get('awayTeam',{}).get('name','')
+                            liga = m.get('competition',{}).get('name','')
+                            hora = m.get('utcDate','')[:16].replace('T',' ')
+                            if home and away:
+                                partidos_raw.append(f'- {home} vs {away} ({liga}, {hora} UTC)')
+                except Exception:
+                    pass
             print(f'[AUTO-PICKS] football-data: {len(partidos_raw)} partidos')
         except Exception as e_fd:
             print(f'[AUTO-PICKS] football-data error: {e_fd}')
