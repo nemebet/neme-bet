@@ -2087,15 +2087,19 @@ def auto_generar_picks_hoy():
                 partidos_raw.append(f"- {p['home']} vs {p['away']} ({p.get('liga','')}, {p.get('hora','')}) ")
 
         if not partidos_raw:
-            # Fallback: Claude genera picks con su conocimiento propio
-            hoy_dt = datetime.now()
-            dia_semana = hoy_dt.strftime('%A')
-            print(f'[AUTO-PICKS] Sin API disponible, usando conocimiento propio de Claude para {hoy2}')
-            lista = f"No hay datos de API disponibles. Genera picks para partidos tipicos de un {dia_semana} {hoy2} en las principales ligas europeas (Premier League, LaLiga, Serie A, Bundesliga, Ligue 1, UCL, UEL) basandote en tu conocimiento de la temporada 2025-26 actual. Selecciona partidos reales que se jueguen hoy."
+            # Fallback: Claude genera picks con conocimiento propio
             try:
                 key_c = os.environ.get('ANTHROPIC_API_KEY', '')
                 if not key_c:
+                    print('[AUTO-PICKS] Sin ANTHROPIC_API_KEY')
                     return
+                from generar_picks import generar_picks_ahora
+                total_c = generar_picks_ahora(path, hoy, key_c)
+                print(f'[AUTO-PICKS] {total_c} picks generados con Claude')
+            except Exception as e_c:
+                print(f'[AUTO-PICKS] Error fallback: {e_c}')
+            return
+            # DEAD CODE (viejo fallback eliminado)
                 body_c = json.dumps({
                     'model': 'claude-sonnet-4-20250514',
                     'max_tokens': 3000,
